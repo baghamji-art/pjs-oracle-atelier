@@ -1,0 +1,6 @@
+.DS_Store
+tarot-netlify-upload*.zip
+tarot-netlify-upload*/
+*.log
+node_modules/
+.netlify/
