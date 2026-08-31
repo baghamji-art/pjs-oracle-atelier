@@ -11803,8 +11803,13 @@ function installQuestionOneSimpleSectionStyleV151(){
     '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-row-v151:last-child{border-bottom:0!important;padding-bottom:2px!important}',
     '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-label-v151{font-family:"Jeju Hallasan","JejuHallasan","Jeju Hallasan OTF","BM HANNA Pro","BM Hanna","Apple SD Gothic Neo",Pretendard,sans-serif!important;color:#7b5e92!important;font-size:clamp(1.18rem,3.4vw,1.55rem)!important;font-weight:500!important;line-height:1.25!important;white-space:nowrap!important}',
     '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-value-v151{color:#332a3d!important;font-size:clamp(1rem,2.5vw,1.14rem)!important;font-weight:760!important;line-height:1.72!important;word-break:keep-all!important;overflow-wrap:anywhere!important}',
+    '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-color-row-v190{grid-template-columns:minmax(78px,.22fr) minmax(0,1fr)!important;align-items:center!important}',
+    '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-color-swatch-grid-v190{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:12px!important;width:100%!important;align-items:start!important}',
+    '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-color-swatch-card-v190{min-width:0!important;display:grid!important;grid-template-rows:auto minmax(34px,auto)!important;gap:8px!important;justify-items:stretch!important;align-items:start!important;text-align:center!important}',
+    '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-color-swatch-v190{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1.18/1!important;min-height:0!important;border-radius:9px!important;border:2px solid rgba(55,39,73,.28)!important;background:var(--swatch)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 12px 28px rgba(71,52,93,.12)!important}',
+    '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-color-name-v190{min-height:34px!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;font-family:"Jeju Hallasan","JejuHallasan","Jeju Hallasan OTF","BM HANNA Pro","BM Hanna","Apple SD Gothic Neo",Pretendard,sans-serif!important;color:#4f3f60!important;font-size:clamp(1rem,2.8vw,1.28rem)!important;font-weight:500!important;line-height:1.22!important;word-break:keep-all!important;overflow-wrap:anywhere!important}',
     '#resultScreen.question-one-love-v141 .dating-exclusive-v69 .lucky-clean-grid-v96, #resultScreen.question-one-love-v141 .dating-exclusive-v69 .lucky-grid-premium-v94, #resultScreen.question-one-love-v141 .dating-exclusive-v69 .lucky-combined-grid-v85{display:none!important}',
-    '@media(max-width:560px){#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-list-v151{padding:21px!important;border-radius:24px!important}#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-row-v151{grid-template-columns:72px minmax(0,1fr)!important;gap:12px!important;padding:15px 0!important}#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-label-v151{font-size:1.13rem!important}#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-value-v151{font-size:.98rem!important;line-height:1.65!important}}'
+    '@media(max-width:560px){#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-list-v151{padding:21px!important;border-radius:24px!important}#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-row-v151{grid-template-columns:72px minmax(0,1fr)!important;gap:12px!important;padding:15px 0!important}#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-color-row-v190{grid-template-columns:1fr!important;gap:12px!important}.q1-color-swatch-grid-v190{gap:10px!important}.q1-color-swatch-v190{min-height:50px!important;border-radius:8px!important}.q1-color-name-v190{font-size:.96rem!important}#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-label-v151{font-size:1.13rem!important}#resultScreen.question-one-love-v141 .dating-exclusive-v69 .q1-lucky-value-v151{font-size:.98rem!important;line-height:1.65!important}}'
   ].join('');
 }
 function splitQuestionOneLuckyRowV151(text,index){
@@ -11815,6 +11820,72 @@ function splitQuestionOneLuckyRowV151(text,index){
   const label=labels.find(x=>cleaned.startsWith(x));
   if(label)return [label,cleaned.slice(label.length).replace(/^[:：·\-\s]+/,'').trim()];
   return ['항목 '+(index+1),cleaned];
+}
+function sortQuestionOneLuckyValueV189(label,value){
+  const name=String(label||'').trim();
+  const raw=String(value||'').replace(/\s+/g,' ').trim();
+  if(!raw)return raw;
+  const parts=raw.split(/\s*(?:,|，|\/|·|ㆍ|、|\||\n|그리고|및|와|과)\s*/).map(x=>x.trim()).filter(Boolean);
+  if(parts.length<2)return raw;
+  if(name.includes('숫자')){
+    const nums=parts.map(x=>({raw:x,num:Number((x.match(/-?\d+(?:\.\d+)?/)||[])[0])})).filter(x=>Number.isFinite(x.num));
+    if(nums.length<2)return raw;
+    const sorted=nums.sort((a,b)=>a.num-b.num).map(x=>x.raw);
+    return [...new Set(sorted)].join(', ');
+  }
+  if(name.includes('요일')){
+    const order=['월요일','화요일','수요일','목요일','금요일','토요일','일요일'];
+    const short={월:'월요일',화:'화요일',수:'수요일',목:'목요일',금:'금요일',토:'토요일',일:'일요일'};
+    const mapped=parts.map(x=>{
+      const clean=x.replace(/\s/g,'');
+      const full=order.find(day=>clean.includes(day)||clean===day.replace('요일',''));
+      return {raw:full||short[clean]||x,idx:order.indexOf(full||short[clean]||x)};
+    }).filter(x=>x.idx>=0);
+    if(mapped.length<2)return raw;
+    return [...new Set(mapped.sort((a,b)=>a.idx-b.idx).map(x=>x.raw))].join(', ');
+  }
+  return raw;
+}
+function questionOneLuckyColorCssV190(name){
+  const s=String(name||'').replace(/\s+/g,'').toLowerCase();
+  const has=x=>s.includes(x);
+  if(has('진주')||has('펄'))return 'linear-gradient(135deg,#fffaf0 0%,#f4e6cd 44%,#d8c6ec 100%)';
+  if(has('화이트')||has('흰')||has('오프화이트')||has('아이보리')||has('크림색'))return 'linear-gradient(135deg,#fffdf3,#f4ead4)';
+  if(has('블랙')||has('검정')||has('먹색'))return 'linear-gradient(135deg,#0d0d13,#2b2630)';
+  if(has('차콜'))return 'linear-gradient(135deg,#2a2b31,#55515b)';
+  if(has('네이비')||has('남색')||has('인디고')||has('미드나잇'))return 'linear-gradient(135deg,#101b3e,#263b78)';
+  if(has('코발트')||has('로열블루'))return 'linear-gradient(135deg,#1b49c7,#5e8dff)';
+  if(has('하늘')||has('스카이')||has('라이트블루')||has('페일블루')||has('아이스블루')||has('파우더블루')||has('연청'))return 'linear-gradient(135deg,#d8f1ff,#80bde8)';
+  if(has('블루')||has('파랑')||has('물빛')||has('청록'))return 'linear-gradient(135deg,#5fa7d8,#2f718e)';
+  if(has('민트'))return 'linear-gradient(135deg,#d7fff2,#79d6bd)';
+  if(has('에메랄드'))return 'linear-gradient(135deg,#43c59e,#08775f)';
+  if(has('포레스트')||has('딥그린')||has('초록')||has('그린')||has('녹색'))return 'linear-gradient(135deg,#2f8d63,#d6edb7)';
+  if(has('올리브')||has('세이지'))return 'linear-gradient(135deg,#9fa878,#5d6c46)';
+  if(has('연두'))return 'linear-gradient(135deg,#dcf5a8,#91c86d)';
+  if(has('라벤더')||has('연보라')||has('라일락')||has('보라'))return 'linear-gradient(135deg,#e9d8ff,#a68bda)';
+  if(has('버건디')||has('와인')||has('크림슨')||has('딥레드'))return 'linear-gradient(135deg,#7d1f35,#c56b7a)';
+  if(has('브릭')||has('테라코타')||has('브라운레드')||has('더스티레드'))return 'linear-gradient(135deg,#9a4c3c,#d39b78)';
+  if(has('레드')||has('빨강')||has('빨간')||has('체리')||has('불꽃')||has('버밀리언'))return 'linear-gradient(135deg,#e74b4b,#ff9a78)';
+  if(has('로즈')||has('장미')||has('핑크')||has('분홍')||has('연분홍'))return 'linear-gradient(135deg,#ffd9e6,#d88ba8)';
+  if(has('피치')||has('복숭아')||has('살구'))return 'linear-gradient(135deg,#ffd9be,#f4a483)';
+  if(has('코랄'))return 'linear-gradient(135deg,#ffb6a6,#f47768)';
+  if(has('오렌지')||has('주황')||has('카퍼')||has('카멜'))return 'linear-gradient(135deg,#f2a252,#c46b32)';
+  if(has('골드')||has('금')||has('노랑')||has('옐로')||has('머스터드')||has('해바라기'))return 'linear-gradient(135deg,#fff2a6,#c99727)';
+  if(has('실버')||has('은빛')||has('회색')||has('그레이')||has('스틸'))return 'linear-gradient(135deg,#e9e9eb,#9aa0ad)';
+  if(has('베이지')||has('샌드')||has('토프')||has('브라운')||has('월넛'))return 'linear-gradient(135deg,#e9d4b8,#a87954)';
+  let hash=0;
+  for(let i=0;i<s.length;i++)hash=(hash*31+s.charCodeAt(i))%360;
+  return 'linear-gradient(135deg,hsl('+hash+' 56% 86%),hsl('+hash+' 42% 58%))';
+}
+function splitQuestionOneLuckyValuesV190(value){
+  return String(value||'').split(/\s*(?:,|，|\/|·|ㆍ|、|\||\n|그리고|및|와|과)\s*/).map(x=>x.trim()).filter(Boolean).slice(0,3);
+}
+function renderQuestionOneColorSwatchesV190(value){
+  const colors=splitQuestionOneLuckyValuesV190(value);
+  if(!colors.length)return esc(value);
+  return '<div class="q1-color-swatch-grid-v190">'+colors.map(color=>
+    '<div class="q1-color-swatch-card-v190"><div class="q1-color-swatch-v190" style="--swatch:'+esc(questionOneLuckyColorCssV190(color))+'"></div><div class="q1-color-name-v190">'+esc(color)+'</div></div>'
+  ).join('')+'</div>';
 }
 function flattenQuestionOneLuckyItemsV151(){
   installQuestionOneSimpleSectionStyleV151();
@@ -11838,7 +11909,11 @@ function flattenQuestionOneLuckyItemsV151(){
   lucky.classList.add('q1-lucky-list-v151');
   lucky.innerHTML='<header class="q1-lucky-head-v151"><h3>'+esc(title)+'</h3></header><div class="q1-lucky-rows-v151">'+rows.map((text,index)=>{
     const pair=splitQuestionOneLuckyRowV151(text,index);
-    return '<div class="q1-lucky-row-v151"><div class="q1-lucky-label-v151">'+esc(pair[0])+'</div><div class="q1-lucky-value-v151">'+esc(pair[1]||text)+'</div></div>';
+    const sortedValue=sortQuestionOneLuckyValueV189(pair[0],pair[1]||text);
+    if(String(pair[0]||'').includes('색상')){
+      return '<div class="q1-lucky-row-v151 q1-lucky-color-row-v190"><div class="q1-lucky-label-v151">'+esc(pair[0])+'</div><div class="q1-lucky-value-v151">'+renderQuestionOneColorSwatchesV190(sortedValue)+'</div></div>';
+    }
+    return '<div class="q1-lucky-row-v151"><div class="q1-lucky-label-v151">'+esc(pair[0])+'</div><div class="q1-lucky-value-v151">'+esc(sortedValue)+'</div></div>';
   }).join('')+'</div>';
 }
 if(typeof applyQuestionOneResultFixV141==='function'){
@@ -12747,10 +12822,12 @@ function renderHybridAiReportV185(data){
   }
   if(data?.loading){
     root.classList.remove('ai-hybrid-success-v186');
-    box.innerHTML='<div class="ai-hybrid-loading-v185">AI가 리딩 문장을 정리하고 있습니다.</div>';
+    box.innerHTML='';
+    box.style.display='none';
     return;
   }
   if(data?.error){
+    box.style.display='';
     root.classList.remove('ai-hybrid-success-v186');
     box.innerHTML='<h3>AI 리딩 연결 대기</h3><p>기존 DB 리딩은 그대로 볼 수 있습니다.</p><p style="margin-top:8px;font-size:.86rem;opacity:.82">오류: '+esc(data.message||'Netlify 환경변수, Function 배포, API 크레딧을 확인하세요.')+'</p>';
     return;
@@ -12762,6 +12839,7 @@ function renderHybridAiReportV185(data){
     sections.map(section=>'<section><h4>'+esc(section.heading||'리딩')+'</h4><p>'+esc(section.body||'')+'</p></section>').join(''),
     data.closing?'<section><h4>마무리</h4><p>'+esc(data.closing)+'</p></section>':''
   ].join('');
+  box.style.display='';
   box.innerHTML=html;
   applyHybridAiIntoExistingReportV187(data);
   root.classList.add('ai-hybrid-success-v186');
@@ -12774,8 +12852,9 @@ function applyHybridAiIntoExistingReportV187(data){
   if(!root||!data)return;
   const sections=Array.isArray(data.sections)?data.sections.filter(s=>s&&String(s.body||'').trim()):[];
   if(!sections.length&&!data.headline)return;
-  const candidates=[...root.querySelectorAll('.reading-box,.quick-summary,.study-box-v112,.dating-section-v70,.dating-copy-card-v70,.dating-advice-card-v70')].filter(el=>{
+  const candidates=[...root.querySelectorAll('.reading-box,.quick-summary,.study-box-v112,.pj-section-v67,.dating-section-v70,.dating-copy-card-v70,.dating-advice-card-v70')].filter(el=>{
     if(el.classList.contains('ai-hybrid-report-v185'))return false;
+    if(el.classList.contains('lucky-items-v82')||el.classList.contains('lucky-clean-v96')||el.classList.contains('lucky-premium-v94'))return false;
     if(el.closest('.ai-hybrid-report-v185'))return false;
     if(el.querySelector('.heart-scale-v141,.video-scale-v156'))return false;
     const text=(el.textContent||'').trim();
@@ -12809,7 +12888,7 @@ function applyHybridAiIntoExistingReportV187(data){
     if(hero)hero.textContent=String(data.headline).trim();
   }
   if(data.closing){
-    const closing=[...root.querySelectorAll('.reading-box,.study-box-v112,.dating-section-v70')].reverse().find(el=>!el.classList.contains('ai-hybrid-report-v185'));
+    const closing=[...root.querySelectorAll('.reading-box,.study-box-v112,.pj-section-v67,.dating-section-v70')].reverse().find(el=>!el.classList.contains('ai-hybrid-report-v185')&&!el.classList.contains('lucky-items-v82')&&!el.classList.contains('lucky-clean-v96')&&!el.classList.contains('lucky-premium-v94'));
     const p=closing?.querySelector('p.master-note,p,.study-box-body-v112');
     if(p)p.textContent=String(data.closing).trim();
   }
@@ -12864,6 +12943,131 @@ if(typeof renderReading==='function'){
   };
 }
 document.addEventListener('DOMContentLoaded',installHybridAiReportStyleV185);
+</script>
+
+<script>
+// V188: all existing and future members are permanent during tester mode.
+const PERMANENT_MEMBER_EXPIRES_AT_V188=4102444800000; // 2100-01-01
+function normalizePermanentMembersV188(){
+  if(typeof getMembers!=='function'||typeof setMembers!=='function')return [];
+  const ms=getMembers();
+  let changed=false;
+  ms.forEach(m=>{
+    if(!m||!m.id)return;
+    if(m.status==='expired'||m.status==='expiring_soon'||m.status==='pending'||m.status==='renew_pending'||!m.status){
+      m.status='active';
+      changed=true;
+    }
+    if(!m.paid){m.paid=true;changed=true}
+    if(!m.plan||m.plan==='trial3'||m.plan==='trial7'){m.plan='permanent';changed=true}
+    if(!m.tier){m.tier='member';changed=true}
+    if(m.expiresAt!==PERMANENT_MEMBER_EXPIRES_AT_V188){
+      m.expiresAt=PERMANENT_MEMBER_EXPIRES_AT_V188;
+      changed=true;
+    }
+    if(!m.permanent){m.permanent=true;changed=true}
+    if(m.uniqueCode){m.uniqueCode='';changed=true}
+  });
+  if(changed)setMembers(ms);
+  return ms;
+}
+function permanentMemberLabelV188(){
+  return currentLang==='zh'?'永久会员':currentLang==='en'?'Permanent member':'영구 회원';
+}
+if(typeof syncExpired==='function'){
+  const syncExpiredBaseV188=syncExpired;
+  syncExpired=function(){
+    normalizePermanentMembersV188();
+    try{syncExpiredBaseV188()}catch(e){}
+    normalizePermanentMembersV188();
+  };
+}
+if(typeof requestMember==='function'){
+  requestMember=function(){
+    const id=($('memberIdInput')?.value||'').trim();
+    const pw=$('memberPwInput')?.value||'';
+    if(!id||!pw){msg('memberCreateMsg','아이디와 패스워드를 모두 입력하세요.');return}
+    const ms=normalizePermanentMembersV188();
+    if(ms.some(m=>m.id===id)){msg('memberCreateMsg','이미 존재하는 아이디입니다. 로그인 화면에서 로그인해주세요.');return}
+    const nowTime=now();
+    ms.push({id,password:pw,plan:'permanent',tier:'member',paid:true,uniqueCode:'',memo:'테스트 가입',status:'active',createdAt:nowTime,firstLoginAt:nowTime,expiresAt:PERMANENT_MEMBER_EXPIRES_AT_V188,lastLoginAt:nowTime,history:[],permanent:true});
+    setMembers(ms);
+    currentUser={type:'member',id,tier:'member',expiresAt:PERMANENT_MEMBER_EXPIRES_AT_V188};
+    if(typeof addLog==='function')addLog(id,'Member signup - permanent');
+    msg('memberCreateMsg','가입 완료. 바로 이용할 수 있습니다.',true);
+    if($('memberIdInput'))$('memberIdInput').value='';
+    if($('memberPwInput'))$('memberPwInput').value='';
+    renderMemberHome();
+    show('memberHomeScreen');
+  };
+}
+if(typeof memberLogin==='function'){
+  memberLogin=function(){
+    const id=($('loginIdInput')?.value||'').trim();
+    const pw=$('loginPwInput')?.value||'';
+    const ms=normalizePermanentMembersV188();
+    const m=ms.find(x=>x.id===id&&x.password===pw);
+    if(!m){msg('memberLoginMsg','아이디 또는 패스워드가 맞지 않습니다.');return}
+    m.status='active';
+    m.paid=true;
+    m.uniqueCode='';
+    m.plan=m.plan||'permanent';
+    m.permanent=true;
+    m.firstLoginAt=m.firstLoginAt||now();
+    m.lastLoginAt=now();
+    m.expiresAt=PERMANENT_MEMBER_EXPIRES_AT_V188;
+    setMembers(ms);
+    if(typeof addLog==='function')addLog(m.id,'Member login');
+    currentUser={type:'member',id:m.id,tier:m.tier||'member',expiresAt:PERMANENT_MEMBER_EXPIRES_AT_V188};
+    renderMemberHome();
+    show('memberHomeScreen');
+  };
+}
+if(typeof renderMemberHome==='function'){
+  const renderMemberHomeBaseV188=renderMemberHome;
+  renderMemberHome=function(){
+    normalizePermanentMembersV188();
+    renderMemberHomeBaseV188();
+    if(!$('memberPeriod')||!currentUser?.id)return;
+    const m=getMembers().find(x=>x.id===currentUser.id);
+    if(!m)return;
+    const tier=tiers[m.tier||currentUser.tier||'member']?.label||'Member';
+    const count=m.history?.length||0;
+    $('memberBadge').textContent='👤 '+currentUser.id+' · '+tier;
+    $('memberPeriod').innerHTML='<div><b>'+esc(tier)+' MEMBER</b><p>상태: '+permanentMemberLabelV188()+' · 제한 없이 이용 가능<br>저장된 리딩: '+count+'개</p></div>';
+  };
+}
+if(typeof renderAccount==='function'){
+  renderAccount=function(){
+    normalizePermanentMembersV188();
+    const m=getMembers().find(x=>x.id===currentUser?.id);
+    if(!m)return;
+    const tier=tiers[m.tier||currentUser.tier||'member']?.label||'Member';
+    $('accountBox').innerHTML='<h3>'+esc(tier)+' MEMBER</h3><p>상태: '+permanentMemberLabelV188()+' · 제한 없이 이용 가능<br>만료일: 없음<br>결제 상태: 결제 확인</p>';
+    $('renewBtn')?.classList.add('hidden');
+  };
+}
+if(typeof renderMemberList==='function'){
+  const renderMemberListBaseV188=renderMemberList;
+  renderMemberList=function(){
+    normalizePermanentMembersV188();
+    renderMemberListBaseV188();
+    document.querySelectorAll('.admin-member-meta span').forEach(el=>{
+      if((el.textContent||'').includes('만료일'))el.textContent='만료일: 없음';
+    });
+    document.querySelectorAll('.status-pill').forEach(el=>{
+      if(['만료','만료 임박','승인 대기','재신청 대기'].includes((el.textContent||'').trim()))el.textContent='이용 중';
+    });
+  };
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  normalizePermanentMembersV188();
+  setTimeout(()=>{
+    normalizePermanentMembersV188();
+    if(currentUser?.type==='member'&&typeof renderMemberHome==='function')renderMemberHome();
+    if(!$('adminEditBox')?.classList.contains('hidden')&&typeof renderMemberList==='function')renderMemberList();
+  },700);
+});
 </script>
 
 </body>
