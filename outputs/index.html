@@ -12806,7 +12806,6 @@ function userContextForAiV185(){
   const ctx={};
   if(typeof studyOneStatusV121==='string'&&studyOneStatusV121)ctx.studyStatus=studyOneStatusV121;
   if(typeof questionTwoContextV81==='object'&&questionTwoContextV81)ctx.questionTwo=questionTwoContextV81;
-  if(currentUser?.id)ctx.memberId=currentUser.id;
   return ctx;
 }
 function cardsForAiV185(cards){
@@ -13445,9 +13444,26 @@ function destinySceneTitleV216(value){
   }
   return title;
 }
+function destinyRepeatedPlaceCommaV231(value){
+  const words=String(value||'').trim().split(/\s+/);
+  for(let index=1;index<words.length;index++){
+    const before=words[index-1].replace(/[,，]$/,'');
+    const current=words[index].replace(/[,，]$/,'');
+    if(before&&before===current&&!/[,，]$/.test(words[index-1]))words[index-1]+=',';
+  }
+  return words.join(' ');
+}
+function destinyStoryTextPlaceCommaV231(text,chapter){
+  const source=String(text||'');
+  const rawPlace=String(chapter?.place||'').trim();
+  const punctuatedPlace=destinyRepeatedPlaceCommaV231(rawPlace);
+  return rawPlace&&rawPlace!==punctuatedPlace
+    ?source.split(rawPlace).join(punctuatedPlace)
+    :source;
+}
 function destinyStoryLocationHtmlV230(chapter){
   const era=String(chapter?.era||'').trim();
-  const place=String(chapter?.place||'').trim();
+  const place=destinyRepeatedPlaceCommaV231(chapter?.place);
   const commaIndex=era.indexOf(',');
   const eraHtml=commaIndex>=0
     ?esc(era.slice(0,commaIndex+1))+'<br>'+esc(era.slice(commaIndex+1).trim())
@@ -13473,13 +13489,10 @@ function destinyOverviewProseV208(connection,presenceLabel,fallback){
 }
 function destinyOverviewSentenceHtmlV210(sentence,index){
   let safe=esc(sentence);
-  safe=safe.replace(/(가장 가까운 인물은 )(.+?)(입니다\.)/,(_,lead,identity,ending)=>{
-    const words=identity.trim().split(/\s+/);
-    const emphasisStart=Math.max(0,words.length-2);
-    const context=words.slice(0,emphasisStart).join(' ');
-    const emphasis=words.slice(emphasisStart).join(' ');
-    return lead+(context?context+' ':'')+'<strong>'+emphasis+'</strong>'+ending;
-  });
+  safe=safe.replace(
+    /(가장 가까운 인물은 )(.+?)(입니다[.!]?|이에요[.!]?|예요[.!]?)/,
+    '$1<strong>$2</strong>$3'
+  );
   if(index===1)return safe.replace(/(가장 강하게 보이는 인연은 .+? 이번 생에서의 )(.+?)(입니다\.)/,'$1<strong>$2</strong>$3');
   return safe.replace(/(함께 보이는 인연은 )(.+?)(입니다\.)/,'$1<strong>$2</strong>$3');
 }
@@ -13615,6 +13628,13 @@ function destinyPickUniqueColorsV227(items){
   });
   return selected;
 }
+function destinyNaturalMeetingSignsV233(value){
+  const text=String(value||'').trim();
+  if(text==='온라인 대화·수업·문서 업무·이동 중에서 같은 상징·노래·숫자·장소가 반복되며 자연스럽게 다시 마주칠 수 있다.'){
+    return '온라인에서 대화하거나 수업·문서 작업을 하거나 이동하는 중에, 같은 상징이나 노래·숫자·장소가 반복해서 눈에 띄며 자연스럽게 다시 마주칠 수 있어.';
+  }
+  return text;
+}
 function destinyRelationshipCluesHtmlV222(cards){
   const items=(cards||[]).slice(0,3).map((card,index)=>({card,index,record:destinyRelationshipClueRecordV222(card)})).filter(item=>item.record);
   if(!items.length)return '';
@@ -13626,7 +13646,7 @@ function destinyRelationshipCluesHtmlV222(cards){
   return '<div class="destiny-extra-clues-v222"><div class="destiny-extra-clues-head-v222"><b>뽑은 카드가 더 보여주는 단서</b></div><div class="destiny-extra-clue-grid-v222">'+
     '<article class="destiny-extra-clue-card-v222">'+
     '<div class="destiny-extra-tags-v222"><div><b>성씨</b><p>'+esc(surnames.join(', '))+'</p></div><div class="destiny-extra-colors-v225"><b>자주 쓰는 색</b><p>'+colorClues+'</p></div></div>'+
-    '<dl><div><dt>말투</dt><dd>'+esc(record.speech)+'</dd></div><div><dt>행동</dt><dd>'+esc(record.behavior)+'</dd></div><div><dt>마주칠 때의 단서</dt><dd>'+esc(record.meetingSigns)+'</dd></div></dl></article></div></div>';
+    '<dl><div><dt>말투</dt><dd>'+esc(record.speech)+'</dd></div><div><dt>행동</dt><dd>'+esc(record.behavior)+'</dd></div><div><dt>마주칠 때의 단서</dt><dd>'+esc(destinyNaturalMeetingSignsV233(record.meetingSigns))+'</dd></div></dl></article></div></div>';
 }
 function destinyReturnPurposeRecordV226(cards){
   const db=window.PJ_PAST_LIFE_RETURN_PURPOSE_KO_V226;
@@ -13637,6 +13657,43 @@ function destinyReturnPurposeRecordV226(cards){
   const entry=(db.cards||[]).find(item=>normalizeKo(item.nameKo)===normalizeKo(card.ko)||normalizeEn(item.nameEn)===normalizeEn(card.en));
   return entry?.readings?.[card.rev?'reversed':'upright']||null;
 }
+function destinyNaturalPurposeAnswerV231(record){
+  const raw=String(record?.directAnswer||'').split(/\s+지금 필요한 건\s*/)[0].trim();
+  const match=raw.match(/^이번에 다시 만난 이유는 (.+?)(?:와|과)의 관계에서 (.+?) 위해서야(?:[.!?]|$)/);
+  if(!match)return raw;
+  const person=String(record?.sourceBinding?.strongestRelationship||match[1]).trim();
+  const goal=match[2].trim();
+  const concreteGoals={
+    '함께 시작한 일을 한 사람의 수고로 끝내지 않기':'함께 시작한 일을 누군가 혼자 마무리하는 상황을 반복하지 않기',
+    '조언을 듣되 중요한 선택과 결과를 네 이름으로 남기기':'조언은 참고하되 마지막 결정은 네가 직접 내리기',
+    '도와주는 일과 상대의 생활까지 책임지는 일을 구분하기':'도울 범위를 정하고 상대의 생활 문제까지 대신 해결하지 않기',
+    '상대의 문제까지 네가 수습하는 역할에서 물러나기':'상대가 만든 문제를 네가 대신 수습하는 관계에서 벗어나기',
+    '응원·비교·경쟁이 섞일 때 서로의 수고를 정확히 인정하기':'성과가 걸린 순간에도 누가 무엇을 했는지 정확히 인정하기',
+    '바쁨과 능력을 이유로 업무가 한 사람에게 몰리지 않게 하기':'역할과 마감일을 미리 정해 일이 한 사람에게 몰리지 않게 하기',
+    '표정과 추측으로 넘긴 말을 당사자끼리 직접 나누기':'눈치로 넘기지 말고 불편한 점을 당사자끼리 직접 말하기',
+    '친분이나 능력과 상관없이 역할·공로·책임을 공평하게 나누기':'역할과 공로를 기록해 책임을 공평하게 나누기',
+    '압박·통제·거짓말 앞에서 관계보다 네 안전과 선택권을 먼저 지키기':'압박이나 거짓말이 보이면 관계보다 네 안전과 선택권을 먼저 지키기',
+    '돌아온 말보다 사과 뒤 실제 행동이 달라졌는지 판단하기':'사과를 들은 뒤 같은 행동이 실제로 달라졌는지 확인하기',
+    '호감이나 말보다 실제로 지킨 약속으로 관계를 판단하기':'호감보다 약속한 날짜와 행동이 실제로 지켜지는지 보기',
+    '그 사람의 설명보다 사실·날짜·행동이 서로 맞는지 구분하기':'그 사람의 말이 실제 사실·날짜·행동과 일치하는지 확인하기',
+    '친밀한 감정과 실제 관계의 이름을 따로 두지 않기':'서로 어떤 관계인지 말로 분명히 정하고 같은 기대를 갖기',
+    '돈·지원·물건을 관계의 애정이나 복종과 섞지 않기':'돈이나 도움을 애정의 증거로 여기지 않고 조건을 분명히 하기',
+    '걱정과 지원을 이유로 네 선택권까지 넘기지 않기':'도움을 받아도 진로와 생활 결정은 네가 직접 내리기',
+    '한 사람이 감정과 실무를 더 많이 맡는 구조를 다시 나누기':'감정적인 부담과 실제 할 일을 한쪽에 몰리지 않게 다시 나누기',
+    '미룬 선택 때문에 한 사람만 기다리는 관계를 끝내기':'결정할 날짜를 정하고 한 사람만 계속 기다리는 상황을 끝내기',
+    '기다림을 사랑이나 의리의 증거로 만들지 않기':'기약 없는 기다림을 사랑이나 의리의 증거로 여기지 않기',
+    '빠르게 가까워지는 속도와 실제 책임의 속도를 맞추기':'가까워지는 속도만큼 약속과 책임도 실제로 따라오는지 보기',
+    '다시 나타났다는 사실보다 이전 문제가 달라졌는지 보기':'다시 만났다는 사실보다 예전 문제가 실제로 달라졌는지 확인하기',
+    '끝난 관계와 아직 정리하지 못한 책임을 따로 처리하기':'끝난 감정과 아직 남은 돈·물건·약속을 따로 정리하기',
+    '강한 끌림·의존과 안전한 관계를 같은 것으로 보지 않기':'강한 끌림만으로 안전한 관계라고 판단하지 않기',
+    '관계가 무너진 사건을 감정이 아니라 사실과 책임으로 다시 다루기':'관계를 무너뜨린 사건을 감정으로 덮지 말고 사실과 책임을 확인하기',
+    '거리와 바쁨을 이유로 약속과 책임이 사라지지 않게 하기':'멀리 있거나 바빠도 약속한 연락과 책임이 지켜지는지 보기',
+    '기억·동경·첫인상과 지금의 실제 행동을 분리해서 보기':'과거의 좋은 기억이 아니라 지금의 행동으로 관계를 판단하기',
+    '가족의 정과 실제 돈·돌봄·행사 책임을 따로 나누기':'가족이라는 이유로 돈·돌봄·행사 책임을 자동으로 떠맡지 않기',
+    '가까워지는 속도와 공개할 개인 정보의 범위를 따로 정하기':'친해지는 속도와 공개할 개인정보의 범위를 따로 정하기'
+  };
+  return destinyKoreanObjectV216(person)+' 다시 만난 건, '+(concreteGoals[goal]||goal)+' 위해서야.';
+}
 function destinyConcretePurposeCopyV228(record){
   const originalTitle=String(record?.purposeTitle||'').trim();
   const concreteTitle=String(record?.doNotRepeat||'')
@@ -13645,7 +13702,7 @@ function destinyConcretePurposeCopyV228(record){
     .replace(/지 마[.!?]*$/,'지 않기')
     .replace(/[.!?]+$/,'')
     .trim();
-  const directAnswer=String(record?.directAnswer||'').split(/\s+지금 필요한 건\s*/)[0].trim();
+  const directAnswer=destinyNaturalPurposeAnswerV231(record);
   return {title:concreteTitle||originalTitle,answer:directAnswer||String(record?.directAnswer||'').trim()};
 }
 function destinyPurposeActionsV229(record){
@@ -13721,7 +13778,7 @@ function renderDestinyOneReportV195(cards){
     const relationSummary=destinyConnection?.relationSummaries?.find(item=>item.type===relationId)||null;
     const databaseStory=typeof window.generatePastLifeCardStoryV217==='function'?window.generatePastLifeCardStoryV217(cards,relationId):null;
     return '<div class="destiny-story-relation-panel-v205 '+(relationIndex===0?'active':'')+'" data-destiny-story-panel-v205="'+relationId+'"><div class="destiny-story-progress-v203"><span data-destiny-story-count-v203>1 / 3</span><div>'+cards.slice(0,3).map((_,index)=>'<i class="'+(index===0?'active':'')+'" data-destiny-story-dot-v203="'+index+'"></i>').join('')+'</div></div><div class="destiny-card-grid-v195 destiny-story-slider-v203" data-destiny-story-index-v203="0">'+
-      cards.slice(0,3).map((card,index)=>{const insight=destinyCardInsightV195(card,index,storyAnalysis),stages=['전반 · 인연의 시작','중반 · 두 사람의 관계','후반 · 남겨진 약속'],exactSource=destinyConnection?.cardReadings?.find(item=>item.index===index&&item.relationType===relationId),storySource=exactSource||relationSummary,chapter=databaseStory?.chapters?.[index],storyText=chapter?.story||destinyPastLifeChapterV203(card,index,storyAnalysis,relationId,storySource);return '<article class="destiny-card-proof-v195 destiny-story-slide-v203 '+(index===0?'active':'')+'" data-destiny-story-slide-v203="'+index+'"><div class="destiny-story-stage-v203">'+stages[index]+'</div><div class="destiny-card-art-v195"><span>'+esc(card.icon)+'</span><small>'+esc(card.en)+'</small></div><h4>'+esc(card.ko)+' <small>· '+(card.rev?'역방향':'정방향')+'</small></h4>'+(chapter?'<div class="destiny-story-scene-v209"><small>'+destinyStoryLocationHtmlV230(chapter)+'</small><b>'+esc(destinySceneTitleV216(chapter.sceneTitle))+'</b></div>':'<p>'+esc(destinyCasualTextV220(insight.short))+'</p>')+'<details><summary>전생 이야기 펼쳐보기</summary>'+(chapter?.roles&&index===0?'<div class="destiny-story-roles-v209">'+esc(chapter.roles)+'</div>':'')+'<p>'+esc(storyText)+'</p>'+(chapter?.currentEcho?'<div class="destiny-story-echo-v209"><b>이번 생에서 확인할 모습</b><span>'+esc(destinyCasualTextV220(destinyHumanCurrentEchoV214(chapter.currentEcho,index)))+'</span></div>':'')+'</details></article>'}).join('')+
+      cards.slice(0,3).map((card,index)=>{const insight=destinyCardInsightV195(card,index,storyAnalysis),stages=['전반 · 인연의 시작','중반 · 두 사람의 관계','후반 · 남겨진 약속'],exactSource=destinyConnection?.cardReadings?.find(item=>item.index===index&&item.relationType===relationId),storySource=exactSource||relationSummary,chapter=databaseStory?.chapters?.[index],storyText=chapter?.story||destinyPastLifeChapterV203(card,index,storyAnalysis,relationId,storySource);return '<article class="destiny-card-proof-v195 destiny-story-slide-v203 '+(index===0?'active':'')+'" data-destiny-story-slide-v203="'+index+'"><div class="destiny-story-stage-v203">'+stages[index]+'</div><div class="destiny-card-art-v195"><span>'+esc(card.icon)+'</span><small>'+esc(card.en)+'</small></div><h4>'+esc(card.ko)+' <small>· '+(card.rev?'역방향':'정방향')+'</small></h4>'+(chapter?'<div class="destiny-story-scene-v209"><small>'+destinyStoryLocationHtmlV230(chapter)+'</small><b>'+esc(destinySceneTitleV216(chapter.sceneTitle))+'</b></div>':'<p>'+esc(destinyCasualTextV220(insight.short))+'</p>')+'<details><summary>전생 이야기 펼쳐보기</summary>'+(chapter?.roles&&index===0?'<div class="destiny-story-roles-v209">'+esc(chapter.roles)+'</div>':'')+'<p>'+esc(destinyStoryTextPlaceCommaV231(storyText,chapter))+'</p>'+(chapter?.currentEcho?'<div class="destiny-story-echo-v209"><b>이번 생에서 확인할 모습</b><span>'+esc(destinyCasualTextV220(destinyHumanCurrentEchoV214(chapter.currentEcho,index)))+'</span></div>':'')+'</details></article>'}).join('')+
       '</div><div class="destiny-story-nav-v203"><button type="button" data-action="destiny-story-prev-v203" disabled aria-label="이전 카드">‹ <span>이전</span></button><button type="button" data-action="destiny-story-next-v203" aria-label="다음 카드"><span>다음</span> ›</button></div></div>';
   }).join('');
   result.classList.remove('question-one-love-v141','study-one-visual-v127');
@@ -13740,9 +13797,6 @@ function renderDestinyOneReportV195(cards){
         '<div class="destiny-relation-panels-v195">'+visibleRelationOrder.map(([id],index)=>destinyRelationPanelV195(id,index,analysis)).join('')+'</div>')+'</section>'+
       '<section class="destiny-section-v195"><div class="destiny-section-head-v195"><span>RECOGNITION</span><h3>그 사람을 알아볼 단서</h3></div><ul class="destiny-clues-v195">'+clues.map(item=>'<li>'+esc(destinyCasualTextV220(item))+'</li>').join('')+'</ul>'+destinyRelationshipCluesHtmlV222(cards)+'</section>'+
       '<section class="destiny-section-v195 destiny-purpose-v195"><div class="destiny-section-head-v195"><span>RETURN PURPOSE</span><h3>왜 다시 만났을까?</h3></div>'+destinyReturnPurposeHtmlV226(returnPurpose,purpose)+'</section>'+
-      '<section class="destiny-section-v195 destiny-reflection-v195"><div class="destiny-section-head-v195"><span>MY REFLECTION</span><h3>리딩을 보며 가장 먼저 떠오른 관계가 있어?</h3></div><div class="destiny-reflection-options-v195">'+
-        [['romance','연인·썸·전 연인'],['friend','친구'],['family','가족'],['unclear','아직 모르겠어요']].map(([id,label])=>'<button type="button" data-action="destiny-reflection-v195" data-reflection="'+id+'">'+label+'</button>').join('')+
-        '</div><div id="destinyReflectionAnswerV195" class="destiny-reflection-answer-v195 hidden"></div></section>'+
       '<p class="destiny-grounding-v195">이 리딩은 전생의 존재를 사실로 증명하거나 특정 인물을 단정하지 않아. 카드가 보여주는 관계 패턴을 지금의 행동과 감정을 점검하는 참고로 사용해.</p>'+
     '</div>';
   const full=[DESTINY_ONE_QUESTION_V195,summary,'그 사람을 알아볼 단서: '+clues.join(' / '),'다시 만난 이유: '+purpose.description,'다음 흐름: '+distance.description,purpose.next].join('\n');
@@ -14506,6 +14560,726 @@ document.addEventListener('DOMContentLoaded',()=>{
   .destiny-extra-clue-card-v222 dl>div{grid-template-columns:1fr;gap:5px}
 }
 </style>
+
+<style id="pjoCardTableStyleV232">
+/* V232: immersive three-card table, long-press selection, and staged reveal. */
+@property --pjo-hold-v232{syntax:"<percentage>";inherits:false;initial-value:0%}
+body.pjo-pick-active-v232{background:#160d07}
+body.pjo-pick-active-v232:before{
+  background:
+    radial-gradient(circle at 50% -18%,rgba(224,171,77,.14),transparent 38%),
+    linear-gradient(115deg,#0b0704,#25160b 46%,#0d0804)!important;
+}
+body.pjo-pick-active-v232:after{opacity:.06}
+body.pjo-pick-active-v232 .hero{display:none}
+body.pjo-pick-active-v232 .app{max-width:1460px;padding:18px 14px 34px}
+#pickScreen.pjo-card-table-v232{
+  position:relative;
+  isolation:isolate;
+  width:100%;
+  max-width:1380px;
+  min-height:min(860px,calc(100vh - 52px));
+  margin:0 auto;
+  padding:58px 38px 30px;
+  overflow:hidden;
+  border:1px solid rgba(226,177,94,.44);
+  border-radius:42px;
+  background:
+    radial-gradient(ellipse at 50% 18%,rgba(143,83,30,.34),transparent 52%),
+    linear-gradient(108deg,#130b06 0%,#342011 48%,#120b06 100%);
+  box-shadow:0 30px 100px rgba(0,0,0,.58),inset 0 0 0 8px rgba(82,45,19,.48),inset 0 0 80px rgba(0,0,0,.62);
+  color:#382514;
+  backdrop-filter:none;
+}
+#pickScreen.pjo-card-table-v232:before{
+  content:"";
+  position:absolute;
+  z-index:-2;
+  inset:30px -92px 24px;
+  border:2px solid rgba(130,84,34,.5);
+  border-radius:48% / 14%;
+  background:
+    radial-gradient(circle at 22% 38%,rgba(139,97,45,.08) 0 1px,transparent 1.5px) 0 0/9px 9px,
+    radial-gradient(ellipse at 50% 42%,#f8e9c9 0%,#ead1a0 72%,#c79b5f 100%);
+  box-shadow:inset 0 0 68px rgba(104,61,25,.26),0 0 34px rgba(0,0,0,.58);
+}
+#pickScreen.pjo-card-table-v232:after{
+  content:"✦";
+  position:absolute;
+  z-index:-1;
+  top:34px;
+  left:50%;
+  color:rgba(112,72,29,.52);
+  font-size:1.2rem;
+  letter-spacing:.35em;
+  transform:translateX(-50%);
+}
+#pickScreen.pjo-card-table-v232>.step-label{display:none!important}
+#pickScreen.pjo-card-table-v232>h2{
+  position:relative;
+  z-index:3;
+  margin:50px 0 0;
+  color:#34200f;
+  font-family:"Nanum Gothic Coding","Apple SD Gothic Neo",serif;
+  font-size:clamp(1.75rem,3.2vw,2.72rem);
+  font-weight:700;
+  letter-spacing:-.055em;
+  text-shadow:0 1px 0 rgba(255,255,255,.46);
+}
+#pickScreen.pjo-card-table-v232>#pickHelp{
+  position:relative;
+  z-index:3;
+  margin:10px auto 0;
+  color:#6e5030!important;
+  font-size:clamp(.91rem,1.55vw,1.08rem);
+  font-weight:650;
+}
+#pickScreen.pjo-card-table-v232>#readBtn{display:none!important}
+#pickScreen.pjo-card-table-v232>[data-action="question-back"]{
+  position:relative;
+  z-index:5;
+  width:auto;
+  min-width:118px;
+  margin:5px auto 0;
+  padding:9px 15px;
+  border-color:rgba(103,66,28,.3);
+  background:rgba(255,248,230,.46);
+  color:#684923;
+  font-size:.78rem;
+  box-shadow:none;
+}
+#pickScreen.pjo-card-table-v232 .pick-deck{
+  position:relative;
+  z-index:2;
+  display:block;
+  width:100%;
+  min-height:590px;
+  margin:0;
+}
+.pjo-table-inner-v232{position:relative;width:100%;height:590px}
+.pjo-pick-status-v232{
+  position:absolute;
+  z-index:20;
+  top:14px;
+  left:50%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#4a311a;
+  font-family:Georgia,"Times New Roman",serif;
+  transform:translateX(-50%);
+}
+.pjo-pick-status-v232:before,.pjo-pick-status-v232:after{
+  content:"";
+  width:68px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(102,66,29,.46));
+}
+.pjo-pick-status-v232:after{background:linear-gradient(90deg,rgba(102,66,29,.46),transparent)}
+.pjo-pick-status-v232 b{font-size:1.08rem;white-space:nowrap}
+.pjo-pick-slots-v232{
+  position:absolute;
+  z-index:22;
+  top:54px;
+  left:50%;
+  display:flex;
+  justify-content:center;
+  gap:22px;
+  transform:translateX(-50%);
+}
+.pjo-pick-slot-v232{
+  position:relative;
+  width:92px;
+  height:122px;
+  border:1px solid rgba(108,70,31,.38);
+  border-radius:12px;
+  background:rgba(255,248,228,.15);
+  box-shadow:inset 0 0 18px rgba(108,70,31,.055);
+  perspective:800px;
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.pjo-pick-slot-v232:before{
+  content:attr(data-number);
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:rgba(83,53,24,.64);
+  font-family:Georgia,serif;
+  font-size:1.12rem;
+  transition:opacity .22s ease;
+}
+.pjo-pick-slot-v232.is-target{border-color:#d8a64b;box-shadow:0 0 28px rgba(213,157,64,.3),inset 0 0 18px rgba(213,157,64,.12)}
+.pjo-pick-slot-v232.is-filled:before{opacity:0}
+.pjo-slot-card-v232{
+  position:absolute;
+  inset:3px;
+  opacity:0;
+  transform-style:preserve-3d;
+  transition:transform .72s cubic-bezier(.2,.75,.2,1),opacity .2s ease;
+}
+.pjo-pick-slot-v232.is-filled .pjo-slot-card-v232{opacity:1}
+.pjo-pick-slot-v232.is-revealed .pjo-slot-card-v232{transform:rotateY(180deg)}
+.pjo-slot-back-v232,.pjo-slot-front-v232{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid #c79a44;
+  border-radius:9px;
+  backface-visibility:hidden;
+}
+.pjo-slot-back-v232{
+  color:#e7bb62;
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 17px,#b98937 18px 19px,transparent 20px),
+    radial-gradient(circle at 50% 50%,#bc8730 0 2px,transparent 3px),
+    linear-gradient(145deg,#2d261f,#11100e);
+  box-shadow:inset 0 0 0 3px #17130f,inset 0 0 0 4px rgba(218,170,79,.58);
+  font-size:1.35rem;
+}
+.pjo-slot-front-v232{
+  color:#3b250f;
+  background:linear-gradient(145deg,#fff5d8,#d4ac61);
+  font-size:2rem;
+  transform:rotateY(180deg);
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.28);
+}
+.pjo-fan-stage-v232{
+  position:absolute;
+  z-index:10;
+  inset:180px 0 48px;
+  overflow:visible;
+  touch-action:none;
+}
+.pjo-fan-card-v232{
+  --fan-x-v232:0px;
+  --fan-y-v232:0px;
+  --fan-r-v232:0deg;
+  --react-x-v232:0px;
+  --react-y-v232:0px;
+  --react-r-v232:0deg;
+  position:absolute;
+  left:50%;
+  bottom:18px;
+  width:96px;
+  height:150px;
+  margin:0;
+  padding:0;
+  overflow:visible;
+  border:1px solid rgba(226,177,83,.86);
+  border-radius:12px;
+  background:#17130f;
+  color:#e5b65a;
+  box-shadow:0 17px 25px rgba(60,34,12,.28),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px rgba(218,168,73,.72);
+  transform:
+    translate3d(calc(-50% + var(--fan-x-v232) + var(--react-x-v232)),calc(var(--fan-y-v232) + var(--react-y-v232)),0)
+    rotate(calc(var(--fan-r-v232) + var(--react-r-v232)));
+  transform-origin:50% 115%;
+  transition:filter .2s ease,box-shadow .2s ease,opacity .35s ease;
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  will-change:transform;
+}
+.pjo-card-table-v232.is-dealing-v232 .pjo-fan-card-v232{
+  animation:pjoFanDealV232 .95s cubic-bezier(.18,.72,.2,1) var(--fan-delay-v232) backwards;
+}
+@keyframes pjoFanDealV232{
+  0%{opacity:0;transform:translate3d(-50%,160px,0) rotate(0) scale(.34)}
+  56%{opacity:1}
+  100%{
+    opacity:1;
+    transform:translate3d(calc(-50% + var(--fan-x-v232)),var(--fan-y-v232),0) rotate(var(--fan-r-v232)) scale(1)
+  }
+}
+.pjo-card-back-v232{
+  position:absolute;
+  inset:6px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(226,177,83,.74);
+  border-radius:8px;
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 24px,rgba(218,168,73,.72) 25px 26px,transparent 27px),
+    repeating-radial-gradient(circle at 50% 50%,transparent 0 16px,rgba(195,143,53,.2) 17px 18px),
+    linear-gradient(155deg,#2c251d,#0d0d0c 70%);
+}
+.pjo-card-back-v232:before,.pjo-card-back-v232:after{
+  content:"";
+  position:absolute;
+  width:1px;
+  height:78%;
+  background:linear-gradient(transparent,rgba(220,171,78,.72),transparent);
+}
+.pjo-card-back-v232:after{width:72%;height:1px}
+.pjo-card-sigil-v232{
+  position:relative;
+  z-index:2;
+  display:grid;
+  width:42px;
+  height:42px;
+  place-items:center;
+  border:1px solid rgba(226,177,83,.76);
+  border-radius:50%;
+  background:#17130f;
+  box-shadow:0 0 18px rgba(226,177,83,.14);
+  font-family:Georgia,serif;
+  font-size:1.28rem;
+}
+.pjo-hold-ring-v232{
+  --pjo-hold-v232:0%;
+  position:absolute;
+  z-index:6;
+  inset:-5px;
+  border-radius:16px;
+  background:conic-gradient(from -90deg,#fff0a9 var(--pjo-hold-v232),transparent 0);
+  filter:drop-shadow(0 0 7px rgba(255,207,95,.72));
+  opacity:0;
+  pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  padding:3px;
+}
+.pjo-fan-card-v232.is-holding-v232,.pjo-fan-card-v232.is-dragging-v232{z-index:80!important;filter:brightness(1.12);box-shadow:0 24px 42px rgba(82,48,14,.42),0 0 18px rgba(235,184,78,.25),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px #e2b153}
+.pjo-fan-card-v232.is-holding-v232 .pjo-hold-ring-v232{
+  opacity:1;
+  animation:pjoHoldFillV232 .9s linear forwards;
+}
+.pjo-fan-card-v232.is-dragging-v232{cursor:grabbing}
+.pjo-fan-card-v232.is-dragging-v232 .pjo-hold-ring-v232{
+  --pjo-hold-v232:100%;
+  opacity:1;
+  animation:none;
+}
+.pjo-fan-card-v232.is-ready-v232{filter:brightness(1.28);box-shadow:0 25px 48px rgba(82,48,14,.5),0 0 30px rgba(244,198,94,.68),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px #ffdc83}
+@keyframes pjoHoldFillV232{to{--pjo-hold-v232:100%}}
+.pjo-fan-card-v232.is-picked-v232{opacity:0;pointer-events:none}
+.pjo-fan-card-v232:focus-visible{outline:3px solid #f2bd59;outline-offset:5px;z-index:90!important}
+.pjo-pick-hint-v232{
+  position:absolute;
+  z-index:25;
+  right:0;
+  bottom:2px;
+  left:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  min-height:30px;
+  color:#73522d;
+  font-size:.82rem;
+  font-weight:750;
+  letter-spacing:.01em;
+}
+.pjo-pick-hint-v232:before{content:"◉";color:#a17435;font-size:.72rem}
+.pjo-flight-card-v232{
+  position:fixed!important;
+  z-index:9999!important;
+  margin:0!important;
+  pointer-events:none!important;
+  transform-origin:center!important;
+  transition:none!important;
+}
+@media(max-width:720px){
+  body.pjo-pick-active-v232 .app{padding:0}
+  #pickScreen.pjo-card-table-v232{
+    min-height:100svh;
+    padding:28px 10px 18px;
+    border:0;
+    border-radius:0;
+    box-shadow:inset 0 0 0 6px rgba(82,45,19,.42),inset 0 0 64px rgba(0,0,0,.58);
+  }
+  #pickScreen.pjo-card-table-v232:before{inset:14px -92px 16px;border-radius:48% / 10%}
+  #pickScreen.pjo-card-table-v232:after{top:23px}
+  #pickScreen.pjo-card-table-v232>h2{margin-top:39px;font-size:clamp(1.55rem,7vw,2rem)}
+  #pickScreen.pjo-card-table-v232>#pickHelp{margin-top:7px;font-size:.86rem}
+  #pickScreen.pjo-card-table-v232 .pick-deck{min-height:535px}
+  .pjo-table-inner-v232{height:535px}
+  .pjo-pick-status-v232{top:13px}
+  .pjo-pick-status-v232:before,.pjo-pick-status-v232:after{width:38px}
+  .pjo-pick-slots-v232{top:51px;gap:12px}
+  .pjo-pick-slot-v232{width:72px;height:96px;border-radius:10px}
+  .pjo-slot-card-v232{inset:2px}
+  .pjo-fan-stage-v232{inset:156px -4px 43px}
+  .pjo-fan-card-v232{width:62px;height:101px;border-radius:9px}
+  .pjo-card-back-v232{inset:4px;border-radius:6px}
+  .pjo-card-sigil-v232{width:31px;height:31px;font-size:1rem}
+  .pjo-hold-ring-v232{inset:-4px;border-radius:13px}
+  .pjo-pick-hint-v232{font-size:.75rem}
+}
+@media(max-width:380px){
+  #pickScreen.pjo-card-table-v232{padding-right:5px;padding-left:5px}
+  .pjo-pick-slots-v232{gap:9px}
+  .pjo-pick-slot-v232{width:67px;height:91px}
+}
+@media(prefers-reduced-motion:reduce){
+  .pjo-card-table-v232.is-dealing-v232 .pjo-fan-card-v232{animation-duration:.01ms;animation-delay:0ms}
+  .pjo-slot-card-v232{transition-duration:.01ms}
+  .pjo-flight-card-v232{display:none!important}
+}
+</style>
+
+<script>
+// V232: preserve the reading DB and replace only the card-picking interaction.
+(function(){
+  var pjoHoldV232=null;
+  var pjoTransitioningV232=false;
+  var pjoSkipRitualV232=false;
+  var pjoLayoutFrameV232=0;
+
+  function pjoCopyV232(){
+    if(currentLang==='zh')return {
+      title:'请选择三张牌',
+      intro:'轻轻拖动最先吸引你目光的牌，松手即可确认。',
+      idle:'抓住一张牌，轻轻拖动。',
+      holding:'再拖动一点即可选择。',
+      ready:'现在松手，即可选择这张牌。',
+      next:'已选择一张。继续选择下一张。',
+      final:'三张牌已选好，正在依次翻开。'
+    };
+    if(currentLang==='en')return {
+      title:'Choose three cards',
+      intro:'Drag the card that catches your eye, then release to confirm.',
+      idle:'Grab a card and drag it slightly.',
+      holding:'Drag just a little farther to choose it.',
+      ready:'Release now to choose this card.',
+      next:'Card selected. Choose the next one.',
+      final:'All three cards are ready. Revealing them now.'
+    };
+    return {
+      title:'세 장의 카드를 선택하세요',
+      intro:'가장 먼저 시선이 닿는 카드를 살짝 끌고 손을 떼어 선택해.',
+      idle:'끌리는 카드를 잡아 살짝 움직여.',
+      holding:'조금만 더 끌면 바로 선택할 수 있어.',
+      ready:'이제 손을 떼면 이 카드로 선택돼.',
+      next:'선택했어. 다음으로 끌리는 카드를 골라.',
+      final:'세 장을 모두 골랐어. 카드를 차례로 확인할게.'
+    };
+  }
+
+  function pjoCardMarkupV232(i,total){
+    var center=(total-1)/2;
+    return '<button type="button" class="pjo-fan-card-v232" data-pjo-pick-index-v232="'+i+'" aria-label="'+(i+1)+'번째 카드, 드래그해 선택" style="--fan-delay-v232:'+(Math.abs(i-center)*24+30)+'ms">'+
+      '<span class="pjo-card-back-v232" aria-hidden="true"><span class="pjo-card-sigil-v232">✦</span></span>'+
+      '<span class="pjo-hold-ring-v232" aria-hidden="true"></span>'+
+    '</button>';
+  }
+
+  function pjoSlotMarkupV232(i){
+    return '<div class="pjo-pick-slot-v232" data-pjo-slot-v232="'+i+'" data-number="'+(i+1)+'">'+
+      '<div class="pjo-slot-card-v232">'+
+        '<div class="pjo-slot-back-v232">✦</div>'+
+        '<div class="pjo-slot-front-v232">✦</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function pjoSetHintV232(text){
+    var hint=document.querySelector('#pickScreen .pjo-pick-hint-v232');
+    if(hint)hint.textContent=text;
+  }
+
+  function pjoUpdateStatusV232(){
+    var count=typeof requiredCards==='function'?requiredCards():3;
+    var status=document.querySelector('#pickScreen .pjo-pick-status-v232 b');
+    if(status)status.textContent=selectedIndexes.length+' / '+count;
+    if($('readBtn'))$('readBtn').disabled=selectedIndexes.length!==count;
+  }
+
+  function pjoLayoutFanV232(){
+    cancelAnimationFrame(pjoLayoutFrameV232);
+    pjoLayoutFrameV232=requestAnimationFrame(function(){
+      var stage=document.querySelector('#pickScreen .pjo-fan-stage-v232');
+      if(!stage)return;
+      var cards=Array.from(stage.querySelectorAll('.pjo-fan-card-v232'));
+      if(!cards.length)return;
+      var width=stage.clientWidth||window.innerWidth;
+      var compact=window.matchMedia('(max-width:720px)').matches;
+      var cardWidth=compact?62:96;
+      var usable=Math.max(220,width-cardWidth-14);
+      var spacing=Math.min(compact?19:48,usable/Math.max(1,cards.length-1));
+      var center=(cards.length-1)/2;
+      cards.forEach(function(card,i){
+        var delta=i-center;
+        var ratio=Math.abs(delta)/Math.max(1,center);
+        card.style.setProperty('--fan-x-v232',(delta*spacing)+'px');
+        card.style.setProperty('--fan-y-v232',(ratio*ratio*(compact?45:78))+'px');
+        card.style.setProperty('--fan-r-v232',(delta*(compact?2.45:2.75))+'deg');
+        card.style.zIndex=String(100-Math.round(Math.abs(delta)));
+      });
+    });
+  }
+
+  function pjoRenderPickDeckV232(){
+    var deck=$('pickDeck');
+    if(!deck)return;
+    var count=typeof requiredCards==='function'?requiredCards():3;
+    var total=shuffledDeck.length;
+    var cards='';
+    var slots='';
+    for(var i=0;i<total;i++)cards+=pjoCardMarkupV232(i,total);
+    for(var s=0;s<count;s++)slots+=pjoSlotMarkupV232(s);
+    deck.innerHTML='<div class="pjo-table-inner-v232">'+
+      '<div class="pjo-pick-status-v232" aria-live="polite"><b>0 / '+count+'</b></div>'+
+      '<div class="pjo-pick-slots-v232">'+slots+'</div>'+
+      '<div class="pjo-fan-stage-v232">'+cards+'</div>'+
+      '<div class="pjo-pick-hint-v232" aria-live="polite">'+pjoCopyV232().idle+'</div>'+
+    '</div>';
+    pjoUpdateStatusV232();
+    requestAnimationFrame(pjoLayoutFanV232);
+  }
+
+  function pjoResetCardReactionV232(card){
+    if(!card)return;
+    card.style.setProperty('--react-x-v232','0px');
+    card.style.setProperty('--react-y-v232','0px');
+    card.style.setProperty('--react-r-v232','0deg');
+  }
+
+  function pjoReactToPointerV232(event){
+    if(pjoTransitioningV232)return;
+    var stage=event.currentTarget;
+    var cards=stage.querySelectorAll('.pjo-fan-card-v232:not(.is-picked-v232)');
+    cards.forEach(function(card){
+      var rect=card.getBoundingClientRect();
+      var dx=event.clientX-(rect.left+rect.width/2);
+      var dy=event.clientY-(rect.top+rect.height/2);
+      var distance=Math.sqrt(dx*dx+dy*dy);
+      var strength=Math.max(0,1-distance/210);
+      card.style.setProperty('--react-x-v232',(dx*strength*.055)+'px');
+      card.style.setProperty('--react-y-v232',(-strength*(window.innerWidth<=720?11:18))+'px');
+      card.style.setProperty('--react-r-v232',(dx*strength*.012)+'deg');
+      if(strength>.18)card.style.zIndex=String(160+Math.round(strength*20));
+    });
+  }
+
+  function pjoCancelHoldV232(quiet){
+    if(!pjoHoldV232)return;
+    clearTimeout(pjoHoldV232.timer);
+    if(pjoHoldV232.card){
+      pjoHoldV232.card.classList.remove('is-holding-v232','is-dragging-v232','is-ready-v232');
+      pjoResetCardReactionV232(pjoHoldV232.card);
+    }
+    pjoHoldV232=null;
+    if(!quiet)pjoSetHintV232(pjoCopyV232().idle);
+  }
+
+  function pjoStartHoldV232(event,card){
+    if(pjoTransitioningV232||card.classList.contains('is-picked-v232'))return;
+    if(selectedIndexes.length>=(typeof requiredCards==='function'?requiredCards():3))return;
+    pjoCancelHoldV232(true);
+    event.preventDefault();
+    event.stopPropagation();
+    if(card.setPointerCapture)try{card.setPointerCapture(event.pointerId)}catch(e){}
+    card.classList.add('is-dragging-v232');
+    pjoSetHintV232(pjoCopyV232().holding);
+    pjoHoldV232={
+      card:card,
+      index:Number(card.dataset.pjoPickIndexV232),
+      pointerId:event.pointerId,
+      startX:event.clientX,
+      startY:event.clientY,
+      ready:false,
+      timer:null
+    };
+  }
+
+  function pjoMoveDragV232(event){
+    if(!pjoHoldV232||pjoHoldV232.pointerId!==event.pointerId)return false;
+    event.preventDefault();
+    event.stopPropagation();
+    var dx=event.clientX-pjoHoldV232.startX;
+    var dy=event.clientY-pjoHoldV232.startY;
+    var distance=Math.sqrt(dx*dx+dy*dy);
+    var card=pjoHoldV232.card;
+    card.style.setProperty('--react-x-v232',(Math.max(-74,Math.min(74,dx*.78)))+'px');
+    card.style.setProperty('--react-y-v232',(Math.max(-96,Math.min(68,dy*.78)))+'px');
+    card.style.setProperty('--react-r-v232',(Math.max(-7,Math.min(7,dx*.055)))+'deg');
+    if(distance>=16&&!pjoHoldV232.ready){
+      pjoHoldV232.ready=true;
+      card.classList.add('is-ready-v232');
+      pjoSetHintV232(pjoCopyV232().ready);
+      if(navigator.vibrate)navigator.vibrate(12);
+    }
+    return true;
+  }
+
+  function pjoAnimateToSlotV232(card,slot,done){
+    if(!card||!slot){done();return}
+    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){done();return}
+    var from=card.getBoundingClientRect();
+    var to=slot.getBoundingClientRect();
+    var clone=card.cloneNode(true);
+    clone.className='pjo-fan-card-v232 pjo-flight-card-v232';
+    clone.style.left=from.left+'px';
+    clone.style.top=from.top+'px';
+    clone.style.bottom='auto';
+    clone.style.width=from.width+'px';
+    clone.style.height=from.height+'px';
+    clone.style.transform='none';
+    document.body.appendChild(clone);
+    var dx=to.left-from.left+(to.width-from.width)/2;
+    var dy=to.top-from.top+(to.height-from.height)/2;
+    requestAnimationFrame(function(){
+      var animation=clone.animate([
+        {transform:'translate3d(0,0,0) rotate(0deg) scale(1)',filter:'brightness(1)'},
+        {offset:.42,transform:'translate3d('+(dx*.46)+'px,'+(dy*.42-34)+'px,0) rotate(-2deg) scale(1.08)',filter:'brightness(1.18)'},
+        {transform:'translate3d('+dx+'px,'+dy+'px,0) rotate(0deg) scale('+(to.width/from.width)+')',filter:'brightness(1.05)'}
+      ],{duration:620,easing:'cubic-bezier(.2,.75,.2,1)',fill:'forwards'});
+      animation.onfinish=function(){clone.remove();done()};
+      animation.oncancel=function(){clone.remove();done()};
+    });
+  }
+
+  function pjoConfirmSelectionV232(index,card){
+    var count=typeof requiredCards==='function'?requiredCards():3;
+    if(pjoTransitioningV232||selectedIndexes.indexOf(index)!==-1||selectedIndexes.length>=count)return;
+    selectedIndexes.push(index);
+    card.classList.remove('is-holding-v232','is-dragging-v232','is-ready-v232');
+    card.classList.add('is-picked-v232');
+    var slotIndex=selectedIndexes.length-1;
+    var slot=document.querySelector('#pickScreen [data-pjo-slot-v232="'+slotIndex+'"]');
+    if(slot){
+      slot.classList.add('is-target');
+      var pickedCard=shuffledDeck[index];
+      var front=slot.querySelector('.pjo-slot-front-v232');
+      if(front&&pickedCard)front.textContent=pickedCard.icon||'✦';
+    }
+    pjoUpdateStatusV232();
+    pjoAnimateToSlotV232(card,slot,function(){
+      if(slot){
+        slot.classList.remove('is-target');
+        slot.classList.add('is-filled');
+      }
+      pjoUpdateStatusV232();
+      if(selectedIndexes.length<count){
+        pjoSetHintV232(pjoCopyV232().next);
+      }else{
+        pjoSetHintV232(pjoCopyV232().final);
+        setTimeout(pjoRevealSelectionV232,420);
+      }
+    });
+  }
+
+  function pjoReleaseHoldV232(event,card){
+    if(!pjoHoldV232||pjoHoldV232.card!==card||pjoHoldV232.pointerId!==event.pointerId)return;
+    event.preventDefault();
+    event.stopPropagation();
+    var ready=pjoHoldV232.ready;
+    var index=pjoHoldV232.index;
+    clearTimeout(pjoHoldV232.timer);
+    pjoHoldV232=null;
+    card.classList.remove('is-holding-v232','is-dragging-v232','is-ready-v232');
+    if(ready)pjoConfirmSelectionV232(index,card);
+    else pjoSetHintV232(pjoCopyV232().idle);
+  }
+
+  function pjoRevealSelectionV232(){
+    if(pjoTransitioningV232)return;
+    pjoTransitioningV232=true;
+    var slots=Array.from(document.querySelectorAll('#pickScreen .pjo-pick-slot-v232'));
+    slots.forEach(function(slot,i){
+      setTimeout(function(){
+        slot.classList.add('is-revealed');
+        if(navigator.vibrate)navigator.vibrate(10);
+      },i*360);
+    });
+    setTimeout(function(){
+      pjoSkipRitualV232=true;
+      readCards();
+      pjoTransitioningV232=false;
+    },slots.length*360+520);
+  }
+
+  function pjoBindDeckV232(){
+    var deck=$('pickDeck');
+    if(!deck||deck.dataset.pjoBoundV232==='1')return;
+    deck.dataset.pjoBoundV232='1';
+    deck.addEventListener('pointerdown',function(event){
+      var card=event.target.closest('.pjo-fan-card-v232');
+      if(card)pjoStartHoldV232(event,card);
+    },true);
+    deck.addEventListener('pointerup',function(event){
+      var card=(pjoHoldV232&&pjoHoldV232.card)||event.target.closest('.pjo-fan-card-v232');
+      if(card)pjoReleaseHoldV232(event,card);
+    },true);
+    deck.addEventListener('pointercancel',function(){pjoCancelHoldV232(false)},true);
+    deck.addEventListener('contextmenu',function(event){
+      if(event.target.closest('.pjo-fan-card-v232'))event.preventDefault();
+    });
+    deck.addEventListener('keydown',function(event){
+      var card=event.target.closest('.pjo-fan-card-v232');
+      if(!card||!(event.key==='Enter'||event.key===' '))return;
+      event.preventDefault();
+      pjoConfirmSelectionV232(Number(card.dataset.pjoPickIndexV232),card);
+    });
+    deck.addEventListener('pointermove',function(event){
+      if(pjoMoveDragV232(event))return;
+      var stage=event.target.closest('.pjo-fan-stage-v232');
+      if(stage)pjoReactToPointerV232.call(null,{currentTarget:stage,clientX:event.clientX,clientY:event.clientY});
+    });
+    deck.addEventListener('pointerleave',function(){
+      if(pjoHoldV232)return;
+      deck.querySelectorAll('.pjo-fan-card-v232').forEach(pjoResetCardReactionV232);
+    });
+  }
+
+  if(typeof renderPickDeck==='function')renderPickDeck=pjoRenderPickDeckV232;
+
+  if(typeof showRitual==='function'){
+    var pjoShowRitualBaseV232=showRitual;
+    showRitual=function(done){
+      if(pjoSkipRitualV232){
+        pjoSkipRitualV232=false;
+        requestAnimationFrame(done);
+        return;
+      }
+      return pjoShowRitualBaseV232(done);
+    };
+  }
+
+  if(typeof show==='function'){
+    var pjoShowBaseV232=show;
+    show=function(id){
+      var result=pjoShowBaseV232(id);
+      document.body.classList.toggle('pjo-pick-active-v232',id==='pickScreen');
+      if(id!=='pickScreen'){
+        pjoCancelHoldV232(true);
+        pjoTransitioningV232=false;
+      }
+      return result;
+    };
+  }
+
+  if(typeof startPick==='function'){
+    var pjoStartPickBaseV232=startPick;
+    startPick=function(){
+      pjoTransitioningV232=false;
+      pjoCancelHoldV232(true);
+      var result=pjoStartPickBaseV232();
+      var screen=$('pickScreen');
+      if(!screen||screen.classList.contains('hidden'))return result;
+      var copy=pjoCopyV232();
+      screen.classList.add('pjo-card-table-v232','is-dealing-v232');
+      var title=screen.querySelector('h2');
+      if(title)title.textContent=copy.title;
+      if($('pickHelp'))$('pickHelp').textContent=copy.intro;
+      pjoBindDeckV232();
+      pjoLayoutFanV232();
+      setTimeout(function(){screen.classList.remove('is-dealing-v232')},1550);
+      return result;
+    };
+  }
+
+  window.addEventListener('resize',pjoLayoutFanV232,{passive:true});
+})();
+</script>
 
 </body>
 </html>

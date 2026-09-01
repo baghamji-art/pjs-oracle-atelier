@@ -1,6 +1,10 @@
 .DS_Store
 tarot-netlify-upload*.zip
+tarot-netlify-api-source.zip
 tarot-netlify-upload*/
 *.log
 node_modules/
 .netlify/
+.env
+.env.*
+!.env.example

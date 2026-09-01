@@ -112,8 +112,37 @@ exports.handler = async function(event) {
         body: JSON.stringify({
           model,
           input: prompt,
+          store: false,
           temperature: 0.55,
-          max_output_tokens: isDatingPossibility ? 2300 : 1600
+          max_output_tokens: isDatingPossibility ? 2300 : 1600,
+          text: {
+            format: {
+              type: 'json_schema',
+              name: 'tarot_reading_report',
+              strict: true,
+              schema: {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  headline: { type: 'string' },
+                  sections: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      additionalProperties: false,
+                      properties: {
+                        heading: { type: 'string' },
+                        body: { type: 'string' }
+                      },
+                      required: ['heading', 'body']
+                    }
+                  },
+                  closing: { type: 'string' }
+                },
+                required: ['headline', 'sections', 'closing']
+              }
+            }
+          }
         })
       });
 
