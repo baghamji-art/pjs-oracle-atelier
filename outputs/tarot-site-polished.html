@@ -13354,6 +13354,78 @@ function destinyHumanClueSentenceV212(clues){
   }
   return '떠오르는 사람이 있다면, 그 사람과 함께 있을 때 유독 기억에 남았던 행동이나 대화가 무엇이었는지 천천히 생각해 보세요.';
 }
+function destinyClueSentenceV215(value){
+  const clue=String(value||'').trim().replace(/[.!?]+$/,'');
+  const exact={
+    '건강·시험·업무 피로가 있어':'건강이나 시험, 업무 때문에 지쳐 있습니다.',
+    '차단보다 조용한 거리두기야':'갑자기 관계를 끊기보다 말없이 조금씩 거리를 두는 편입니다.',
+    '데이트 계획이 섬세해':'데이트나 약속을 세심하게 준비합니다.',
+    '편지·음악·꽃과 연결돼':'편지나 음악, 꽃으로 마음을 표현합니다.'
+  };
+  if(exact[clue])return exact[clue];
+  const rules=[
+    [/있었어$/,'있었습니다.'],[/없었어$/,'없었습니다.'],[/됐어$/,'됐습니다.'],[/했어$/,'했습니다.'],[/였어$/,'였습니다.'],[/았어$/,'았습니다.'],[/었어$/,'었습니다.'],
+    [/있어$/,'있습니다.'],[/없어$/,'없습니다.'],[/하지 않아$/,'하지 않습니다.'],[/지 않아$/,'지 않습니다.'],[/않아$/,'않습니다.'],
+    [/깊어져$/,'깊어집니다.'],[/흐려져$/,'흐려집니다.'],[/나아져$/,'나아집니다.'],[/바뀌어$/,'바뀝니다.'],[/반복돼$/,'반복됩니다.'],[/연결돼$/,'연결됩니다.'],[/취소돼$/,'취소됩니다.'],[/비교돼$/,'비교됩니다.'],[/돼$/,'됩니다.'],
+    [/돌아와$/,'돌아옵니다.'],[/나와$/,'나옵니다.'],[/와$/,'옵니다.'],[/보여$/,'보입니다.'],[/느껴$/,'느낍니다.'],[/바꿔$/,'바꿉니다.'],[/맡겨$/,'맡깁니다.'],[/건네$/,'건넵니다.'],[/지켜$/,'지킵니다.'],[/숨겨$/,'숨깁니다.'],[/삐쳐$/,'삐칩니다.'],[/놓쳐$/,'놓칩니다.'],[/미뤄$/,'미룹니다.'],[/끊어$/,'끊습니다.'],
+    [/좋아해$/,'좋아합니다.'],[/어려워해$/,'어려워합니다.'],[/서운해해$/,'서운해합니다.'],[/말해$/,'말합니다.'],[/연락해$/,'연락합니다.'],[/기억해$/,'기억합니다.'],[/확인해$/,'확인합니다.'],[/공감해$/,'공감합니다.'],[/해$/,'합니다.'],
+    [/줘$/,'줍니다.'],[/알아$/,'압니다.'],[/봐$/,'봅니다.'],[/많아$/,'많습니다.'],[/길어$/,'깁니다.'],[/빨라$/,'빠릅니다.'],[/달라$/,'다릅니다.'],[/커$/,'큽니다.'],[/좋아$/,'좋습니다.'],[/서툴러$/,'서툽니다.'],[/부드러워$/,'부드럽습니다.'],[/자연스러워$/,'자연스럽습니다.'],[/야$/,'입니다.']
+  ];
+  for(const [pattern,replacement] of rules){
+    if(pattern.test(clue))return clue.replace(pattern,replacement);
+  }
+  return clue+'.';
+}
+function destinyHumanCurrentEchoV214(value,index=0){
+  const text=String(value||'').trim();
+  if(!text)return '';
+  const clues=[...text.matchAll(/“([^”]+)”/g)].map(match=>match[1]).slice(0,2);
+  if(!clues.length)return destinyPoliteSentenceV208(text);
+  const leads=[
+    '가장 먼저 떠오른 사람의 평소 모습을 되짚어 보세요.',
+    '두 사람 사이가 가까워지거나 흔들렸을 때의 장면을 떠올려 보세요.',
+    '관계를 이어갈지 멀어질지 결정하던 순간의 행동을 기억해 보세요.'
+  ];
+  const endings=[
+    '이 두 모습이 한 사람에게 함께 보였다면 첫 번째 단서와 가깝습니다.',
+    '평소보다 갈등이 생겼을 때 이런 태도가 더 선명했다면 두 번째 장면과 이어집니다.',
+    '마지막에는 그 사람이 실제로 어떤 선택을 했는지가 가장 중요한 단서입니다.'
+  ];
+  return [leads[index]||leads[0],...clues.map(destinyClueSentenceV215),endings[index]||endings[0]].join(' ');
+}
+function destinyKoreanObjectV216(noun){
+  const text=String(noun||'').trim();
+  const last=text.charCodeAt(text.length-1);
+  const hasBatchim=last>=0xac00&&last<=0xd7a3&&(last-0xac00)%28!==0;
+  return text+(hasBatchim?'을':'를');
+}
+function destinySceneTitleV216(value){
+  const title=String(value||'').trim();
+  if(!title)return '';
+  if(title==='안개에 젖어 번진 야간 지도 뒤에 남은 첫 감정'){
+    return '안개에 젖어 번진 야간 지도를 함께 펼쳐 본 밤, 처음 생긴 감정';
+  }
+  const patterns=[
+    [/(.+) 뒤에 남은 첫 감정$/,noun=>destinyKoreanObjectV216(noun)+' 함께 확인하던 날, 처음 생긴 감정'],
+    [/(.+) 뒤에 남은 마음$/,noun=>destinyKoreanObjectV216(noun)+' 정리한 뒤에도 끝내 남은 마음'],
+    [/(.+)와 깊어진 일상$/,noun=>destinyKoreanObjectV216(noun)+' 함께 지키며 가까워진 두 사람'],
+    [/(.+)과 깊어진 일상$/,noun=>destinyKoreanObjectV216(noun)+' 함께 지키며 가까워진 두 사람'],
+    [/(.+) 이후의 두 사람$/,noun=>destinyKoreanObjectV216(noun)+' 둘러싼 일이 끝난 뒤 달라진 두 사람'],
+    [/(.+)에 쌓인 책임$/,noun=>destinyKoreanObjectV216(noun)+' 함께 맡으며 점점 무거워진 책임'],
+    [/(.+) 앞의 선택$/,noun=>destinyKoreanObjectV216(noun)+' 두고 내려야 했던 선택'],
+    [/(.+)를 지키는 방식$/,noun=>destinyKoreanObjectV216(noun)+' 지키기 위해 두 사람이 택한 방법'],
+    [/(.+)을 지키는 방식$/,noun=>destinyKoreanObjectV216(noun)+' 지키기 위해 두 사람이 택한 방법'],
+    [/(.+)를 둘러싼 균열$/,noun=>destinyKoreanObjectV216(noun)+' 둘러싸고 처음 어긋난 두 사람'],
+    [/(.+)을 둘러싼 균열$/,noun=>destinyKoreanObjectV216(noun)+' 둘러싸고 처음 어긋난 두 사람'],
+    [/(.+)와 마지막 결정$/,noun=>destinyKoreanObjectV216(noun)+' 두고 내린 마지막 결정'],
+    [/(.+)과 마지막 결정$/,noun=>destinyKoreanObjectV216(noun)+' 두고 내린 마지막 결정']
+  ];
+  for(const [pattern,makeTitle] of patterns){
+    const match=title.match(pattern);
+    if(match)return makeTitle(match[1]);
+  }
+  return title;
+}
 function destinyOverviewProseV208(connection,presenceLabel,fallback){
   const groups=connection?.relationSummaries||[];
   if(!groups.length)return [fallback];
@@ -13451,7 +13523,7 @@ function renderDestinyOneReportV195(cards){
     const relationSummary=destinyConnection?.relationSummaries?.find(item=>item.type===relationId)||null;
     const databaseStory=typeof window.generatePastLifeCardStoryV209==='function'?window.generatePastLifeCardStoryV209(cards,relationId):null;
     return '<div class="destiny-story-relation-panel-v205 '+(relationIndex===0?'active':'')+'" data-destiny-story-panel-v205="'+relationId+'"><div class="destiny-story-progress-v203"><span data-destiny-story-count-v203>1 / 3</span><div>'+cards.slice(0,3).map((_,index)=>'<i class="'+(index===0?'active':'')+'" data-destiny-story-dot-v203="'+index+'"></i>').join('')+'</div></div><div class="destiny-card-grid-v195 destiny-story-slider-v203" data-destiny-story-index-v203="0">'+
-      cards.slice(0,3).map((card,index)=>{const insight=destinyCardInsightV195(card,index,storyAnalysis),stages=['전반 · 인연의 시작','중반 · 두 사람의 관계','후반 · 남겨진 약속'],exactSource=destinyConnection?.cardReadings?.find(item=>item.index===index&&item.relationType===relationId),storySource=exactSource||relationSummary,chapter=databaseStory?.chapters?.[index],storyText=chapter?.story||destinyPastLifeChapterV203(card,index,storyAnalysis,relationId,storySource);return '<article class="destiny-card-proof-v195 destiny-story-slide-v203 '+(index===0?'active':'')+'" data-destiny-story-slide-v203="'+index+'"><div class="destiny-story-stage-v203">'+stages[index]+'</div><div class="destiny-card-art-v195"><span>'+esc(card.icon)+'</span><small>'+esc(card.en)+'</small></div><h4>'+esc(card.ko)+' <small>· '+(card.rev?'역방향':'정방향')+'</small></h4>'+(chapter?'<div class="destiny-story-scene-v209"><b>'+esc(chapter.sceneTitle)+'</b><small>'+esc(chapter.era)+' · '+esc(chapter.place)+'</small></div>':'<p>'+esc(insight.short)+'</p>')+'<details><summary>이 장면의 전생 이야기 펼쳐보기</summary>'+(chapter?.roles&&index===0?'<div class="destiny-story-roles-v209">'+esc(chapter.roles)+'</div>':'')+'<p>'+esc(storyText)+'</p>'+(chapter?.currentEcho?'<div class="destiny-story-echo-v209"><b>이번 생에서 확인할 모습</b><span>'+esc(chapter.currentEcho)+'</span></div>':'')+'</details></article>'}).join('')+
+      cards.slice(0,3).map((card,index)=>{const insight=destinyCardInsightV195(card,index,storyAnalysis),stages=['전반 · 인연의 시작','중반 · 두 사람의 관계','후반 · 남겨진 약속'],exactSource=destinyConnection?.cardReadings?.find(item=>item.index===index&&item.relationType===relationId),storySource=exactSource||relationSummary,chapter=databaseStory?.chapters?.[index],storyText=chapter?.story||destinyPastLifeChapterV203(card,index,storyAnalysis,relationId,storySource);return '<article class="destiny-card-proof-v195 destiny-story-slide-v203 '+(index===0?'active':'')+'" data-destiny-story-slide-v203="'+index+'"><div class="destiny-story-stage-v203">'+stages[index]+'</div><div class="destiny-card-art-v195"><span>'+esc(card.icon)+'</span><small>'+esc(card.en)+'</small></div><h4>'+esc(card.ko)+' <small>· '+(card.rev?'역방향':'정방향')+'</small></h4>'+(chapter?'<div class="destiny-story-scene-v209"><b>'+esc(destinySceneTitleV216(chapter.sceneTitle))+'</b><small>'+esc(chapter.era)+' · '+esc(chapter.place)+'</small></div>':'<p>'+esc(insight.short)+'</p>')+'<details><summary>전생 이야기 펼쳐보기</summary>'+(chapter?.roles&&index===0?'<div class="destiny-story-roles-v209">'+esc(chapter.roles)+'</div>':'')+'<p>'+esc(storyText)+'</p>'+(chapter?.currentEcho?'<div class="destiny-story-echo-v209"><b>이번 생에서 확인할 모습</b><span>'+esc(destinyHumanCurrentEchoV214(chapter.currentEcho,index))+'</span></div>':'')+'</details></article>'}).join('')+
       '</div><div class="destiny-story-nav-v203"><button type="button" data-action="destiny-story-prev-v203" disabled aria-label="이전 카드">‹ <span>이전</span></button><button type="button" data-action="destiny-story-next-v203" aria-label="다음 카드"><span>다음</span> ›</button></div></div>';
   }).join('');
   result.classList.remove('question-one-love-v141','study-one-visual-v127');
@@ -14086,6 +14158,58 @@ document.addEventListener('DOMContentLoaded',()=>{
 }
 #questionScreen>.step-label{
   display:none!important;
+}
+</style>
+
+<style>
+/* V213: a quiet, wave-like invitation on the past-life story disclosure. */
+.destiny-one-v195 .destiny-story-slide-v203 summary{
+  position:relative;
+  isolation:isolate;
+  display:inline-flex;
+  align-items:center;
+  min-height:42px;
+  padding:9px 16px;
+  overflow:hidden;
+  border:1px solid rgba(167,124,63,.3);
+  border-radius:999px;
+  background:rgba(255,250,240,.72);
+  box-shadow:0 5px 16px rgba(137,102,49,.06);
+  list-style:none;
+}
+.destiny-one-v195 .destiny-story-slide-v203 summary::-webkit-details-marker{display:none}
+.destiny-one-v195 .destiny-story-slide-v203 summary::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:-55%;
+  bottom:-55%;
+  left:-48%;
+  width:42%;
+  border-radius:50%;
+  background:linear-gradient(100deg,transparent,rgba(238,207,145,.08),rgba(255,246,209,.5),rgba(238,207,145,.08),transparent);
+  filter:blur(7px);
+  transform:translateX(0) skewX(-12deg);
+  animation:destinyStoryAuraV213 5.4s ease-in-out infinite;
+  pointer-events:none;
+}
+.destiny-one-v195 .destiny-story-slide-v203 summary::after{
+  content:"⌄";
+  margin-left:8px;
+  color:#a77c3f;
+  font-size:.92rem;
+  transition:transform .24s ease;
+}
+.destiny-one-v195 .destiny-story-slide-v203 details[open] summary::before{animation:none;opacity:0}
+.destiny-one-v195 .destiny-story-slide-v203 details[open] summary::after{transform:rotate(180deg)}
+@keyframes destinyStoryAuraV213{
+  0%,18%{transform:translateX(0) skewX(-12deg);opacity:0}
+  28%{opacity:.45}
+  62%{opacity:.72}
+  82%,100%{transform:translateX(355%) skewX(-12deg);opacity:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .destiny-one-v195 .destiny-story-slide-v203 summary::before{animation:none;opacity:0}
 }
 </style>
 
