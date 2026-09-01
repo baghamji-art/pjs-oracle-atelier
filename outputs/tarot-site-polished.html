@@ -5838,7 +5838,7 @@ function contactFreeCatalogV64(){
     ?{q:'前世延续的缘分，现在在我身边吗？',cat:'love',qtype:'past_life_connection',group:'destiny',tags:['前世','缘分','命运'],art:'destiny'}
     :currentLang==='en'
       ?{q:'Is someone from a past-life connection around me now?',cat:'love',qtype:'past_life_connection',group:'destiny',tags:['past life','fate','connection'],art:'destiny'}
-      :{q:'전생에서 이어진 인연이 지금 내 주변에 있을까?',cat:'love',qtype:'past_life_connection',group:'destiny',tags:['전생','인연','운명'],art:'destiny'};
+      :{q:'전생에서 이어진 인연이 이번 생에도 나타날까?',cat:'love',qtype:'past_life_connection',group:'destiny',tags:['전생','인연','운명'],art:'destiny'};
   if(!filtered.some(item=>item.qtype==='past_life_connection'))filtered.splice(Math.min(2,filtered.length),0,destiny);
   return filtered;
 }
@@ -6734,7 +6734,7 @@ function archiveDateV78(time){
 }
 function isDestinyOneV80(text){
   const q=String(text||'').trim();
-  return q==='운1'||q==='전생에서 이어진 인연이 지금 내 주변에 있을까?'||/전생에서\s*이어진\s*인연이\s*지금\s*내\s*주변에\s*있을까\??/.test(q);
+  return q==='운1'||q==='전생에서 이어진 인연이 이번 생에도 나타날까?'||q==='전생에서 이어진 인연이 지금 내 주변에 있을까?'||/전생에서\s*이어진\s*인연이\s*(?:이번\s*생에도\s*나타날까|지금\s*내\s*주변에\s*있을까)\??/.test(q);
 }
 if(typeof questionTypeFromTextV61==='function'){
   const questionTypeFromTextBaseV80=questionTypeFromTextV61;
@@ -7183,7 +7183,7 @@ function imageOnlyCatalogV83(){
   return[
     {q:(window.QUESTION_ONE_V66?.displayText)||'이 관계가 연애로 발전할 수 있을까? (썸 전용)',cat:'love',qtype:'dating_possibility',group:'popular',tags:['썸','관계발전','가능성'],art:'couple'},
     {q:(window.QUESTION_TWO_V68?.fullText)||'그 사람은 나를 어떻게 보고 있을까?',cat:'love_mind',qtype:'how_they_see_me',group:'mind',tags:['상대','시선','매력'],art:'gaze'},
-    {q:'전생에서 이어진 인연이 지금 내 주변에 있을까?',cat:'love',qtype:'past_life_connection',group:'destiny',tags:['전생','인연','운명'],art:'destiny'}
+    {q:'전생에서 이어진 인연이 이번 생에도 나타날까?',cat:'love',qtype:'past_life_connection',group:'destiny',tags:['전생','인연','운명'],art:'destiny'}
   ];
 }
 function contactFreeLabelsV64(){
@@ -13175,14 +13175,15 @@ body[data-screen="memberHomeScreen"] #memberHomeScreen .private-consult-home-row
 
 <script src="assets/destiny-one-reading-v195.js"></script>
 <script src="assets/destiny-connection-ko-v201.js"></script>
-<script src="assets/pj-oracle-past-life-card-story-ko-v209.js"></script>
+<script src="assets/pj-oracle-past-life-card-story-ko-v217.js"></script>
+<script src="assets/pj-oracle-past-life-relation-ko-v218.js"></script>
 <script>
 // V195: dedicated three-card story and result experience for Destiny 1.
-const DESTINY_ONE_QUESTION_V195='전생에서 이어진 인연이 지금 내 주변에 있을까?';
+const DESTINY_ONE_QUESTION_V195='전생에서 이어진 인연이 이번 생에도 나타날까?';
 function isDestinyOneReadingV195(){
   const q=String($('question')?.value||lastReadingData?.q||'').trim();
   const type=String($('question')?.dataset?.qtype||lastReadingData?.qtype||lastReadingData?.type||'');
-  return type==='past_life_connection'||q==='운1'||/전생에서\s*이어진\s*인연이\s*지금\s*내\s*주변에\s*있을까/.test(q);
+  return type==='past_life_connection'||q==='운1'||/전생에서\s*이어진\s*인연이\s*(?:이번\s*생에도\s*나타날까|지금\s*내\s*주변에\s*있을까)/.test(q);
 }
 function unlockDestinyOneQuestionV195(){
   document.querySelectorAll('#questionExamples [data-qtype="past_life_connection"]').forEach(card=>{
@@ -13444,7 +13445,14 @@ function destinyOverviewProseV208(connection,presenceLabel,fallback){
   return sentences.slice(0,5);
 }
 function destinyOverviewSentenceHtmlV210(sentence,index){
-  const safe=esc(sentence);
+  let safe=esc(sentence);
+  safe=safe.replace(/(가장 가까운 인물은 )(.+?)(입니다\.)/,(_,lead,identity,ending)=>{
+    const words=identity.trim().split(/\s+/);
+    const emphasisStart=Math.max(0,words.length-2);
+    const context=words.slice(0,emphasisStart).join(' ');
+    const emphasis=words.slice(emphasisStart).join(' ');
+    return lead+(context?context+' ':'')+'<strong>'+emphasis+'</strong>'+ending;
+  });
   if(index===1)return safe.replace(/(가장 강하게 보이는 인연은 .+? 이번 생에서의 )(.+?)(입니다\.)/,'$1<strong>$2</strong>$3');
   return safe.replace(/(함께 보이는 인연은 )(.+?)(입니다\.)/,'$1<strong>$2</strong>$3');
 }
@@ -13476,29 +13484,88 @@ function destinyCluesV195(analysis){
   };
   return [...new Set([...(relationClues[analysis.primary]||[]),purposeClues[analysis.purpose],distanceClues[analysis.distance]])].slice(0,4);
 }
+function destinyRelationReadingV218(card){
+  const db=window.PJ_PAST_LIFE_RELATION_KO_V218;
+  if(!db||!card)return null;
+  const normalize=value=>String(value||'').toUpperCase().replace(/[^A-Z0-9가-힣]/g,'');
+  const ko=normalize(card.ko),en=normalize(card.en);
+  const record=db.cards?.find(item=>normalize(item.nameKo)===ko||normalize(item.nameEn)===en);
+  if(!record)return null;
+  return record.readings?.[card.rev?'reversed':'upright']||null;
+}
+function destinyRelationResultV218(cards){
+  const weighted=(cards||[]).slice(0,3).map((card,index)=>({index,weight:[.25,.5,.25][index],reading:destinyRelationReadingV218(card)})).filter(item=>item.reading);
+  if(weighted.length<3)return null;
+  const counts={},scores={};
+  weighted.forEach(item=>{const type=item.reading.relationshipType;counts[type]=(counts[type]||0)+1;scores[type]=(scores[type]||0)+item.weight;});
+  const majority=Object.entries(counts).find(([,count])=>count>=2)?.[0];
+  const selectedType=majority||Object.entries(scores).sort((a,b)=>b[1]-a[1]||((weighted[1]?.reading.relationshipType===b[0])- (weighted[1]?.reading.relationshipType===a[0])))[0]?.[0];
+  const candidates=weighted.filter(item=>item.reading.relationshipType===selectedType).sort((a,b)=>b.weight-a.weight);
+  const reading=(candidates[0]||weighted[1]||weighted[0]).reading;
+  const storyRelation={romance:'romance',friend:'friend',acquaintance:'friend',family:'family',relative:'family'}[selectedType]||'friend';
+  return {type:selectedType,storyRelation,reading,cardReadings:weighted.map(item=>item.reading)};
+}
+function destinyRelationTypeLabelV218(type){
+  return {romance:'연인·썸·전 연인',friend:'친구',family:'직계가족',relative:'친척',acquaintance:'지인'}[type]||'인연';
+}
+function destinyHumanizeRelationTextV219(value){
+  return String(value||'').replaceAll('큰 폭로 뒤 함께하던 일이 무너진 동료','함께하던 일에서 숨겨진 사실이 드러난 뒤 멀어진 동료');
+}
+function destinyCasualTextV220(value){
+  return String(value||'')
+    .replaceAll('분명해집니다.','분명해져.').replaceAll('편안해집니다.','편안해져.').replaceAll('어려워집니다.','어려워져.').replaceAll('싶어집니다.','싶어져.')
+    .replaceAll('떠오릅니다.','떠올라.').replaceAll('중요합니다.','중요해.').replaceAll('안전합니다.','안전해.').replaceAll('좌우합니다.','좌우해.')
+    .replaceAll('쉽습니다.','쉬워.').replaceAll('어렵습니다.','어려워.').replaceAll('좋습니다.','좋아.').replaceAll('큽니다.','커.')
+    .replaceAll('있습니다.','있어.').replaceAll('없습니다.','없어.').replaceAll('아닙니다.','아니야.').replaceAll('됩니다.','돼.')
+    .replaceAll('사람입니다.','사람이야.').replaceAll('지인입니다.','지인이야.').replaceAll('친구입니다.','친구야.').replaceAll('연인입니다.','연인이야.')
+    .replaceAll('동료입니다.','동료야.').replaceAll('가족입니다.','가족이야.').replaceAll('친척입니다.','친척이야.').replaceAll('상대입니다.','상대야.')
+    .replaceAll('우선입니다.','우선이야.').replaceAll('편입니다.','편이야.').replaceAll('줍니다.','줘.').replaceAll('합니다.','해.')
+    .replaceAll('주세요.','줘.').replaceAll('보세요.','봐.').replaceAll('마세요.','마.').replaceAll('두세요.','둬.').replaceAll('하세요.','해.')
+    .replaceAll('이에요.','이야.').replaceAll('예요.','야.').replace(/요\./g,'.');
+}
+function destinySharedExperiencesV221(reading){
+  if(reading?.strongestRelationship==='계속 기대며 쉬지 못하게 한 가까운 친구'){
+    return [
+      '그 친구와 여행하거나 먼 거리를 이동하던 중 예상치 못한 문제가 생겼고, 그 자리에서 역할을 나눠 해결한 적이 있을 수 있어.',
+      '공모전이나 발표, 새 프로젝트를 함께 준비하면서 각자 맡을 일을 정했고, 마감 직전에 생긴 문제도 같이 해결했을 수 있어.',
+      '그 친구가 먼저 계획을 꺼내면 네가 사람과 일정을 모아 실행했거나, 반대로 네 아이디어를 그 친구가 현실로 옮겨 준 적이 있을 수 있어.'
+    ];
+  }
+  return reading?.sharedExperiences||[];
+}
+function destinyRelationDatabasePanelV218(result){
+  const reading=result?.reading;
+  if(!reading)return '';
+  const casual=value=>destinyCasualTextV220(destinyHumanizeRelationTextV219(value));
+  return '<div class="destiny-relation-panel-v195 active destiny-relation-database-v218" data-relation-panel-v195="'+result.storyRelation+'"><span>가장 강하게 보이는 한 사람</span><h4>'+esc(casual(reading.strongestRelationship))+'</h4><p>'+esc(casual(reading.personDescription))+'</p>'+
+    '<div class="destiny-relation-detail-v218"><b>함께 겪었을 가능성이 높은 장면</b><ul>'+destinySharedExperiencesV221(reading).map(item=>'<li>'+esc(casual(item))+'</li>').join('')+'</ul></div>'+
+    '<div class="destiny-relation-detail-v218"><b>두 사람 사이에 반복되는 감정</b><p>'+esc(casual(reading.emotionalPattern))+'</p></div>'+
+    '<div class="destiny-relation-detail-v218"><b>왜 이 사람으로 보일까?</b><p>'+esc(casual(reading.whyThisPerson))+'</p></div>'+
+    '<div class="destiny-relation-detail-v218"><b>현실에서 확인할 기준</b><p>'+esc(casual(reading.realityCheck))+'</p></div></div>';
+}
 function destinyRelationPanelV195(id,rank,analysis){
   const db=window.PJ_DESTINY_ONE_DB_V195;
   const relation=db.relations[id];
   const labels=['가장 강한 흐름','함께 비치는 흐름','상대적으로 흐릿한 흐름'];
   const selected=rank===0;
-  return '<div class="destiny-relation-panel-v195 '+(selected?'active':'')+'" data-relation-panel-v195="'+id+'"><span>'+labels[rank]+'</span><h4>'+esc(relation.label)+'</h4><p>'+esc(relation.description)+'</p><div class="destiny-signal-pair-v195"><div><b>건강한 신호</b><p>'+esc(relation.healthy)+'</p></div><div><b>주의할 신호</b><p>'+esc(relation.caution)+'</p></div></div></div>';
+  return '<div class="destiny-relation-panel-v195 '+(selected?'active':'')+'" data-relation-panel-v195="'+id+'"><span>'+labels[rank]+'</span><h4>'+esc(relation.label)+'</h4><p>'+esc(destinyCasualTextV220(relation.description))+'</p><div class="destiny-signal-pair-v195"><div><b>건강한 신호</b><p>'+esc(destinyCasualTextV220(relation.healthy))+'</p></div><div><b>주의할 신호</b><p>'+esc(destinyCasualTextV220(relation.caution))+'</p></div></div></div>';
 }
 function destinyReflectionQuestionV195(type){
   return {
-    romance:'그 사람과 있을 때 안정감과 불안 중 어느 감정이 더 커지나요?',
-    friend:'서로의 성장을 지지하나요, 한 사람만 계속 돌보고 있나요?',
-    family:'사랑해서 하는 일과 의무감 때문에 하는 일을 구분할 수 있나요?',
-    unclear:'처음부터 이상할 만큼 익숙했던 사람은 누구였나요?'
+    romance:'그 사람과 있을 때 안정감과 불안 중 어느 감정이 더 커져?',
+    friend:'서로의 성장을 지지해, 아니면 한 사람만 계속 돌보고 있어?',
+    family:'사랑해서 하는 일과 의무감 때문에 하는 일을 구분할 수 있어?',
+    unclear:'처음부터 이상할 만큼 익숙했던 사람은 누구였어?'
   }[type]||'';
 }
 function destinyPresenceAnswerV202(label){
   return {
-    '매우 강하게 비침':'지금 가까운 관계 안에 있을 가능성이 매우 높아요',
-    '강하게 비침':'지금 주변에 있을 가능성이 높아요',
-    '분명하게 비침':'주변의 익숙한 사람부터 살펴보세요',
-    '약하지만 잡힘':'아직 가까운 사람으로 특정하기는 어려워요',
-    '희미하게 비침':'지금은 인물보다 반복되는 관계 패턴이 먼저 보여요',
-    '현재는 보이지 않음':'현재 주변에서는 특정 인물이 뚜렷하게 보이지 않아요'
+    '매우 강하게 비침':'이번 생에는 가까운 관계 안에 있을 가능성이 매우 높아요',
+    '강하게 비침':'이번 생에는 주변에 있을 가능성이 높아요',
+    '분명하게 비침':'이번 생에는 주변의 익숙한 사람으로 나타날 가능성이 높아요',
+    '약하지만 잡힘':'이번 생에는 아직 가까운 사람으로 특정하기 어려워요',
+    '희미하게 비침':'이번 생에는 특정 인물보다 반복되는 관계 패턴이 먼저 보여요',
+    '현재는 보이지 않음':'이번 생에는 아직 특정 인물이 뚜렷하게 보이지 않아요'
   }[label]||label;
 }
 function renderDestinyOneReportV195(cards){
@@ -13507,23 +13574,25 @@ function renderDestinyOneReportV195(cards){
   const result=$('resultScreen');
   if(!root||!result)return false;
   const analysis=destinyAnalysisV195(cards);
+  const relationResult=destinyRelationResultV218(cards);
+  if(relationResult){analysis.primary=relationResult.storyRelation;analysis.secondary=relationResult.storyRelation;analysis.blend=null;}
   const destinyConnection=typeof window.generateDestinyConnectionV201==='function'?window.generateDestinyConnectionV201(cards):null;
-  const visibleRelationTypes=[destinyConnection?.relationTypes?.[0]||analysis.primary];
+  const visibleRelationTypes=[relationResult?.storyRelation||destinyConnection?.relationTypes?.[0]||analysis.primary];
   const visibleRelationOrder=visibleRelationTypes.map(id=>[id,analysis.relationScores[id]||0]);
   const primaryDestinyConnection=destinyConnection?{...destinyConnection,relationTypes:visibleRelationTypes,relationSummaries:(destinyConnection.relationSummaries||[]).filter(item=>item.type===visibleRelationTypes[0]).slice(0,1)}:null;
   const presenceLabel=destinyConnection?.screen?.presence||destinyPresenceLabelV195(analysis.presence);
-  const summary=destinyConnection?.description||destinySummaryV195(analysis);
-  const overviewSentences=destinyOverviewProseV208(primaryDestinyConnection,presenceLabel,summary);
-  const clues=destinyCluesV195(analysis);
+  const summary=destinyHumanizeRelationTextV219(relationResult?.reading.summary||destinyConnection?.description||destinySummaryV195(analysis));
+  const overviewSentences=relationResult?[destinyHumanizeRelationTextV219(relationResult.reading.summary)]:destinyOverviewProseV208(primaryDestinyConnection,presenceLabel,summary).slice(1);
+  const clues=relationResult?.reading.recognitionSigns||destinyCluesV195(analysis);
   const distance=db.distances[analysis.distance];
   const purpose=db.purposes[analysis.purpose];
   const storyRelationTabs=visibleRelationTypes.length>1?'<div class="destiny-story-relation-tabs-v205">'+visibleRelationTypes.map((id,index)=>'<button type="button" class="'+(index===0?'active':'')+'" data-action="destiny-story-relation-v205" data-story-relation-v205="'+id+'">'+esc(destinyRelationLabelV205(id))+' 이야기</button>').join('')+'</div>':'';
   const storyPanels=visibleRelationTypes.map((relationId,relationIndex)=>{
     const storyAnalysis={...analysis,primary:relationId,blend:null};
     const relationSummary=destinyConnection?.relationSummaries?.find(item=>item.type===relationId)||null;
-    const databaseStory=typeof window.generatePastLifeCardStoryV209==='function'?window.generatePastLifeCardStoryV209(cards,relationId):null;
+    const databaseStory=typeof window.generatePastLifeCardStoryV217==='function'?window.generatePastLifeCardStoryV217(cards,relationId):null;
     return '<div class="destiny-story-relation-panel-v205 '+(relationIndex===0?'active':'')+'" data-destiny-story-panel-v205="'+relationId+'"><div class="destiny-story-progress-v203"><span data-destiny-story-count-v203>1 / 3</span><div>'+cards.slice(0,3).map((_,index)=>'<i class="'+(index===0?'active':'')+'" data-destiny-story-dot-v203="'+index+'"></i>').join('')+'</div></div><div class="destiny-card-grid-v195 destiny-story-slider-v203" data-destiny-story-index-v203="0">'+
-      cards.slice(0,3).map((card,index)=>{const insight=destinyCardInsightV195(card,index,storyAnalysis),stages=['전반 · 인연의 시작','중반 · 두 사람의 관계','후반 · 남겨진 약속'],exactSource=destinyConnection?.cardReadings?.find(item=>item.index===index&&item.relationType===relationId),storySource=exactSource||relationSummary,chapter=databaseStory?.chapters?.[index],storyText=chapter?.story||destinyPastLifeChapterV203(card,index,storyAnalysis,relationId,storySource);return '<article class="destiny-card-proof-v195 destiny-story-slide-v203 '+(index===0?'active':'')+'" data-destiny-story-slide-v203="'+index+'"><div class="destiny-story-stage-v203">'+stages[index]+'</div><div class="destiny-card-art-v195"><span>'+esc(card.icon)+'</span><small>'+esc(card.en)+'</small></div><h4>'+esc(card.ko)+' <small>· '+(card.rev?'역방향':'정방향')+'</small></h4>'+(chapter?'<div class="destiny-story-scene-v209"><b>'+esc(destinySceneTitleV216(chapter.sceneTitle))+'</b><small>'+esc(chapter.era)+' · '+esc(chapter.place)+'</small></div>':'<p>'+esc(insight.short)+'</p>')+'<details><summary>전생 이야기 펼쳐보기</summary>'+(chapter?.roles&&index===0?'<div class="destiny-story-roles-v209">'+esc(chapter.roles)+'</div>':'')+'<p>'+esc(storyText)+'</p>'+(chapter?.currentEcho?'<div class="destiny-story-echo-v209"><b>이번 생에서 확인할 모습</b><span>'+esc(destinyHumanCurrentEchoV214(chapter.currentEcho,index))+'</span></div>':'')+'</details></article>'}).join('')+
+      cards.slice(0,3).map((card,index)=>{const insight=destinyCardInsightV195(card,index,storyAnalysis),stages=['전반 · 인연의 시작','중반 · 두 사람의 관계','후반 · 남겨진 약속'],exactSource=destinyConnection?.cardReadings?.find(item=>item.index===index&&item.relationType===relationId),storySource=exactSource||relationSummary,chapter=databaseStory?.chapters?.[index],storyText=chapter?.story||destinyPastLifeChapterV203(card,index,storyAnalysis,relationId,storySource);return '<article class="destiny-card-proof-v195 destiny-story-slide-v203 '+(index===0?'active':'')+'" data-destiny-story-slide-v203="'+index+'"><div class="destiny-story-stage-v203">'+stages[index]+'</div><div class="destiny-card-art-v195"><span>'+esc(card.icon)+'</span><small>'+esc(card.en)+'</small></div><h4>'+esc(card.ko)+' <small>· '+(card.rev?'역방향':'정방향')+'</small></h4>'+(chapter?'<div class="destiny-story-scene-v209"><b>'+esc(destinySceneTitleV216(chapter.sceneTitle))+'</b><small>'+esc(chapter.era)+' · '+esc(chapter.place)+'</small></div>':'<p>'+esc(destinyCasualTextV220(insight.short))+'</p>')+'<details><summary>전생 이야기 펼쳐보기</summary>'+(chapter?.roles&&index===0?'<div class="destiny-story-roles-v209">'+esc(chapter.roles)+'</div>':'')+'<p>'+esc(storyText)+'</p>'+(chapter?.currentEcho?'<div class="destiny-story-echo-v209"><b>이번 생에서 확인할 모습</b><span>'+esc(destinyCasualTextV220(destinyHumanCurrentEchoV214(chapter.currentEcho,index)))+'</span></div>':'')+'</details></article>'}).join('')+
       '</div><div class="destiny-story-nav-v203"><button type="button" data-action="destiny-story-prev-v203" disabled aria-label="이전 카드">‹ <span>이전</span></button><button type="button" data-action="destiny-story-next-v203" aria-label="다음 카드"><span>다음</span> ›</button></div></div>';
   }).join('');
   result.classList.remove('question-one-love-v141','study-one-visual-v127');
@@ -13535,17 +13604,18 @@ function renderDestinyOneReportV195(cards){
     '<div class="destiny-report-v195">'+
       '<section class="destiny-overview-v195"><span class="destiny-kicker-v195">DESTINY CONNECTION</span><h3>한눈에 보는 결론</h3><div class="destiny-overview-prose-v208">'+overviewSentences.map((sentence,index)=>'<p class="sentence-'+(index+1)+'">'+destinyOverviewSentenceHtmlV210(sentence,index)+'</p>').join('')+'</div></section>'+
       '<section class="destiny-section-v195 destiny-evidence-v195"><div class="destiny-section-head-v195"><span>CARD STORY</span><h3>카드가 보여준 나와 이 인연의 전생 이야기</h3></div>'+storyRelationTabs+storyPanels+'</section>'+
-      '<section class="destiny-section-v195"><div class="destiny-section-head-v195"><span>RELATION</span><h3>그 사람은 누구에 가까울까?</h3></div>'+
+      '<section class="destiny-section-v195"><div class="destiny-section-head-v195"><span>RELATION</span><h3>그 사람의 특징</h3></div>'+
+        (relationResult?'<div class="destiny-relation-tabs-v195"><button type="button" class="active">'+esc(destinyRelationTypeLabelV218(relationResult.type))+'</button></div><div class="destiny-relation-panels-v195">'+destinyRelationDatabasePanelV218(relationResult)+'</div>':
         (visibleRelationOrder.length>1&&analysis.blend&&visibleRelationTypes.includes(analysis.primary)&&visibleRelationTypes.includes(analysis.secondary)?'<p class="destiny-blend-note-v195">'+esc(analysis.blend.description)+'</p>':'')+
         '<div class="destiny-relation-tabs-v195">'+visibleRelationOrder.map(([id],index)=>'<button type="button" class="'+(index===0?'active':'')+'" data-action="destiny-relation-tab-v195" data-relation="'+id+'">'+esc(db.relations[id].label)+'</button>').join('')+'</div>'+
-        '<div class="destiny-relation-panels-v195">'+visibleRelationOrder.map(([id],index)=>destinyRelationPanelV195(id,index,analysis)).join('')+'</div></section>'+
-      '<section class="destiny-section-v195"><div class="destiny-section-head-v195"><span>RECOGNITION</span><h3>그 사람을 알아볼 단서</h3></div><ul class="destiny-clues-v195">'+clues.map(item=>'<li>'+esc(item)+'</li>').join('')+'</ul></section>'+
-      '<section class="destiny-section-v195 destiny-purpose-v195"><div class="destiny-section-head-v195"><span>RETURN PURPOSE</span><h3>왜 다시 만났을까?</h3></div><strong>'+esc(purpose.label)+'</strong><p>'+esc(purpose.description)+'</p><div class="destiny-next-step-v195"><b>지금 할 일</b><p>'+esc(purpose.next)+'</p></div></section>'+
-      '<section class="destiny-section-v195"><div class="destiny-section-head-v195"><span>CURRENT FLOW</span><h3>지금 관계의 온도와 다음 흐름</h3></div><div class="destiny-temperature-v195"><b>'+esc(distance.label)+'</b><p>'+esc(distance.description)+'</p></div><div class="destiny-signal-pair-v195"><div><b>건강하게 이어지는 신호</b><p>'+esc(db.relations[analysis.primary].healthy)+'</p></div><div><b>경계해야 할 신호</b><p>'+esc(db.relations[analysis.primary].caution)+'</p></div></div></section>'+
-      '<section class="destiny-section-v195 destiny-reflection-v195"><div class="destiny-section-head-v195"><span>MY REFLECTION</span><h3>리딩을 보며 가장 먼저 떠오른 관계가 있나요?</h3></div><div class="destiny-reflection-options-v195">'+
+        '<div class="destiny-relation-panels-v195">'+visibleRelationOrder.map(([id],index)=>destinyRelationPanelV195(id,index,analysis)).join('')+'</div>')+'</section>'+
+      '<section class="destiny-section-v195"><div class="destiny-section-head-v195"><span>RECOGNITION</span><h3>그 사람을 알아볼 단서</h3></div><ul class="destiny-clues-v195">'+clues.map(item=>'<li>'+esc(destinyCasualTextV220(item))+'</li>').join('')+'</ul></section>'+
+      '<section class="destiny-section-v195 destiny-purpose-v195"><div class="destiny-section-head-v195"><span>RETURN PURPOSE</span><h3>왜 다시 만났을까?</h3></div><strong>'+esc(purpose.label)+'</strong><p>'+esc(destinyCasualTextV220(purpose.description))+'</p><div class="destiny-next-step-v195"><b>지금 할 일</b><p>'+esc(destinyCasualTextV220(purpose.next))+'</p></div></section>'+
+      '<section class="destiny-section-v195"><div class="destiny-section-head-v195"><span>CURRENT FLOW</span><h3>지금 관계의 온도와 다음 흐름</h3></div><div class="destiny-temperature-v195"><b>'+esc(distance.label)+'</b><p>'+esc(destinyCasualTextV220(distance.description))+'</p></div><div class="destiny-signal-pair-v195"><div><b>건강하게 이어지는 신호</b><p>'+esc(destinyCasualTextV220(db.relations[analysis.primary].healthy))+'</p></div><div><b>경계해야 할 신호</b><p>'+esc(destinyCasualTextV220(db.relations[analysis.primary].caution))+'</p></div></div></section>'+
+      '<section class="destiny-section-v195 destiny-reflection-v195"><div class="destiny-section-head-v195"><span>MY REFLECTION</span><h3>리딩을 보며 가장 먼저 떠오른 관계가 있어?</h3></div><div class="destiny-reflection-options-v195">'+
         [['romance','연인·썸·전 연인'],['friend','친구'],['family','가족'],['unclear','아직 모르겠어요']].map(([id,label])=>'<button type="button" data-action="destiny-reflection-v195" data-reflection="'+id+'">'+label+'</button>').join('')+
         '</div><div id="destinyReflectionAnswerV195" class="destiny-reflection-answer-v195 hidden"></div></section>'+
-      '<p class="destiny-grounding-v195">이 리딩은 전생의 존재를 사실로 증명하거나 특정 인물을 단정하지 않습니다. 카드가 보여주는 관계 패턴을 현재의 행동과 감정을 점검하는 참고로 사용하세요.</p>'+
+      '<p class="destiny-grounding-v195">이 리딩은 전생의 존재를 사실로 증명하거나 특정 인물을 단정하지 않아. 카드가 보여주는 관계 패턴을 지금의 행동과 감정을 점검하는 참고로 사용해.</p>'+
     '</div>';
   const full=[DESTINY_ONE_QUESTION_V195,summary,'그 사람을 알아볼 단서: '+clues.join(' / '),'다시 만난 이유: '+purpose.description,'다음 흐름: '+distance.description,purpose.next].join('\n');
   latestSummary=full;
@@ -13599,6 +13669,7 @@ function moveDestinyStoryV203(button,direction){
     slide.classList.toggle('active',index===next);
     if(index!==next)slide.querySelector('details')?.removeAttribute('open');
   });
+  if(direction>0)slides[next]?.querySelector('details')?.setAttribute('open','');
   panel.querySelectorAll('[data-destiny-story-dot-v203]').forEach((dot,index)=>dot.classList.toggle('active',index===next));
   const count=panel.querySelector('[data-destiny-story-count-v203]');
   if(count)count.textContent=(next+1)+' / '+slides.length;
@@ -13722,7 +13793,6 @@ body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)
 .destiny-overview-prose-v208 p{margin:0;color:#5f5a52;font-size:1.03rem;line-height:1.82;word-break:keep-all;overflow-wrap:anywhere}
 .destiny-overview-prose-v208 p+p{margin-top:12px}
 .destiny-overview-prose-v208 p strong{color:#8f642d;font-size:1.08em;font-weight:900}
-.destiny-overview-prose-v208 .sentence-1{color:#8f642d;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:1.28rem;font-weight:500;line-height:1.55}
 .destiny-overview-v195>p,.destiny-section-v195>p,.destiny-relation-panel-v195>p,.destiny-temperature-v195>p,.destiny-next-step-v195>p{margin:18px 0 0;color:#e9e1ef;font-size:1.03rem;line-height:1.88;word-break:keep-all;overflow-wrap:anywhere}
 .destiny-overview-grid-v195{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
 .destiny-overview-grid-v195>div{min-width:0;padding:15px 14px;border:1px solid rgba(230,204,151,.17);border-radius:12px;background:rgba(10,8,15,.25)}
@@ -13794,6 +13864,10 @@ body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)
 .destiny-relation-panel-v195.active{display:block}
 .destiny-relation-panel-v195>span{color:#9f93aa;font-size:.75rem;font-weight:800}
 .destiny-relation-panel-v195 h4{margin:6px 0 0;color:#efd393;font-size:1.35rem}
+.destiny-relation-detail-v218{margin-top:16px;padding-top:15px;border-top:1px solid rgba(221,195,143,.14)}
+.destiny-relation-detail-v218>b{display:block;color:#d7b873;font-size:.84rem}
+.destiny-relation-detail-v218 p{margin:8px 0 0;color:#d7cedd;font-size:.94rem;line-height:1.75;word-break:keep-all}
+.destiny-relation-detail-v218 ul{display:grid;gap:8px;margin:10px 0 0;padding-left:20px;color:#d7cedd;font-size:.92rem;line-height:1.68}
 .destiny-blend-note-v195{padding:13px 15px;border-left:3px solid #d7b873;background:#19141f!important;color:#e8dfec!important}
 .destiny-signal-pair-v195{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
 .destiny-signal-pair-v195>div{min-width:0;padding:14px;border:1px solid rgba(221,195,143,.12);border-radius:12px;background:#151119}
@@ -13828,7 +13902,6 @@ body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)
   .destiny-overview-prose-v208{margin-top:17px}
   .destiny-overview-prose-v208 p{font-size:.96rem;line-height:1.76}
   .destiny-overview-prose-v208 p+p{margin-top:10px}
-  .destiny-overview-prose-v208 .sentence-1{font-size:1.12rem;line-height:1.55}
   .destiny-overview-grid-v195{grid-template-columns:1fr;gap:7px}
   .destiny-overview-grid-v195>div{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:8px;padding:11px 12px}
   .destiny-overview-grid-v195 b{margin:0;font-size:.96rem}
@@ -13984,6 +14057,9 @@ body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)
 }
 .destiny-relation-panel-v195>span{color:#777169!important}
 .destiny-relation-panel-v195 h4{color:#29241e!important}
+.destiny-relation-detail-v218{border-top-color:#ddd2c1}
+.destiny-relation-detail-v218>b{color:#8f642d}
+.destiny-relation-detail-v218 p,.destiny-relation-detail-v218 ul{color:#5f5a52}
 .destiny-blend-note-v195{
   border-left-color:#a77c3f!important;
   background:#f0eadc!important;
@@ -14210,6 +14286,58 @@ document.addEventListener('DOMContentLoaded',()=>{
 }
 @media (prefers-reduced-motion:reduce){
   .destiny-one-v195 .destiny-story-slide-v203 summary::before{animation:none;opacity:0}
+}
+</style>
+
+<style>
+/* V220: improve overview scanning without changing its sentences. */
+.destiny-one-v195 .destiny-overview-v195{
+  padding:30px!important;
+  background:linear-gradient(145deg,#fffaf2 0%,#f5ead7 100%)!important;
+}
+.destiny-one-v195 .destiny-overview-v195 h3{
+  padding-bottom:17px;
+  border-bottom:1px solid #d9c6a2;
+}
+.destiny-one-v195 .destiny-overview-prose-v208{
+  display:grid;
+  gap:12px;
+  max-width:none;
+  margin-top:18px;
+}
+.destiny-one-v195 .destiny-overview-prose-v208 p,
+.destiny-one-v195 .destiny-overview-prose-v208 p+p{
+  position:relative;
+  margin:0;
+  padding:18px 20px 18px 64px;
+  border:1px solid #ded0b7;
+  border-radius:14px;
+  background:rgba(255,255,255,.7);
+  box-shadow:0 8px 22px rgba(98,73,37,.06);
+}
+.destiny-one-v195 .destiny-overview-prose-v208 p::before{
+  content:"0" counter(destiny-overview);
+  position:absolute;
+  top:18px;
+  left:18px;
+  display:grid;
+  width:30px;
+  height:30px;
+  place-items:center;
+  border-radius:50%;
+  background:#eee0c4;
+  color:#8f642d;
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.destiny-one-v195 .destiny-overview-prose-v208{counter-reset:destiny-overview}
+.destiny-one-v195 .destiny-overview-prose-v208 p{counter-increment:destiny-overview}
+@media(max-width:560px){
+  .destiny-one-v195 .destiny-overview-v195{padding:21px!important}
+  .destiny-one-v195 .destiny-overview-prose-v208 p,
+  .destiny-one-v195 .destiny-overview-prose-v208 p+p{padding:16px 15px 16px 52px}
+  .destiny-one-v195 .destiny-overview-prose-v208 p::before{top:15px;left:13px;width:28px;height:28px}
 }
 </style>
 
