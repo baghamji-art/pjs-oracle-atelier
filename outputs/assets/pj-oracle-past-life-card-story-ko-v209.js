@@ -7,7 +7,15 @@ window.PJ_PAST_LIFE_CARD_STORY_KO_V209={"schemaVersion":"1.0.0","locale":"ko-KR"
   const index=new Map(db.cards.map(card=>[card.id,card]));
   function idFor(card){const key=String(card?.key||'');if(majorIds[key])return majorIds[key];const [rank,suit]=key.split('_');return suit&&rankIds[rank]?suit+'-'+rankIds[rank]:''}
   function entryFor(card,indexValue){const record=index.get(idFor(card));const orientation=card?.rev?'reversed':'upright';const reading=record?.readings?.[orientation];return reading?{card,record,reading,index:indexValue,orientation}:null}
-  function chooseEra(entries){const candidates=entries.map(entry=>entry.reading.eraCandidates||[]);const center=candidates[1]||candidates[0]||[];return center.find(code=>candidates.every(list=>list.includes(code)))||center[0]||candidates[0]?.[0]||Object.keys(db.eraCatalog||{})[0]}
+function chooseEra(entries){const centerEntry=entries[1]||entries[0];const center=centerEntry?.reading?.eraCandidates||[];return centerEntry?.reading?.portablePlot?.defaultEra||center[0]||entries[0]?.reading?.portablePlot?.defaultEra||Object.keys(db.eraCatalog||{})[0]}
+  function continuousStory(story,position){
+    if(position==='opening')return story;
+    let sentences=String(story||'').match(/[^.!?]+[.!?]?/g)||[];
+    if(sentences.length>1)sentences.shift();
+    if(position==='ending')sentences=sentences.filter(sentence=>!(/이번 생에서.+다시 만난다면/.test(sentence)));
+    const prefix=position==='middle'?'그 뒤 두 사람의 일상이 겹치면서, 앞서 해결하지 못한 문제는 더 큰 책임과 선택을 요구했어.':'결국 중반의 선택은 두 사람이 함께 남을지 각자의 길로 갈지를 정하는 마지막 사건으로 이어졌어.';
+    return prefix+' '+sentences.join(' ').trim();
+  }
   function adaptedChapter(entries,relation,position,indexValue,eraCode){
     const entry=entries[indexValue];const reading=entry.reading;const plot=reading.portablePlot||{};const era=db.eraCatalog[eraCode]||{};const places=era.places?.[position]||[];const place=places[indexValue%Math.max(1,places.length)]||era.region||'';const roles=era.roles?.[relation]||'';const direct=reading.storyByRelation?.[relation]?.[position]||{};const openingPlot=entries[0].reading.portablePlot||{};
     let story='';
@@ -19,7 +27,7 @@ window.PJ_PAST_LIFE_CARD_STORY_KO_V209={"schemaVersion":"1.0.0","locale":"ko-KR"
   window.generatePastLifeCardStoryV209=function(cards,relation){
     const entries=(cards||[]).slice(0,3).map(entryFor).filter(Boolean);if(entries.length<3)return null;
     const resolved=['romance','friend','family'].includes(relation)?relation:'friend';const eraCode=chooseEra(entries);const positions=['opening','middle','ending'];
-    const chapters=positions.map((position,indexValue)=>{const entry=entries[indexValue];const direct=entry.reading.storyByRelation?.[resolved]?.[position];const sameEra=entry.reading.portablePlot?.defaultEra===eraCode;if(direct&&sameEra)return {...direct,source:'database'};return {...adaptedChapter(entries,resolved,position,indexValue,eraCode),source:'adapted_database'};});
+    const chapters=positions.map((position,indexValue)=>{const entry=entries[indexValue];const direct=entry.reading.storyByRelation?.[resolved]?.[position];const sameEra=entry.reading.portablePlot?.defaultEra===eraCode;const chapter=direct&&sameEra?{...direct,source:'database'}:{...adaptedChapter(entries,resolved,position,indexValue,eraCode),source:'adapted_database'};return {...chapter,story:continuousStory(chapter.story,position)};});
     return {relation:resolved,eraCode,era:db.eraCatalog?.[eraCode]?.era||chapters[0]?.era||'',chapters,sourceCards:entries.map(entry=>entry.record.id+'/'+entry.orientation)};
   };
 })();
