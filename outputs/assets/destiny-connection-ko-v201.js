@@ -132,6 +132,7 @@ window.PJ_DESTINY_CONNECTION_KO_V201={"schemaVersion":"1.0.0","locale":"ko-KR","
       const typeClues=uniqueClues(rows,lead);
       return {
         type,
+        strongestRelationship:clean(lead?.reading.strongestRelationship),
         person:clean(lead?.reading.personToRecall),
         clues:typeClues,
         pastLifePattern:clean(lead?.reading.pastLifePattern),
@@ -139,6 +140,18 @@ window.PJ_DESTINY_CONNECTION_KO_V201={"schemaVersion":"1.0.0","locale":"ko-KR","
         caution:clean(lead?.reading.caution)
       };
     });
+    const cardReadings=entries.map(entry=>({
+      index:entry.index,
+      cardId:entry.id,
+      orientation:entry.orientation,
+      relationType:visibleRelationType(entry.reading),
+      person:clean(entry.reading.personToRecall),
+      clues:(entry.reading.recognitionClues||[]).map(clean).filter(Boolean),
+      pastLifePattern:clean(entry.reading.pastLifePattern),
+      whyMetAgain:clean(entry.reading.currentLifePurpose),
+      caution:clean(entry.reading.caution),
+      tone:clean(entry.reading.tone)
+    }));
     const sentences=[
       narrativePresence(label),
       relationEntry?.reading.personToRecall?'가장 먼저 떠올려볼 사람은, '+clean(relationEntry.reading.personToRecall):'',
@@ -164,6 +177,7 @@ window.PJ_DESTINY_CONNECTION_KO_V201={"schemaVersion":"1.0.0","locale":"ko-KR","
       description:unique.slice(0,6).join(' '),
       relationTypes,
       relationSummaries,
+      cardReadings,
       sourceCards:entries.map(entry=>entry.id+'/'+entry.orientation)
     };
   };
