@@ -1,0 +1,156 @@
+
+/* V235: use the supplied main-page artwork itself as the button artwork. */
+body[data-screen="memberHomeScreen"] .language-toggle-v60{display:none!important}
+#memberHomeScreen.pjo-home-v234 > .private-consult-row:empty{
+  display:none!important;
+  margin:0!important;
+}
+#memberHomeScreen.pjo-home-v234{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+#memberHomeScreen.pjo-home-v234 > *{
+  min-width:0!important;
+}
+.pjo-home-sr-v235{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234,
+#memberHomeScreen.pjo-home-v234 [data-action="account"],
+#memberHomeScreen.pjo-home-v234 [data-action="logout"],
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234,
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"],
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]{
+  min-height:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  background-image:url("../assets/main-page-reference-v235.png")!important;
+  background-repeat:no-repeat!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+}
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234:before,
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234:after,
+#memberHomeScreen.pjo-home-v234 [data-action="account"]:before,
+#memberHomeScreen.pjo-home-v234 [data-action="account"]:after,
+#memberHomeScreen.pjo-home-v234 [data-action="logout"]:before,
+#memberHomeScreen.pjo-home-v234 [data-action="logout"]:after,
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:before,
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:after,
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:before,
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:after,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]:before,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]:after,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]:before,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]:after{
+  display:none!important;
+  content:none!important;
+}
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234{
+  width:76px!important;
+  height:auto!important;
+  min-width:0!important;
+  aspect-ratio:76/76!important;
+  background-size:1134.2105% auto!important;
+  background-position:95.5471% 1.3736%!important;
+}
+#memberHomeScreen.pjo-home-v234 [data-action="account"]{
+  width:145px!important;
+  min-width:0!important;
+  aspect-ratio:145/64!important;
+  background-size:594.4828% auto!important;
+  background-position:6.5551% 15.1136%!important;
+}
+#memberHomeScreen.pjo-home-v234 [data-action="logout"]{
+  width:140px!important;
+  min-width:0!important;
+  aspect-ratio:140/64!important;
+  background-size:615.7143% auto!important;
+  background-position:27.8393% 15.1136%!important;
+}
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234{
+  width:100%!important;
+  aspect-ratio:764/554!important;
+  background-size:112.8272% auto!important;
+  background-position:50% 27.6378%!important;
+}
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234{
+  width:100%!important;
+  aspect-ratio:762/300!important;
+  background-size:113.1234% auto!important;
+  background-position:50% 61.5488%!important;
+}
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]{
+  width:100%!important;
+  aspect-ratio:370/176!important;
+  background-size:232.973% auto!important;
+  background-position:10.1626% 77.0364%!important;
+}
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]{
+  width:100%!important;
+  aspect-ratio:371/176!important;
+  background-size:232.345% auto!important;
+  background-position:89.8167% 77.0364%!important;
+}
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:hover,
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:hover,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile:hover,
+#memberHomeScreen.pjo-home-v234 .top-actions .mini:hover,
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234:hover{
+  filter:brightness(1.025)!important;
+  transform:translateY(-2px)!important;
+}
+@media(max-width:700px){
+  body[data-screen="memberHomeScreen"] .pjo-home-language-v234{width:58px!important;height:auto!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234{
+    padding-right:clamp(18px,5.6vw,24px)!important;
+    padding-left:clamp(18px,5.6vw,24px)!important;
+  }
+  #memberHomeScreen.pjo-home-v234 .top-actions{flex-wrap:nowrap!important}
+  #memberHomeScreen.pjo-home-v234 [data-action="account"]{width:145px!important;max-width:45%!important}
+  #memberHomeScreen.pjo-home-v234 [data-action="logout"]{width:140px!important;max-width:44%!important}
+  #memberHomeScreen.pjo-home-v234 .pjo-home-consult-row-v234{margin-top:16px!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234 .secondary-member-menu{margin-top:14px!important}
+  #memberHomeScreen.pjo-home-v234 #memberFeedbackBox{margin-top:16px!important}
+  #memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234,
+  #memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234,
+  #memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile{min-height:0!important;padding:0!important}
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini,
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini{
+  min-height:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  background-image:url("../assets/main-page-reference-v235.png")!important;
+  background-repeat:no-repeat!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini{
+  width:145px!important;
+  min-width:0!important;
+  aspect-ratio:145/64!important;
+  background-size:594.4828% auto!important;
+  background-position:6.5551% 15.1136%!important;
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini{
+  width:140px!important;
+  min-width:0!important;
+  aspect-ratio:140/64!important;
+  background-size:615.7143% auto!important;
+  background-position:27.8393% 15.1136%!important;
+}

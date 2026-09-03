@@ -119,48 +119,61 @@ exports.handler = async function(event) {
 
     for (const model of models) {
       usedModel = model;
-      const response = await fetch('https://api.openai.com/v1/responses', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model,
-          input: prompt,
-          store: false,
-          temperature: 0.55,
-          max_output_tokens: isDatingPossibility ? 2300 : isPastLifeConnection ? 1400 : 1600,
-          text: {
-            format: {
-              type: 'json_schema',
-              name: 'tarot_reading_report',
-              strict: true,
-              schema: {
-                type: 'object',
-                additionalProperties: false,
-                properties: {
-                  headline: { type: 'string' },
-                  sections: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      additionalProperties: false,
-                      properties: {
-                        heading: { type: 'string' },
-                        body: { type: 'string' }
-                      },
-                      required: ['heading', 'body']
-                    }
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 18000);
+      let response;
+      try {
+        response = await fetch('https://api.openai.com/v1/responses', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          signal: controller.signal,
+          body: JSON.stringify({
+            model,
+            input: prompt,
+            store: false,
+            temperature: 0.55,
+            max_output_tokens: isDatingPossibility ? 2300 : isPastLifeConnection ? 1400 : 1600,
+            text: {
+              format: {
+                type: 'json_schema',
+                name: 'tarot_reading_report',
+                strict: true,
+                schema: {
+                  type: 'object',
+                  additionalProperties: false,
+                  properties: {
+                    headline: { type: 'string' },
+                    sections: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        additionalProperties: false,
+                        properties: {
+                          heading: { type: 'string' },
+                          body: { type: 'string' }
+                        },
+                        required: ['heading', 'body']
+                      }
+                    },
+                    closing: { type: 'string' }
                   },
-                  closing: { type: 'string' }
-                },
-                required: ['headline', 'sections', 'closing']
+                  required: ['headline', 'sections', 'closing']
+                }
               }
             }
-          }
-        })
-      });
+          })
+        });
+      } catch (error) {
+        if (error && error.name === 'AbortError') {
+          return json(504, { error: 'OpenAI request timed out', model });
+        }
+        throw error;
+      } finally {
+        clearTimeout(timeoutId);
+      }
 
       data = await response.json();
       if (response.ok) {
@@ -179,6 +192,9 @@ exports.handler = async function(event) {
     }
 
     const text = extractOutputText(data);
+    if (!text) {
+      return json(502, { error: 'OpenAI returned an empty response', model: usedModel });
+    }
     return json(200, { result: text, model: usedModel });
   } catch (error) {
     return json(500, { error: error.message || 'Unknown error' });

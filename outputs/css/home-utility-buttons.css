@@ -1,0 +1,63 @@
+
+/* V238: account/logout are native controls; the supplied artwork remains on the main tiles. */
+#memberHomeScreen.pjo-home-v234 .top-actions{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  width:min(100%,292px)!important;
+  gap:12px!important;
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini,
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini{
+  display:inline-flex!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  min-height:52px!important;
+  aspect-ratio:auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+  padding:0 17px!important;
+  border:1px solid rgba(153,101,42,.64)!important;
+  border-radius:17px!important;
+  background:
+    linear-gradient(180deg,rgba(255,253,245,.98),rgba(235,215,176,.96))!important;
+  background-image:
+    linear-gradient(180deg,rgba(255,253,245,.98),rgba(235,215,176,.96))!important;
+  color:#3b2817!important;
+  box-shadow:
+    0 6px 13px rgba(80,48,19,.16),
+    inset 0 1px 0 rgba(255,255,255,.96),
+    inset 0 -1px 0 rgba(142,91,36,.12)!important;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif!important;
+  font-size:1rem!important;
+  font-weight:750!important;
+  line-height:1!important;
+  letter-spacing:-.02em!important;
+  white-space:nowrap!important;
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini:hover,
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini:hover{
+  filter:brightness(1.025)!important;
+  transform:translateY(-1px)!important;
+  box-shadow:
+    0 8px 17px rgba(80,48,19,.2),
+    inset 0 1px 0 #fff!important;
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini:focus-visible,
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini:focus-visible{
+  outline:2px solid #9f6d2d!important;
+  outline-offset:3px!important;
+}
+@media(max-width:380px){
+  #memberHomeScreen.pjo-home-v234 .top-actions{
+    gap:9px!important;
+  }
+  #memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini,
+  #memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini{
+    min-height:48px!important;
+    padding:0 12px!important;
+    border-radius:15px!important;
+    font-size:.94rem!important;
+  }
+}

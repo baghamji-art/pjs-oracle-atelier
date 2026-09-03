@@ -1,0 +1,362 @@
+
+/* V232: immersive three-card table, long-press selection, and staged reveal. */
+@property --pjo-hold-v232{syntax:"<percentage>";inherits:false;initial-value:0%}
+body.pjo-pick-active-v232{background:#160d07}
+body.pjo-pick-active-v232:before{
+  background:
+    radial-gradient(circle at 50% -18%,rgba(224,171,77,.14),transparent 38%),
+    linear-gradient(115deg,#0b0704,#25160b 46%,#0d0804)!important;
+}
+body.pjo-pick-active-v232:after{opacity:.06}
+body.pjo-pick-active-v232 .hero{display:none}
+body.pjo-pick-active-v232 .app{max-width:1460px;padding:18px 14px 34px}
+#pickScreen.pjo-card-table-v232{
+  position:relative;
+  isolation:isolate;
+  width:100%;
+  max-width:1380px;
+  min-height:min(860px,calc(100vh - 52px));
+  margin:0 auto;
+  padding:58px 38px 30px;
+  overflow:hidden;
+  border:1px solid rgba(226,177,94,.44);
+  border-radius:42px;
+  background:
+    radial-gradient(ellipse at 50% 18%,rgba(143,83,30,.34),transparent 52%),
+    linear-gradient(108deg,#130b06 0%,#342011 48%,#120b06 100%);
+  box-shadow:0 30px 100px rgba(0,0,0,.58),inset 0 0 0 8px rgba(82,45,19,.48),inset 0 0 80px rgba(0,0,0,.62);
+  color:#382514;
+  backdrop-filter:none;
+}
+#pickScreen.pjo-card-table-v232:before{
+  content:"";
+  position:absolute;
+  z-index:-2;
+  inset:30px -92px 24px;
+  border:2px solid rgba(130,84,34,.5);
+  border-radius:48% / 14%;
+  background:
+    radial-gradient(circle at 22% 38%,rgba(139,97,45,.08) 0 1px,transparent 1.5px) 0 0/9px 9px,
+    radial-gradient(ellipse at 50% 42%,#f8e9c9 0%,#ead1a0 72%,#c79b5f 100%);
+  box-shadow:inset 0 0 68px rgba(104,61,25,.26),0 0 34px rgba(0,0,0,.58);
+}
+#pickScreen.pjo-card-table-v232:after{
+  content:"✦";
+  position:absolute;
+  z-index:-1;
+  top:34px;
+  left:50%;
+  color:rgba(112,72,29,.52);
+  font-size:1.2rem;
+  letter-spacing:.35em;
+  transform:translateX(-50%);
+}
+#pickScreen.pjo-card-table-v232>.step-label{display:none!important}
+#pickScreen.pjo-card-table-v232>h2{
+  position:relative;
+  z-index:3;
+  margin:50px 0 0;
+  color:#34200f;
+  font-family:"Nanum Gothic Coding","Apple SD Gothic Neo",serif;
+  font-size:clamp(1.75rem,3.2vw,2.72rem);
+  font-weight:700;
+  letter-spacing:-.055em;
+  text-shadow:0 1px 0 rgba(255,255,255,.46);
+}
+#pickScreen.pjo-card-table-v232>#pickHelp{
+  position:relative;
+  z-index:3;
+  margin:10px auto 0;
+  color:#6e5030!important;
+  font-size:clamp(.91rem,1.55vw,1.08rem);
+  font-weight:650;
+}
+#pickScreen.pjo-card-table-v232>#readBtn{display:none!important}
+#pickScreen.pjo-card-table-v232>[data-action="question-back"]{
+  position:relative;
+  z-index:5;
+  width:auto;
+  min-width:118px;
+  margin:5px auto 0;
+  padding:9px 15px;
+  border-color:rgba(103,66,28,.3);
+  background:rgba(255,248,230,.46);
+  color:#684923;
+  font-size:.78rem;
+  box-shadow:none;
+}
+#pickScreen.pjo-card-table-v232 .pick-deck{
+  position:relative;
+  z-index:2;
+  display:block;
+  width:100%;
+  min-height:590px;
+  margin:0;
+}
+.pjo-table-inner-v232{position:relative;width:100%;height:590px}
+.pjo-pick-status-v232{
+  position:absolute;
+  z-index:20;
+  top:14px;
+  left:50%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#4a311a;
+  font-family:Georgia,"Times New Roman",serif;
+  transform:translateX(-50%);
+}
+.pjo-pick-status-v232:before,.pjo-pick-status-v232:after{
+  content:"";
+  width:68px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(102,66,29,.46));
+}
+.pjo-pick-status-v232:after{background:linear-gradient(90deg,rgba(102,66,29,.46),transparent)}
+.pjo-pick-status-v232 b{font-size:1.08rem;white-space:nowrap}
+.pjo-pick-slots-v232{
+  position:absolute;
+  z-index:22;
+  top:54px;
+  left:50%;
+  display:flex;
+  justify-content:center;
+  gap:22px;
+  transform:translateX(-50%);
+}
+.pjo-pick-slot-v232{
+  position:relative;
+  width:92px;
+  height:122px;
+  border:1px solid rgba(108,70,31,.38);
+  border-radius:12px;
+  background:rgba(255,248,228,.15);
+  box-shadow:inset 0 0 18px rgba(108,70,31,.055);
+  perspective:800px;
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.pjo-pick-slot-v232:before{
+  content:attr(data-number);
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:rgba(83,53,24,.64);
+  font-family:Georgia,serif;
+  font-size:1.12rem;
+  transition:opacity .22s ease;
+}
+.pjo-pick-slot-v232.is-target{border-color:#d8a64b;box-shadow:0 0 28px rgba(213,157,64,.3),inset 0 0 18px rgba(213,157,64,.12)}
+.pjo-pick-slot-v232.is-filled:before{opacity:0}
+.pjo-slot-card-v232{
+  position:absolute;
+  inset:3px;
+  opacity:0;
+  transform-style:preserve-3d;
+  transition:transform .72s cubic-bezier(.2,.75,.2,1),opacity .2s ease;
+}
+.pjo-pick-slot-v232.is-filled .pjo-slot-card-v232{opacity:1}
+.pjo-pick-slot-v232.is-revealed .pjo-slot-card-v232{transform:rotateY(180deg)}
+.pjo-slot-back-v232,.pjo-slot-front-v232{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid #c79a44;
+  border-radius:9px;
+  backface-visibility:hidden;
+}
+.pjo-slot-back-v232{
+  color:#e7bb62;
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 17px,#b98937 18px 19px,transparent 20px),
+    radial-gradient(circle at 50% 50%,#bc8730 0 2px,transparent 3px),
+    linear-gradient(145deg,#2d261f,#11100e);
+  box-shadow:inset 0 0 0 3px #17130f,inset 0 0 0 4px rgba(218,170,79,.58);
+  font-size:1.35rem;
+}
+.pjo-slot-front-v232{
+  color:#3b250f;
+  background:linear-gradient(145deg,#fff5d8,#d4ac61);
+  font-size:2rem;
+  transform:rotateY(180deg);
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.28);
+}
+.pjo-fan-stage-v232{
+  position:absolute;
+  z-index:10;
+  inset:180px 0 48px;
+  overflow:visible;
+  touch-action:none;
+}
+.pjo-fan-card-v232{
+  --fan-x-v232:0px;
+  --fan-y-v232:0px;
+  --fan-r-v232:0deg;
+  --react-x-v232:0px;
+  --react-y-v232:0px;
+  --react-r-v232:0deg;
+  position:absolute;
+  left:50%;
+  bottom:18px;
+  width:96px;
+  height:150px;
+  margin:0;
+  padding:0;
+  overflow:visible;
+  border:1px solid rgba(226,177,83,.86);
+  border-radius:12px;
+  background:#17130f;
+  color:#e5b65a;
+  box-shadow:0 17px 25px rgba(60,34,12,.28),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px rgba(218,168,73,.72);
+  transform:
+    translate3d(calc(-50% + var(--fan-x-v232) + var(--react-x-v232)),calc(var(--fan-y-v232) + var(--react-y-v232)),0)
+    rotate(calc(var(--fan-r-v232) + var(--react-r-v232)));
+  transform-origin:50% 115%;
+  transition:filter .2s ease,box-shadow .2s ease,opacity .35s ease;
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  will-change:transform;
+}
+.pjo-card-table-v232.is-dealing-v232 .pjo-fan-card-v232{
+  animation:pjoFanDealV232 .95s cubic-bezier(.18,.72,.2,1) var(--fan-delay-v232) backwards;
+}
+@keyframes pjoFanDealV232{
+  0%{opacity:0;transform:translate3d(-50%,160px,0) rotate(0) scale(.34)}
+  56%{opacity:1}
+  100%{
+    opacity:1;
+    transform:translate3d(calc(-50% + var(--fan-x-v232)),var(--fan-y-v232),0) rotate(var(--fan-r-v232)) scale(1)
+  }
+}
+.pjo-card-back-v232{
+  position:absolute;
+  inset:6px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(226,177,83,.74);
+  border-radius:8px;
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 24px,rgba(218,168,73,.72) 25px 26px,transparent 27px),
+    repeating-radial-gradient(circle at 50% 50%,transparent 0 16px,rgba(195,143,53,.2) 17px 18px),
+    linear-gradient(155deg,#2c251d,#0d0d0c 70%);
+}
+.pjo-card-back-v232:before,.pjo-card-back-v232:after{
+  content:"";
+  position:absolute;
+  width:1px;
+  height:78%;
+  background:linear-gradient(transparent,rgba(220,171,78,.72),transparent);
+}
+.pjo-card-back-v232:after{width:72%;height:1px}
+.pjo-card-sigil-v232{
+  position:relative;
+  z-index:2;
+  display:grid;
+  width:42px;
+  height:42px;
+  place-items:center;
+  border:1px solid rgba(226,177,83,.76);
+  border-radius:50%;
+  background:#17130f;
+  box-shadow:0 0 18px rgba(226,177,83,.14);
+  font-family:Georgia,serif;
+  font-size:1.28rem;
+}
+.pjo-hold-ring-v232{
+  --pjo-hold-v232:0%;
+  position:absolute;
+  z-index:6;
+  inset:-5px;
+  border-radius:16px;
+  background:conic-gradient(from -90deg,#fff0a9 var(--pjo-hold-v232),transparent 0);
+  filter:drop-shadow(0 0 7px rgba(255,207,95,.72));
+  opacity:0;
+  pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  padding:3px;
+}
+.pjo-fan-card-v232.is-holding-v232,.pjo-fan-card-v232.is-dragging-v232{z-index:80!important;filter:brightness(1.12);box-shadow:0 24px 42px rgba(82,48,14,.42),0 0 18px rgba(235,184,78,.25),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px #e2b153}
+.pjo-fan-card-v232.is-holding-v232 .pjo-hold-ring-v232{
+  opacity:1;
+  animation:pjoHoldFillV232 .9s linear forwards;
+}
+.pjo-fan-card-v232.is-dragging-v232{cursor:grabbing}
+.pjo-fan-card-v232.is-dragging-v232 .pjo-hold-ring-v232{
+  --pjo-hold-v232:100%;
+  opacity:1;
+  animation:none;
+}
+.pjo-fan-card-v232.is-ready-v232{filter:brightness(1.28);box-shadow:0 25px 48px rgba(82,48,14,.5),0 0 30px rgba(244,198,94,.68),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px #ffdc83}
+@keyframes pjoHoldFillV232{to{--pjo-hold-v232:100%}}
+.pjo-fan-card-v232.is-picked-v232{opacity:0;pointer-events:none}
+.pjo-fan-card-v232:focus-visible{outline:3px solid #f2bd59;outline-offset:5px;z-index:90!important}
+.pjo-pick-hint-v232{
+  position:absolute;
+  z-index:25;
+  right:0;
+  bottom:2px;
+  left:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  min-height:30px;
+  color:#73522d;
+  font-size:.82rem;
+  font-weight:750;
+  letter-spacing:.01em;
+}
+.pjo-pick-hint-v232:before{content:"◉";color:#a17435;font-size:.72rem}
+.pjo-flight-card-v232{
+  position:fixed!important;
+  z-index:9999!important;
+  margin:0!important;
+  pointer-events:none!important;
+  transform-origin:center!important;
+  transition:none!important;
+}
+@media(max-width:720px){
+  body.pjo-pick-active-v232 .app{padding:0}
+  #pickScreen.pjo-card-table-v232{
+    min-height:100svh;
+    padding:28px 10px 18px;
+    border:0;
+    border-radius:0;
+    box-shadow:inset 0 0 0 6px rgba(82,45,19,.42),inset 0 0 64px rgba(0,0,0,.58);
+  }
+  #pickScreen.pjo-card-table-v232:before{inset:14px -92px 16px;border-radius:48% / 10%}
+  #pickScreen.pjo-card-table-v232:after{top:23px}
+  #pickScreen.pjo-card-table-v232>h2{margin-top:39px;font-size:clamp(1.55rem,7vw,2rem)}
+  #pickScreen.pjo-card-table-v232>#pickHelp{margin-top:7px;font-size:.86rem}
+  #pickScreen.pjo-card-table-v232 .pick-deck{min-height:535px}
+  .pjo-table-inner-v232{height:535px}
+  .pjo-pick-status-v232{top:13px}
+  .pjo-pick-status-v232:before,.pjo-pick-status-v232:after{width:38px}
+  .pjo-pick-slots-v232{top:51px;gap:12px}
+  .pjo-pick-slot-v232{width:72px;height:96px;border-radius:10px}
+  .pjo-slot-card-v232{inset:2px}
+  .pjo-fan-stage-v232{inset:156px -4px 43px}
+  .pjo-fan-card-v232{width:62px;height:101px;border-radius:9px}
+  .pjo-card-back-v232{inset:4px;border-radius:6px}
+  .pjo-card-sigil-v232{width:31px;height:31px;font-size:1rem}
+  .pjo-hold-ring-v232{inset:-4px;border-radius:13px}
+  .pjo-pick-hint-v232{font-size:.75rem}
+}
+@media(max-width:380px){
+  #pickScreen.pjo-card-table-v232{padding-right:5px;padding-left:5px}
+  .pjo-pick-slots-v232{gap:9px}
+  .pjo-pick-slot-v232{width:67px;height:91px}
+}
+@media(prefers-reduced-motion:reduce){
+  .pjo-card-table-v232.is-dealing-v232 .pjo-fan-card-v232{animation-duration:.01ms;animation-delay:0ms}
+  .pjo-slot-card-v232{transition-duration:.01ms}
+  .pjo-flight-card-v232{display:none!important}
+}

@@ -1,0 +1,917 @@
+
+/* Customer-first result layout */
+#resultScreen .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-top:10px;margin-bottom:12px}
+#resultScreen .tarot-card{padding:9px;border-radius:12px;min-height:0;display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:center}
+#resultScreen .card-image{height:42px;margin:0;border-radius:10px}
+#resultScreen .card-image:before{display:none}
+#resultScreen .premium-card-art{gap:0}
+#resultScreen .arcana-icon{font-size:1.15rem;line-height:1}
+#resultScreen .arcana-title,#resultScreen .arcana-code{display:none}
+#resultScreen .position{font-size:.64rem;letter-spacing:0;line-height:1.15}
+#resultScreen .card-title{font-size:.78rem;line-height:1.2;margin:2px 0;word-break:keep-all}
+#resultScreen .orientation{font-size:.65rem;padding:2px 6px}
+#resultScreen .reading{margin-top:8px}
+#resultScreen .quick-summary{padding:18px}
+#resultScreen .reading-box{padding:16px}
+#resultScreen .master-note{line-height:1.78}
+@media(max-width:560px){
+  #resultScreen .cards{grid-template-columns:repeat(2,1fr);gap:7px}
+  #resultScreen .tarot-card{grid-template-columns:30px 1fr;padding:8px}
+  #resultScreen .card-image{height:36px}
+  #resultScreen .card-title{font-size:.72rem}
+  #resultScreen .position,#resultScreen .orientation{font-size:.6rem}
+}
+
+#guestScreen label,#guestCodeInput{display:none!important}
+#guestScreen .subtitle-free{margin:0 0 18px;color:var(--muted);line-height:1.7}
+#reading .reading-box{padding:20px}
+#reading .reading-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+#reading .reading-mini{border:1px solid rgba(216,182,111,.2);background:rgba(255,255,255,.045);border-radius:8px;padding:16px}
+#reading .reading-mini h4{margin:0 0 8px;color:var(--gold);font-size:14px}
+#reading .reading-mini p{margin:0;color:#efe7df;line-height:1.75}
+#reading .card-evidence p{margin:0 0 14px}
+#reading .card-evidence p:last-child{margin-bottom:0}
+@media(max-width:760px){#reading .reading-grid{grid-template-columns:1fr}.result-layout{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.tarot-card{grid-template-columns:72px 1fr}.card-image{width:72px;height:104px}.premium-card-art{min-height:104px}.arcana-icon{font-size:28px}.arcana-title{font-size:10px}}
+
+#resultScreen .cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+#resultScreen .tarot-card{display:grid!important;grid-template-columns:64px minmax(0,1fr)!important;gap:12px!important;align-items:center!important;padding:12px!important;border-radius:14px!important;min-height:92px!important}
+#resultScreen .card-image{width:64px!important;height:88px!important;margin:0!important;border-radius:12px!important;overflow:hidden!important;background:linear-gradient(180deg,#39205f 0%,#120b22 100%)!important;box-shadow:inset 0 0 0 1px rgba(248,220,145,.36),0 12px 26px rgba(0,0,0,.25)!important}
+#resultScreen .card-image:before{display:block!important;inset:6px!important;border-radius:9px!important;border-color:rgba(248,220,145,.32)!important}
+#resultScreen .premium-card-art{width:100%!important;height:100%!important;min-height:0!important;display:grid!important;grid-template-rows:1fr auto!important;place-items:center!important;padding:8px 5px!important;gap:2px!important}
+#resultScreen .premium-card-art:before{content:"";position:absolute;inset:12px 16px;border-radius:50%;background:radial-gradient(circle,rgba(248,220,145,.42),transparent 64%);filter:blur(1px)}
+#resultScreen .arcana-icon{position:relative;font-size:30px!important;line-height:1!important;text-shadow:0 0 16px rgba(248,220,145,.45)}
+#resultScreen .arcana-title{position:relative;max-width:54px;font-size:8px!important;line-height:1.15!important;letter-spacing:0!important;text-transform:none!important;white-space:normal!important;overflow:hidden!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#resultScreen .arcana-code{display:none!important}
+#resultScreen .card-title{font-size:.94rem!important;line-height:1.35!important;margin:4px 0!important;word-break:keep-all}
+#resultScreen .position{font-size:.74rem!important;line-height:1.25!important;letter-spacing:0!important}
+#resultScreen .orientation{font-size:.74rem!important;padding:4px 8px!important}
+#reading .reading-intro{padding:22px;border-radius:18px;background:linear-gradient(145deg,rgba(248,220,145,.14),rgba(255,255,255,.05));border:1px solid rgba(248,220,145,.28);color:var(--muted);line-height:1.85}
+#reading .reading-intro b{color:var(--gold)}
+@media(max-width:520px){#resultScreen .cards{grid-template-columns:1fr}#resultScreen .tarot-card{grid-template-columns:58px minmax(0,1fr)!important}#resultScreen .card-image{width:58px!important;height:80px!important}}
+
+#reading .mode-panel{padding:20px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(248,220,145,.22);display:grid;gap:14px}
+#reading .mode-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#reading .mode-chip{display:inline-flex;width:max-content;padding:7px 11px;border-radius:999px;background:rgba(248,220,145,.14);border:1px solid rgba(248,220,145,.28);color:#ffe8a8;font-size:.86rem;font-weight:900}
+#reading .timeline-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#reading .timeline-step{padding:14px;border-radius:14px;background:rgba(5,6,20,.34);border:1px solid rgba(248,220,145,.16);line-height:1.65}
+#reading .timeline-step b{display:block;color:var(--gold);margin-bottom:4px}
+#reading .premium-preview{padding:20px;border-radius:18px;background:linear-gradient(145deg,rgba(248,220,145,.18),rgba(255,255,255,.055));border:1px solid rgba(248,220,145,.34)}
+#reading .premium-preview h3{margin:0 0 10px;color:var(--gold)}
+#reading .premium-preview ul{margin:10px 0 0;padding-left:20px;color:var(--muted);line-height:1.75}
+#reading .card-evidence p{padding:14px 0;border-bottom:1px solid rgba(248,220,145,.14)}
+#reading .card-evidence p:last-child{border-bottom:0}
+@media(max-width:760px){#reading .timeline-grid{grid-template-columns:1fr}}
+
+#reading .action-plan{padding:20px;border-radius:18px;background:rgba(5,6,20,.38);border:1px solid rgba(248,220,145,.22)}
+#reading .action-plan h3{margin:0 0 10px;color:var(--gold)}
+#reading .action-plan ol{margin:0;padding-left:22px;color:var(--muted);line-height:1.82}
+#reading .upgrade-strip{padding:18px;border-radius:18px;border:1px solid rgba(248,220,145,.38);background:linear-gradient(135deg,rgba(248,220,145,.2),rgba(38,206,178,.08));color:var(--muted);line-height:1.75}
+#reading .upgrade-strip b{color:var(--gold)}
+
+#vipSpreadControl{margin:16px 0;padding:16px;border-radius:18px;border:1px solid rgba(248,220,145,.24);background:rgba(255,255,255,.055);text-align:left}
+#vipSpreadControl .spread-options{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+#vipSpreadControl button{width:100%;margin:0;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(248,220,145,.24);box-shadow:none}
+#vipSpreadControl button.active{background:linear-gradient(135deg,#fff3bd,#d99c32);color:#151019}
+#reading .analysis-report{display:grid;gap:14px}
+#reading .analysis-section{padding:20px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.04));border:1px solid rgba(248,220,145,.18);line-height:1.85;color:var(--muted)}
+#reading .analysis-section h3{margin:0 0 9px;color:var(--gold);font-size:1.05rem}
+#reading .signal-cloud{display:flex;gap:8px;flex-wrap:wrap}
+#reading .signal-cloud span{display:inline-flex;padding:8px 11px;border-radius:999px;background:rgba(248,220,145,.12);border:1px solid rgba(248,220,145,.24);color:#ffe8a8;font-weight:850;font-size:.88rem}
+#reading .card-evidence{display:none!important}
+@media(max-width:620px){#vipSpreadControl .spread-options{grid-template-columns:repeat(2,1fr)}}
+
+.member-item.simple-admin-card{display:grid;gap:12px}
+.admin-member-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.admin-member-main{display:grid;gap:5px}
+.admin-member-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.admin-member-meta span,.admin-code-box{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(248,220,145,.16);color:var(--muted)}
+.admin-code-box b{display:block;color:var(--gold);margin-bottom:4px}
+.admin-code-value{font-size:1.08rem;color:#fff4bf;font-weight:950;letter-spacing:.04em;word-break:break-all}
+.admin-approve-btn{width:auto;margin-top:0;white-space:nowrap}
+.admin-empty-note{color:var(--muted);line-height:1.6}
+@media(max-width:640px){.admin-member-meta{grid-template-columns:1fr}.admin-approve-btn{width:100%}}
+
+#loginLogs,#loginLogs+h4,#clearLogsBtn{display:none!important}
+#clearMembersBtn{display:none!important}
+.admin-delete-btn{width:auto;margin-top:0;border-color:rgba(255,116,140,.34)!important;color:#ffccd5!important;background:rgba(255,116,140,.08)!important}
+.admin-member-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+@media(max-width:640px){.admin-delete-btn{width:100%}.admin-member-actions{width:100%}}
+
+#guestScreen label,#guestCodeInput,#guestScreen .error{display:none!important}
+#guestCode1,#guestCode2,#guestCode3,#randomGuestCodesBtn,#randomSaveGuestCodesBtn,#saveGuestCodesBtn{display:none!important}
+.member-feedback-box{margin-top:16px;padding:18px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));border:1px solid rgba(248,220,145,.2)}
+.member-feedback-box h3{margin:0 0 8px;color:var(--gold)}
+.member-feedback-box textarea{min-height:88px}
+.member-feedback-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.member-feedback-msg{color:var(--ok);font-weight:800}
+.feedback-list{display:grid;gap:10px;margin-top:10px}
+.feedback-item{padding:14px;border-radius:16px;background:rgba(255,255,255,.055);border:1px solid rgba(248,220,145,.16);line-height:1.65;color:var(--muted)}
+.feedback-item b{color:var(--gold)}
+
+#loginLogs.feedback-list{display:grid!important}
+
+#adminPanel .stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+}
+#adminPanel .stat-card{
+  min-height:70px!important;
+  padding:12px 10px!important;
+  border-radius:14px!important;
+}
+#adminPanel .stat-card .choice-title{
+  font-size:1.18rem!important;
+  line-height:1.1!important;
+}
+#adminPanel .stat-card .choice-sub{
+  margin-top:4px!important;
+  font-size:.78rem!important;
+  line-height:1.25!important;
+}
+#adminPanel .tabs{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+}
+#adminPanel .tab{
+  width:100%!important;
+  margin:0!important;
+  padding:10px 8px!important;
+  border-radius:12px!important;
+  font-size:.86rem!important;
+  white-space:nowrap!important;
+}
+#adminPanel h4{
+  margin:14px 0 10px!important;
+}
+@media(max-width:520px){
+  #adminPanel .stats-grid,#adminPanel .tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #adminPanel .tab{font-size:.76rem!important;padding:9px 4px!important}
+  #adminPanel .stat-card{padding:10px 6px!important}
+  #adminPanel .stat-card .choice-title{font-size:1rem!important}
+  #adminPanel .stat-card .choice-sub{font-size:.68rem!important}
+}
+
+.access-grid{
+  display:grid;
+  grid-template-columns:minmax(180px,.8fr) minmax(260px,1fr) minmax(300px,1.25fr);
+  gap:14px;
+  align-items:stretch;
+  margin-top:18px;
+}
+.access-card{
+  padding:18px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));
+  border:1px solid rgba(248,220,145,.2);
+}
+.access-card h3{margin:0 0 8px;color:var(--gold)}
+.access-card .plan-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.access-card .plan-choice{min-height:86px;padding:12px 8px;border-radius:14px}
+.access-card .choice-sub{font-size:.78rem}
+.guest-access{display:grid;align-items:stretch}
+.guest-access .choice{height:100%;min-height:100%;border-radius:16px}
+@media(max-width:980px){.access-grid{grid-template-columns:1fr}.access-card .plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.access-card .plan-grid{grid-template-columns:1fr}}
+
+#memberHomeScreen{
+  max-width:880px;
+}
+#memberHomeScreen .topbar{
+  margin-bottom:10px;
+}
+#memberHomeScreen #memberPeriod.member-card{
+  max-width:none;
+  margin:10px 0 14px;
+  padding:14px;
+  border-radius:16px;
+  grid-template-columns:56px 1fr;
+  gap:12px;
+}
+#memberHomeScreen #memberPeriod .daily-card-icon{
+  width:56px;
+  height:56px;
+  font-size:1.8rem;
+  border-radius:14px;
+}
+#memberHomeScreen #memberPeriod p{
+  margin-top:3px;
+  line-height:1.45;
+  font-size:.9rem;
+}
+#memberHomeScreen .grid,#memberHomeScreen .grid2{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin-top:10px!important;
+}
+#memberHomeScreen .home-tile{
+  min-height:92px!important;
+  padding:14px 10px!important;
+  border-radius:15px!important;
+}
+#memberHomeScreen .home-tile .flag{
+  font-size:1.9rem!important;
+  margin-bottom:6px!important;
+}
+#memberHomeScreen .home-tile .choice-title{
+  font-size:1rem!important;
+}
+#memberHomeScreen .home-tile[data-action="reading-start"]{
+  min-height:112px!important;
+  background:linear-gradient(145deg,rgba(248,220,145,.22),rgba(255,255,255,.06));
+  border-color:rgba(248,220,145,.45);
+}
+#memberHomeScreen .member-feedback-box{
+  margin-top:12px;
+  padding:14px;
+  border-radius:16px;
+}
+#memberHomeScreen .member-feedback-box textarea{
+  min-height:70px;
+}
+@media(max-width:560px){
+  #memberHomeScreen .grid,#memberHomeScreen .grid2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #memberHomeScreen .home-tile{min-height:84px!important;padding:12px 6px!important}
+  #memberHomeScreen .home-tile .choice-title{font-size:.9rem!important}
+  #memberHomeScreen #memberPeriod.member-card{grid-template-columns:1fr;text-align:center}
+  #memberHomeScreen #memberPeriod .daily-card-icon{margin:0 auto}
+}
+
+#memberHomeScreen .secondary-member-menu{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin-top:10px!important;
+}
+#memberHomeScreen .secondary-member-menu .home-tile{
+  min-height:86px!important;
+  background:rgba(255,255,255,.055)!important;
+  border-color:rgba(248,220,145,.18)!important;
+}
+#memberHomeScreen .primary-member-menu{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:10px!important;
+}
+#memberHomeScreen .primary-member-menu .home-tile[data-action="reading-start"]{
+  min-height:118px!important;
+}
+@media(max-width:560px){#memberHomeScreen .secondary-member-menu{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+body[data-screen="pickScreen"] #dailyCard,body[data-screen="resultScreen"] #dailyCard{display:none!important}
+body[data-screen="pickScreen"] .hero,body[data-screen="resultScreen"] .hero{padding-bottom:8px!important}
+
+#uniqueCodeInput,.unique-login-field,.admin-code-box{display:none!important}
+.approval-note-v27{color:var(--muted);line-height:1.55;margin:8px 0 0}
+
+.card-title .card-original-name{display:block;margin-top:3px;font-size:.72rem;color:var(--muted);font-weight:750;line-height:1.25}
+.card-title .card-local-name{display:block;line-height:1.25}
+
+/* V110: remove the admin summary statistic boxes above member management. */
+#adminEditBox > #stats,
+#adminEditBox > #stats.stats-grid,
+#adminEditBox > #stats + .divider {
+  display:none!important;
+}
+
+/* V193: compact logged-in home so primary actions fit above the fold. */
+body[data-screen="memberHomeScreen"] .app{
+  padding-top:10px!important;
+}
+body[data-screen="memberHomeScreen"] .hero{
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:8px 10px 12px!important;
+  margin:0 auto 8px!important;
+  text-align:center!important;
+}
+body[data-screen="memberHomeScreen"] .hero:before,
+body[data-screen="memberHomeScreen"] .hero .moon,
+body[data-screen="memberHomeScreen"] .hero .subtitle,
+body[data-screen="memberHomeScreen"] #dailyCard{
+  display:none!important;
+}
+body[data-screen="memberHomeScreen"] .hero h1{
+  max-width:none!important;
+  margin:0!important;
+  font-size:clamp(2.15rem,5.3vw,3.65rem)!important;
+  line-height:1!important;
+  text-align:center!important;
+  text-shadow:0 10px 28px rgba(0,0,0,.35)!important;
+}
+body[data-screen="memberHomeScreen"] #memberHomeScreen{
+  margin-top:6px!important;
+  padding:16px!important;
+}
+body[data-screen="memberHomeScreen"] #memberHomeScreen .topbar{
+  margin-bottom:8px!important;
+}
+body[data-screen="memberHomeScreen"] #memberHomeScreen .grid,
+body[data-screen="memberHomeScreen"] #memberHomeScreen .primary-member-menu,
+body[data-screen="memberHomeScreen"] #memberHomeScreen .secondary-member-menu{
+  margin-top:8px!important;
+  gap:10px!important;
+}
+body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile{
+  min-height:86px!important;
+  padding:12px 8px!important;
+}
+body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile .flag{
+  font-size:1.55rem!important;
+  margin-bottom:5px!important;
+}
+body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile .choice-title{
+  font-size:.98rem!important;
+  line-height:1.2!important;
+}
+body[data-screen="memberHomeScreen"] #memberHomeScreen .member-feedback-box,
+body[data-screen="memberHomeScreen"] #memberHomeScreen .private-consult-home-row{
+  margin-top:10px!important;
+}
+@media(max-width:560px){
+  body[data-screen="memberHomeScreen"] .app{padding:8px 10px 36px!important}
+  body[data-screen="memberHomeScreen"] .hero{padding:6px 4px 10px!important}
+  body[data-screen="memberHomeScreen"] .hero h1{font-size:clamp(2rem,11vw,3.05rem)!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen{padding:13px!important;border-radius:18px!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen .topbar{gap:6px!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen .badge{padding:7px 9px!important;font-size:.82rem!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen .mini{padding:7px 10px!important;font-size:.8rem!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile{min-height:74px!important;padding:10px 6px!important;border-radius:14px!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile .flag{font-size:1.35rem!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile .choice-title{font-size:.9rem!important}
+}
+
+/* V194: remove the default hero description and daily card teaser. */
+.hero>.subtitle,
+#dailyCard{
+  display:none!important;
+}
+.hero{
+  padding-bottom:14px!important;
+}
+
+/* V195: Destiny 1 visual system. */
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .app{padding-top:8px!important}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero{
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:7px 10px 11px!important;
+  margin:0 auto 8px!important;
+  text-align:center!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero:before,
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero .moon,
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero .subtitle{
+  display:none!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero h1{
+  max-width:none!important;
+  margin:0!important;
+  font-size:clamp(2.1rem,5vw,3.35rem)!important;
+  line-height:1!important;
+  text-align:center!important;
+  text-shadow:0 10px 28px rgba(0,0,0,.35)!important;
+}
+#resultScreen.destiny-one-v195{
+  max-width:1080px!important;
+  color:#f6f0ff!important;
+  background:linear-gradient(180deg,#21172e 0%,#171321 58%,#111018 100%)!important;
+  border:1px solid rgba(221,195,143,.2)!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.42)!important;
+  overflow-x:hidden!important;
+}
+#resultScreen.destiny-one-v195 #cards{display:none!important}
+.destiny-question-top-v195{padding:12px 2px 24px;text-align:left}
+.destiny-question-top-v195 h2{max-width:820px;margin:0;color:#fff8e9;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:clamp(2rem,5vw,3.7rem);font-weight:500;line-height:1.2;letter-spacing:0;word-break:keep-all;text-wrap:balance}
+.destiny-report-v195{display:grid;gap:16px;min-width:0}
+.destiny-overview-v195,.destiny-section-v195{min-width:0;padding:26px;border:1px solid rgba(221,195,143,.17);border-radius:18px;background:#211a2b;box-shadow:0 16px 40px rgba(0,0,0,.2)}
+.destiny-overview-v195{background:linear-gradient(145deg,#342540,#211a2b 72%);border-color:rgba(230,204,151,.3)}
+.destiny-kicker-v195,.destiny-section-head-v195>span{display:block;margin:0 0 7px;color:#d9bb7e;font-size:.76rem;font-weight:900;letter-spacing:.1em}
+.destiny-overview-v195 h3,.destiny-section-head-v195 h3{margin:0;color:#fff8eb;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-weight:500;letter-spacing:0;line-height:1.25}
+.destiny-overview-v195 h3{font-size:clamp(1.7rem,4vw,2.55rem)}
+.destiny-section-head-v195 h3{font-size:clamp(1.42rem,3vw,2rem)}
+.destiny-overview-prose-v208{max-width:820px;margin-top:22px}
+.destiny-overview-prose-v208 p{margin:0;color:#5f5a52;font-size:1.03rem;line-height:1.82;word-break:keep-all;overflow-wrap:anywhere}
+.destiny-overview-prose-v208 p+p{margin-top:12px}
+.destiny-overview-prose-v208 p strong{color:#8f642d;font-size:1.08em;font-weight:900}
+.destiny-overview-v195>p,.destiny-section-v195>p,.destiny-relation-panel-v195>p,.destiny-temperature-v195>p,.destiny-next-step-v195>p{margin:18px 0 0;color:#e9e1ef;font-size:1.03rem;line-height:1.88;word-break:keep-all;overflow-wrap:anywhere}
+.destiny-overview-grid-v195{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
+.destiny-overview-grid-v195>div{min-width:0;padding:15px 14px;border:1px solid rgba(230,204,151,.17);border-radius:12px;background:rgba(10,8,15,.25)}
+.destiny-overview-grid-v195 small{display:block;color:#a99fb2;font-size:.75rem;font-weight:800}
+.destiny-overview-grid-v195 b{display:block;margin-top:6px;color:#efd393;font-size:1.06rem;line-height:1.35;word-break:keep-all}
+.destiny-overview-grid-v195 .destiny-why-v204{grid-column:1/-1;display:grid;grid-template-columns:180px minmax(0,1fr);align-items:start;gap:14px}
+.destiny-overview-grid-v195 .destiny-why-v204 b{margin:0;font-size:1rem;line-height:1.65}
+.destiny-overview-intro-v205{margin-bottom:12px!important}
+.destiny-person-grid-v205{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.destiny-person-grid-v205.single{grid-template-columns:1fr}
+.destiny-person-grid-v205 article{min-width:0;padding:17px;border:1px solid rgba(157,113,52,.2);border-radius:13px;background:#f7f1e6}
+.destiny-person-grid-v205 h4{margin:0;color:#8f642d;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:1.13rem;font-weight:500;line-height:1.4}
+.destiny-person-grid-v205 dl{display:grid;gap:0;margin:13px 0 0}
+.destiny-person-grid-v205 dl>div{display:grid;grid-template-columns:132px minmax(0,1fr);gap:13px;padding:11px 0;border-top:1px solid #e2d6bf}
+.destiny-person-grid-v205 dt{color:#8f642d;font-size:.8rem;font-weight:900;line-height:1.55}
+.destiny-person-grid-v205 dd{min-width:0;margin:0;color:#4f4a43;font-size:.94rem;line-height:1.72;word-break:keep-all;overflow-wrap:anywhere}
+.destiny-person-grid-v205 ul{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.destiny-person-grid-v205 li{padding:5px 9px;border-radius:999px;background:#eee5d5;color:#5a5043;font-size:.82rem;line-height:1.4}
+.destiny-card-grid-v195{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px}
+.destiny-card-proof-v195{min-width:0;padding:13px;border:1px solid rgba(221,195,143,.16);border-radius:14px;background:#17131e}
+.destiny-card-art-v195{display:grid;place-items:center;align-content:center;aspect-ratio:2/3;padding:10px;border:1px solid rgba(236,210,158,.26);border-radius:10px;background:linear-gradient(155deg,#4d365b,#1a1421);text-align:center;overflow:hidden}
+.destiny-card-art-v195>span{font-size:clamp(2.6rem,6vw,4.8rem);line-height:1}
+.destiny-card-art-v195>small{max-width:100%;margin-top:12px;color:#f4dca7;font-family:Georgia,serif;font-size:.78rem;line-height:1.25;overflow-wrap:anywhere}
+.destiny-role-v195{margin-top:13px;color:#d8bb7f;font-size:.8rem;font-weight:900}
+.destiny-card-proof-v195 h4{margin:6px 0 9px;color:#fff8ec;font-size:1rem;line-height:1.35;word-break:keep-all}
+.destiny-card-proof-v195 h4 small{color:#a99fb2;font-size:.74rem;font-weight:700}
+.destiny-card-proof-v195>p,.destiny-card-proof-v195 details p{margin:0;color:#ddd4e4;font-size:.91rem;line-height:1.72;word-break:keep-all}
+.destiny-card-proof-v195 details{margin-top:12px;padding-top:10px;border-top:1px solid rgba(221,195,143,.12)}
+.destiny-card-proof-v195 summary{cursor:pointer;color:#d9bb7e;font-size:.8rem;font-weight:850}
+.destiny-card-proof-v195 details p{margin-top:10px;color:#cfc5d6}
+.destiny-story-progress-v203{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:620px;margin:20px auto 10px;color:#9f93aa;font-size:.78rem;font-weight:850}
+.destiny-story-relation-tabs-v205{display:flex;justify-content:center;gap:8px;overflow-x:auto;margin:20px 0 4px;padding-bottom:3px;scrollbar-width:none}
+.destiny-story-relation-tabs-v205::-webkit-scrollbar{display:none}
+.destiny-story-relation-tabs-v205 button{width:auto;min-width:112px;margin:0;padding:10px 16px;border:1px solid #cfbb91;border-radius:999px;background:#fbf6ed;color:#6b5a42;box-shadow:none;white-space:nowrap}
+.destiny-story-relation-tabs-v205 button.active{background:#a77c3f;color:#fffaf1;border-color:#a77c3f}
+.destiny-story-relation-panel-v205{display:none}
+.destiny-story-relation-panel-v205.active{display:block}
+.destiny-story-progress-v203>div{display:flex;align-items:center;gap:7px}
+.destiny-story-progress-v203 i{display:block;width:7px;height:7px;border-radius:50%;background:#c9c0cd;transition:width .2s ease,background .2s ease}
+.destiny-story-progress-v203 i.active{width:24px;border-radius:999px;background:#b07e3c}
+.destiny-story-slider-v203{display:block;max-width:620px;margin:0 auto}
+.destiny-story-slide-v203{display:none;padding:18px}
+.destiny-story-slide-v203.active{display:grid;grid-template-columns:minmax(180px,250px) minmax(0,1fr);column-gap:24px;align-items:start;animation:destinyStoryInV203 .24s ease both}
+.destiny-story-slide-v203 .destiny-story-stage-v203,.destiny-story-slide-v203 .destiny-card-art-v195{grid-column:1}
+.destiny-story-slide-v203 h4,.destiny-story-slide-v203>p,.destiny-story-slide-v203 details,.destiny-story-slide-v203 .destiny-story-scene-v209{grid-column:2}
+.destiny-story-stage-v203{margin:0 0 10px;color:#9d7134;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:1.08rem;font-weight:500}
+.destiny-story-slide-v203 h4{margin:2px 0 12px;font-size:1.28rem}
+.destiny-story-slide-v203>p{font-size:1rem;line-height:1.75}
+.destiny-story-slide-v203 details{margin-top:17px;padding:14px 0 0}
+.destiny-story-slide-v203 summary{font-size:.92rem;line-height:1.45}
+.destiny-story-slide-v203 details>p{font-family:"Nanum Gothic Coding","Apple SD Gothic Neo",monospace;font-size:1.35rem;font-weight:400;line-height:1.85}
+.destiny-story-scene-v209{margin:0 0 2px;padding:13px 14px;border-left:3px solid #a77c3f;background:#f2eadb}
+.destiny-story-scene-v209 b{display:block;margin-top:8px;color:#8a8176;font-family:"Apple SD Gothic Neo",Pretendard,sans-serif;font-size:1rem;font-weight:500;line-height:1.5;word-break:keep-all}
+.destiny-story-scene-v209 small{display:block;margin:0;color:#332c24;font-family:"Hi Melody","Apple SD Gothic Neo",sans-serif;font-size:1.5rem;font-weight:800;line-height:1.42;word-break:keep-all}
+.destiny-story-scene-v209 small>span{display:block}
+.destiny-story-place-v230{margin-top:.18em}
+.destiny-story-roles-v209{margin:12px 0 0;padding:10px 12px;border-radius:8px;background:#eee5d5;color:#655744;font-family:"Hi Melody","Apple SD Gothic Neo",sans-serif;font-size:1.5rem;font-weight:400;line-height:1.6;word-break:keep-all}
+.destiny-story-echo-v209{display:grid;gap:5px;margin-top:14px;padding:12px 13px;border-top:1px solid #d8c7a6;color:#5d5245}
+.destiny-story-echo-v209 b{color:#8f642d;font-size:.78rem}
+.destiny-story-echo-v209 span{font-size:.86rem;line-height:1.65;word-break:keep-all}
+.destiny-story-nav-v203{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:620px;margin:12px auto 0}
+.destiny-story-nav-v203 button{min-height:44px;margin:0;padding:9px 16px;border:1px solid #cfbb91;border-radius:999px;background:#fbf6ed;color:#5e503e;box-shadow:none;font-size:1.12rem}
+.destiny-story-nav-v203 button span{font-size:.86rem;font-weight:850;vertical-align:1px}
+.destiny-story-nav-v203 button:disabled{opacity:.35;cursor:default}
+@keyframes destinyStoryInV203{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+.destiny-relation-tabs-v195{display:flex;gap:8px;overflow-x:auto;margin-top:18px;padding-bottom:3px;scrollbar-width:none}
+.destiny-relation-tabs-v195::-webkit-scrollbar{display:none}
+.destiny-relation-tabs-v195 button,.destiny-reflection-options-v195 button{width:auto;margin:0;padding:10px 14px;border:1px solid rgba(221,195,143,.18);border-radius:999px;background:#17131e;color:#bdb2c6;box-shadow:none;white-space:nowrap}
+.destiny-relation-tabs-v195 button.active,.destiny-reflection-options-v195 button.active{background:#d7b873;color:#1b1420;border-color:#e4cc97}
+.destiny-relation-panel-v195{display:none;margin-top:14px;padding:18px;border:1px solid rgba(221,195,143,.14);border-radius:14px;background:#19141f}
+.destiny-relation-panel-v195.active{display:block}
+.destiny-relation-panel-v195>span{color:#9f93aa;font-size:.75rem;font-weight:800}
+.destiny-relation-panel-v195 h4{margin:6px 0 0;color:#efd393;font-size:1.35rem}
+.destiny-relation-detail-v218{margin-top:16px;padding-top:15px;border-top:1px solid rgba(221,195,143,.14)}
+.destiny-relation-detail-v218>b{display:block;color:#d7b873;font-size:.84rem}
+.destiny-relation-detail-v218 p{margin:8px 0 0;color:#d7cedd;font-size:.94rem;line-height:1.75;word-break:keep-all}
+.destiny-relation-detail-v218 ul{display:grid;gap:8px;margin:10px 0 0;padding-left:20px;color:#d7cedd;font-size:.92rem;line-height:1.68}
+.destiny-relation-detail-v218 .destiny-shared-experience-v224{margin-top:10px;padding:14px 15px;border-radius:10px;background:rgba(255,255,255,.04);line-height:1.85}
+.destiny-blend-note-v195{padding:13px 15px;border-left:3px solid #d7b873;background:#19141f!important;color:#e8dfec!important}
+.destiny-signal-pair-v195{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
+.destiny-signal-pair-v195>div{min-width:0;padding:14px;border:1px solid rgba(221,195,143,.12);border-radius:12px;background:#151119}
+.destiny-signal-pair-v195 b{color:#d9bb7e;font-size:.82rem}
+.destiny-signal-pair-v195 p{margin:7px 0 0;color:#d4cbd9;line-height:1.7;word-break:keep-all}
+.destiny-clues-v195{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0 0;padding:0;list-style:none}
+.destiny-clues-v195 li{position:relative;min-width:0;padding:15px 15px 15px 38px;border:1px solid rgba(221,195,143,.13);border-radius:12px;background:#17131e;color:#e3dbe8;line-height:1.65;word-break:keep-all}
+.destiny-clues-v195 li:before{content:'✓';position:absolute;left:15px;top:15px;color:#d9bb7e;font-weight:900}
+.destiny-purpose-v195>strong{display:inline-block;margin-top:18px;color:#efd393;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:1.65rem;font-weight:500}
+.destiny-next-step-v195,.destiny-temperature-v195{margin-top:18px;padding:16px;border-left:3px solid #d7b873;background:#17131e}
+.destiny-next-step-v195 b,.destiny-temperature-v195 b{color:#efd393;font-size:1rem}
+.destiny-next-step-v195 p,.destiny-temperature-v195 p{margin-top:7px!important}
+.destiny-reflection-options-v195{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.destiny-reflection-answer-v195{margin-top:15px;padding:17px;border:1px solid rgba(221,195,143,.14);border-radius:14px;background:#17131e}
+.destiny-reflection-answer-v195>p{margin:0 0 12px;color:#fff1cf;font-size:1.02rem;line-height:1.65;font-weight:800}
+.destiny-reflection-answer-v195 textarea{min-height:90px;background:#100d14;border-color:rgba(221,195,143,.2);color:#f2ebf5}
+.destiny-reflection-answer-v195 button{width:auto;margin-top:10px;padding:10px 14px}
+.destiny-reflection-answer-v195 small{display:block;margin-top:9px;color:#a99fb2;line-height:1.5}
+.destiny-grounding-v195{margin:2px 4px 0!important;color:#92889b!important;font-size:.78rem!important;line-height:1.62!important}
+#resultScreen.destiny-one-v195 .reading-review-v117{background:#211a2b!important;border-color:rgba(221,195,143,.17)!important;color:#e8dfed!important}
+#resultScreen.destiny-one-v195 .reading-review-v117 h3{color:#fff8eb!important}
+#resultScreen.destiny-one-v195 .row-actions{margin-top:18px}
+@media(max-width:640px){
+  body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) #adminModeBtn{display:none!important}
+  body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .app{padding:7px 8px 34px!important}
+  body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero{justify-content:flex-start!important;padding:7px 154px 9px 7px!important;text-align:left!important}
+  body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero h1{font-size:clamp(1.18rem,5.4vw,1.42rem)!important;line-height:1.05!important;text-align:left!important;white-space:nowrap!important}
+  #resultScreen.destiny-one-v195{padding:16px!important;border-radius:18px!important}
+  .destiny-question-top-v195{padding:8px 0 18px}
+  .destiny-question-top-v195 h2{font-size:clamp(1.65rem,8vw,2.3rem)}
+  .destiny-overview-v195,.destiny-section-v195{padding:18px;border-radius:14px}
+  .destiny-overview-prose-v208{margin-top:17px}
+  .destiny-overview-prose-v208 p{font-size:.96rem;line-height:1.76}
+  .destiny-overview-prose-v208 p+p{margin-top:10px}
+  .destiny-overview-grid-v195{grid-template-columns:1fr;gap:7px}
+  .destiny-overview-grid-v195>div{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:8px;padding:11px 12px}
+  .destiny-overview-grid-v195 b{margin:0;font-size:.96rem}
+  .destiny-overview-grid-v195 .destiny-why-v204{grid-column:auto;grid-template-columns:110px minmax(0,1fr);gap:8px}
+  .destiny-overview-grid-v195 .destiny-why-v204 b{font-size:.94rem;line-height:1.55}
+  .destiny-person-grid-v205{grid-template-columns:1fr}
+  .destiny-person-grid-v205 article{padding:14px}
+  .destiny-person-grid-v205 h4{font-size:1.02rem}
+  .destiny-person-grid-v205 dl>div{grid-template-columns:1fr;gap:5px;padding:10px 0}
+  .destiny-person-grid-v205 dt{font-size:.78rem}
+  .destiny-person-grid-v205 dd{font-size:.91rem;line-height:1.68}
+  .destiny-story-relation-tabs-v205{justify-content:flex-start;margin-top:17px}
+  .destiny-card-grid-v195{gap:6px}
+  .destiny-card-proof-v195{padding:7px;border-radius:10px}
+  .destiny-card-art-v195{padding:5px;border-radius:7px}
+  .destiny-card-art-v195>span{font-size:2rem}
+  .destiny-card-art-v195>small{margin-top:6px;font-size:.55rem}
+  .destiny-story-progress-v203{margin-top:17px}
+  .destiny-story-slide-v203.active{display:block;padding:12px}
+  .destiny-story-slide-v203 .destiny-card-art-v195{width:min(76%,260px);margin:0 auto 15px}
+  .destiny-story-stage-v203{text-align:center;font-size:1rem}
+  .destiny-story-slide-v203 h4{font-size:1.05rem;text-align:center}
+  .destiny-story-slide-v203 h4 small{display:inline;margin:0;font-size:.72rem}
+  .destiny-story-slide-v203>p{font-size:.92rem;line-height:1.72}
+  .destiny-story-slide-v203 summary{font-size:.82rem}
+  .destiny-story-slide-v203 details>p{font-size:1.35rem;line-height:1.78}
+  .destiny-story-scene-v209{margin-top:10px;padding:12px}
+  .destiny-story-scene-v209 b{font-size:.92rem}
+  .destiny-story-scene-v209 small{font-size:1.5rem}
+  .destiny-role-v195{margin-top:8px;font-size:.62rem}
+  .destiny-card-proof-v195 h4{font-size:.72rem;line-height:1.3}
+  .destiny-card-proof-v195 h4 small{display:block;margin-top:2px;font-size:.58rem}
+  .destiny-card-proof-v195>p{font-size:.72rem;line-height:1.55}
+  .destiny-card-proof-v195 summary{font-size:.66rem;line-height:1.4}
+  .destiny-card-proof-v195 details p{font-size:.72rem;line-height:1.55}
+  .destiny-signal-pair-v195,.destiny-clues-v195{grid-template-columns:1fr}
+  .destiny-overview-v195>p,.destiny-section-v195>p,.destiny-relation-panel-v195>p{font-size:.96rem;line-height:1.8}
+}
+
+/* V196: warm ivory palette for Destiny 1; layout remains unchanged. */
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)){
+  background:#f3ecdf!important;
+  color:#1c1915!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)):before{
+  background:#f3ecdf!important;
+  opacity:1!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)):after{display:none!important}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero h1{
+  color:#4c4740!important;
+  text-shadow:none!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .language-toggle-v60{
+  background:#f8f2e7!important;
+  color:#39342e!important;
+  border-color:#cdb98f!important;
+  box-shadow:0 8px 24px rgba(92,72,42,.12)!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .language-menu-v60{
+  background:#fffaf1!important;
+  border-color:#d8c49b!important;
+  box-shadow:0 16px 38px rgba(92,72,42,.16)!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .language-menu-v60 button{
+  background:#f7f0e4!important;
+  color:#39342e!important;
+  border-color:#ddd0b5!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .admin-entry{
+  opacity:.7!important;
+}
+body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) #adminModeBtn{
+  background:#f8f2e7!important;
+  color:#4a443c!important;
+  border-color:#cdb98f!important;
+}
+#resultScreen.destiny-one-v195{
+  color:#1d1a16!important;
+  background:#f6efe3!important;
+  border-color:#cbb786!important;
+  box-shadow:0 24px 70px rgba(93,71,36,.16)!important;
+}
+#resultScreen.destiny-one-v195>.topbar{border-bottom-color:#ded0b4!important}
+#resultScreen.destiny-one-v195>.topbar .badge{
+  background:#fbf6ed!important;
+  border-color:#d4c19a!important;
+  color:#4f473c!important;
+  box-shadow:none!important;
+}
+#resultScreen.destiny-one-v195 .top-actions .ghost,
+#resultScreen.destiny-one-v195 .row-actions .ghost{
+  background:#fbf6ed!important;
+  color:#39342e!important;
+  border-color:#cfbb91!important;
+  box-shadow:none!important;
+}
+#resultScreen.destiny-one-v195 .row-actions button:not(.ghost){
+  background:#a77c3f!important;
+  color:#fffaf1!important;
+  box-shadow:0 12px 26px rgba(129,91,38,.18)!important;
+}
+.destiny-question-top-v195 h2{color:#171512!important}
+.destiny-overview-v195,.destiny-section-v195{
+  border-color:#d5c39d!important;
+  background:#fffaf2!important;
+  box-shadow:0 14px 34px rgba(94,73,42,.1)!important;
+}
+.destiny-overview-v195{background:#fffaf2!important;border-color:#c9b17e!important}
+.destiny-kicker-v195,.destiny-section-head-v195>span{color:#9d7134!important}
+.destiny-overview-v195 h3,.destiny-section-head-v195 h3{color:#181512!important}
+.destiny-overview-v195>p,.destiny-section-v195>p,.destiny-relation-panel-v195>p,.destiny-temperature-v195>p,.destiny-next-step-v195>p{color:#5f5a52!important}
+.destiny-overview-grid-v195>div{
+  border-color:#ddd0b7!important;
+  background:#f2eee2!important;
+}
+.destiny-overview-grid-v195 small{color:#777169!important}
+.destiny-overview-grid-v195 b{color:#8f642d!important}
+.destiny-card-proof-v195{
+  border-color:#ccb485!important;
+  background:#f9f4ea!important;
+  box-shadow:0 12px 28px rgba(102,79,43,.08)!important;
+}
+.destiny-card-art-v195{
+  border-color:#a97734!important;
+  background:#dfe9e5!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.65)!important;
+}
+.destiny-card-art-v195>span{filter:saturate(.72) sepia(.14)}
+.destiny-card-art-v195>small{color:#795624!important}
+.destiny-role-v195{color:#8f642d!important}
+.destiny-card-proof-v195 h4{color:#28231d!important}
+.destiny-card-proof-v195 h4 small{color:#777169!important}
+.destiny-card-proof-v195>p,.destiny-card-proof-v195 details p{color:#625d55!important}
+.destiny-card-proof-v195 details{border-top-color:#ddd0b7!important}
+.destiny-card-proof-v195 summary{color:#8f642d!important}
+.destiny-card-proof-v195 details p{color:#686259!important}
+.destiny-relation-tabs-v195 button,.destiny-reflection-options-v195 button{
+  background:#f7f1e6!important;
+  color:#332f2a!important;
+  border-color:#ccb98f!important;
+}
+.destiny-relation-tabs-v195 button.active,.destiny-reflection-options-v195 button.active{
+  background:#ead5ae!important;
+  color:#2e261c!important;
+  border-color:#9f7137!important;
+  box-shadow:none!important;
+}
+.destiny-relation-panel-v195{
+  border-color:#dfd2bb!important;
+  background:#fffaf2!important;
+}
+.destiny-relation-panel-v195>span{color:#777169!important}
+.destiny-relation-panel-v195 h4{color:#29241e!important}
+.destiny-relation-detail-v218{border-top-color:#ddd2c1}
+.destiny-relation-detail-v218>b{color:#8f642d}
+.destiny-relation-detail-v218 p,.destiny-relation-detail-v218 ul{color:#5f5a52}
+.destiny-relation-detail-v218 .destiny-shared-experience-v224{background:#f4ecdf}
+.destiny-blend-note-v195{
+  border-left-color:#a77c3f!important;
+  background:#f0eadc!important;
+  color:#4f4a43!important;
+}
+.destiny-signal-pair-v195>div{
+  border-color:#e0d5c0!important;
+  background:#f4f0e6!important;
+}
+.destiny-signal-pair-v195 b{color:#8e642d!important}
+.destiny-signal-pair-v195 p{color:#625d55!important}
+.destiny-clues-v195 li{
+  border-color:#dfd3bd!important;
+  background:#fbf7ef!important;
+  color:#514c45!important;
+}
+.destiny-clues-v195 li:before{color:#9c7137!important}
+.destiny-purpose-v195>strong{color:#8f642d!important}
+.destiny-next-step-v195,.destiny-temperature-v195{
+  border-left-color:#a77c3f!important;
+  background:#f1ede1!important;
+}
+.destiny-next-step-v195 b,.destiny-temperature-v195 b{color:#755124!important}
+.destiny-reflection-answer-v195{
+  border-color:#d8c7a5!important;
+  background:#fbf7ef!important;
+}
+.destiny-reflection-answer-v195>p{color:#28231d!important}
+.destiny-reflection-answer-v195 textarea{
+  background:#fffdf8!important;
+  border-color:#cdb98f!important;
+  color:#2d2822!important;
+}
+.destiny-reflection-answer-v195 button{
+  background:#a77c3f!important;
+  color:#fffaf1!important;
+  box-shadow:none!important;
+}
+.destiny-reflection-answer-v195 small,.destiny-grounding-v195{color:#79736a!important}
+#resultScreen.destiny-one-v195 .reading-review-v117{
+  background:#fffaf2!important;
+  border-color:#d5c39d!important;
+  color:#5f5a52!important;
+  box-shadow:0 14px 34px rgba(94,73,42,.08)!important;
+}
+#resultScreen.destiny-one-v195 .reading-review-v117 h3{color:#181512!important}
+#resultScreen.destiny-one-v195 .reading-review-v117 p{color:#686259!important}
+#resultScreen.destiny-one-v195 .study-star-v115{color:#b29362!important;text-shadow:none!important}
+#resultScreen.destiny-one-v195 .reading-review-v117 textarea{
+  background:#fffdf8!important;
+  color:#2d2822!important;
+  border-color:#cdb98f!important;
+}
+#resultScreen.destiny-one-v195 .reading-review-v117 button:not(.study-star-v115){
+  background:#a77c3f!important;
+  color:#fffaf1!important;
+  box-shadow:none!important;
+}
+#resultScreen.destiny-one-v195>.subtitle{color:#777169!important}
+
+/* V197: use a compact masthead on the PJ reading selection screen. */
+body[data-screen="questionScreen"] .app{
+  padding-top:8px!important;
+}
+body[data-screen="questionScreen"] .hero{
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0 auto 6px!important;
+  padding:7px 118px 9px!important;
+  text-align:center!important;
+}
+body[data-screen="questionScreen"] .hero:before,
+body[data-screen="questionScreen"] .hero .moon,
+body[data-screen="questionScreen"] .hero .subtitle,
+body[data-screen="questionScreen"] #dailyCard{
+  display:none!important;
+}
+body[data-screen="questionScreen"] .hero h1{
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  font-size:clamp(1.75rem,3.2vw,2.45rem)!important;
+  line-height:1!important;
+  letter-spacing:.01em!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  text-shadow:0 8px 24px rgba(0,0,0,.3)!important;
+}
+body[data-screen="questionScreen"] #questionScreen{
+  margin-top:4px!important;
+}
+@media(max-width:640px){
+  body[data-screen="questionScreen"] .app{padding:7px 10px 38px!important}
+  body[data-screen="questionScreen"] .admin-entry{display:none!important}
+  body[data-screen="questionScreen"] .hero{
+    min-height:40px!important;
+    margin-bottom:3px!important;
+    padding:7px 136px 7px 4px!important;
+  }
+  body[data-screen="questionScreen"] .hero h1{
+    font-size:clamp(1.1rem,5vw,1.34rem)!important;
+  }
+  body[data-screen="questionScreen"] #questionScreen{margin-top:2px!important}
+}
+
+/* V200: keep question cards focused on the question title. */
+#questionScreen .love-card-copy-v62 small{
+  display:none!important;
+}
+#questionScreen>.step-label{
+  display:none!important;
+}
+
+/* V213: a quiet, wave-like invitation on the past-life story disclosure. */
+.destiny-one-v195 .destiny-story-slide-v203 summary{
+  position:relative;
+  isolation:isolate;
+  display:inline-flex;
+  align-items:center;
+  min-height:42px;
+  padding:9px 16px;
+  overflow:hidden;
+  border:1px solid rgba(167,124,63,.3);
+  border-radius:999px;
+  background:rgba(255,250,240,.72);
+  box-shadow:0 5px 16px rgba(137,102,49,.06);
+  list-style:none;
+}
+.destiny-one-v195 .destiny-story-slide-v203 summary::-webkit-details-marker{display:none}
+.destiny-one-v195 .destiny-story-slide-v203 summary::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:-55%;
+  bottom:-55%;
+  left:-48%;
+  width:42%;
+  border-radius:50%;
+  background:linear-gradient(100deg,transparent,rgba(238,207,145,.08),rgba(255,246,209,.5),rgba(238,207,145,.08),transparent);
+  filter:blur(7px);
+  transform:translateX(0) skewX(-12deg);
+  animation:destinyStoryAuraV213 5.4s ease-in-out infinite;
+  pointer-events:none;
+}
+.destiny-one-v195 .destiny-story-slide-v203 summary::after{
+  content:"⌄";
+  margin-left:8px;
+  color:#a77c3f;
+  font-size:.92rem;
+  transition:transform .24s ease;
+}
+.destiny-one-v195 .destiny-story-slide-v203 details[open] summary::before{animation:none;opacity:0}
+.destiny-one-v195 .destiny-story-slide-v203 details[open] summary::after{transform:rotate(180deg)}
+@keyframes destinyStoryAuraV213{
+  0%,18%{transform:translateX(0) skewX(-12deg);opacity:0}
+  28%{opacity:.45}
+  62%{opacity:.72}
+  82%,100%{transform:translateX(355%) skewX(-12deg);opacity:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .destiny-one-v195 .destiny-story-slide-v203 summary::before{animation:none;opacity:0}
+}
+
+/* V220: improve overview scanning without changing its sentences. */
+.destiny-one-v195 .destiny-overview-v195{
+  padding:30px!important;
+  background:linear-gradient(145deg,#fffaf2 0%,#f5ead7 100%)!important;
+}
+.destiny-one-v195 .destiny-overview-v195 h3{
+  padding-bottom:17px;
+  border-bottom:1px solid #d9c6a2;
+}
+.destiny-one-v195 .destiny-overview-prose-v208{
+  display:grid;
+  gap:12px;
+  max-width:none;
+  margin-top:18px;
+}
+.destiny-one-v195 .destiny-overview-prose-v208 p,
+.destiny-one-v195 .destiny-overview-prose-v208 p+p{
+  margin:0;
+  padding:20px 22px;
+  border:1px solid #ded0b7;
+  border-left:4px solid #c49a57;
+  border-radius:14px;
+  background:rgba(255,255,255,.7);
+  box-shadow:0 8px 22px rgba(98,73,37,.06);
+  color:#4f4941;
+  font-size:1.07rem;
+  line-height:1.9;
+}
+.destiny-one-v195 .destiny-overview-prose-v208 p::before{
+  content:none;
+  display:none;
+}
+@media(max-width:560px){
+  .destiny-one-v195 .destiny-overview-v195{padding:21px!important}
+  .destiny-one-v195 .destiny-overview-prose-v208 p,
+  .destiny-one-v195 .destiny-overview-prose-v208 p+p{padding:17px 16px;font-size:1rem;line-height:1.82}
+}
+
+/* V222: card-matched recognition database beneath the three primary clues. */
+.destiny-extra-clues-v222{margin-top:24px;padding-top:22px;border-top:1px solid #ddcfb4}
+.destiny-extra-clues-head-v222{display:grid;gap:5px;margin-bottom:14px}
+.destiny-extra-clues-head-v222>b{color:#2b261f;font-size:1.08rem}
+.destiny-extra-clues-head-v222>small{color:#766e64;font-size:.78rem;line-height:1.55}
+.destiny-extra-clue-grid-v222{display:grid;gap:12px}
+.destiny-extra-clue-card-v222{min-width:0;padding:24px;border:1px solid rgba(157,113,52,.18);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(248,242,231,.78));box-shadow:0 14px 34px rgba(94,73,42,.09)}
+.destiny-extra-card-head-v222{display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:start}
+.destiny-extra-card-head-v222>span{grid-column:1/-1;color:#9d7134;font-size:.74rem;font-weight:900;letter-spacing:.04em}
+.destiny-extra-card-head-v222 h4{margin:0;color:#28231d;font-size:1.2rem}
+.destiny-extra-card-head-v222 em{align-self:center;padding:5px 9px;border-radius:999px;background:#eadcc0;color:#705029;font-size:.72rem;font-style:normal;font-weight:850;text-align:right}
+.destiny-extra-tags-v222{display:grid;gap:0;margin-top:4px}
+.destiny-extra-tags-v222>div{display:grid;grid-template-columns:minmax(100px,.25fr) minmax(0,1fr);gap:18px;align-items:start;padding:17px 0;border-bottom:1px solid rgba(157,113,52,.14)}
+.destiny-extra-tags-v222>div:last-child{border-bottom:0;padding-bottom:2px}
+.destiny-extra-tags-v222 b{color:#8f642d;font-size:clamp(1.12rem,3.2vw,1.4rem);font-weight:900;line-height:1.3;white-space:nowrap}
+.destiny-extra-tags-v222 p{display:flex;flex-wrap:wrap;gap:9px;margin:0;color:#403a33;font-size:clamp(1.04rem,2.5vw,1.16rem);font-weight:800;line-height:1.65;word-break:keep-all}
+.destiny-extra-tags-v222>.destiny-extra-colors-v225{grid-template-columns:1fr;gap:12px}
+.destiny-extra-colors-v225 p{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;width:100%}
+.destiny-extra-color-v225{display:grid;grid-template-rows:auto minmax(30px,auto);gap:8px;align-items:start;min-width:0;text-align:center}
+.destiny-extra-color-v225 i{display:block;width:100%;height:auto;aspect-ratio:1.45/1;border:2px solid rgba(55,39,73,.24);border-radius:9px;background:var(--swatch);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 7px 16px rgba(71,52,93,.12)}
+.destiny-extra-color-v225 em{color:#403a33;font-size:1.03rem;font-style:normal;font-weight:850;line-height:1.3;word-break:keep-all}
+.destiny-extra-clue-card-v222 dl{display:grid;gap:10px;margin:15px 0 0}
+.destiny-extra-clue-card-v222 dl>div{display:grid;grid-template-columns:94px minmax(0,1fr);gap:12px;padding-top:10px;border-top:1px solid #e2d6c2}
+.destiny-extra-clue-card-v222 dt{color:#8f642d;font-size:.8rem;font-weight:900}
+.destiny-extra-clue-card-v222 dd{margin:0;color:#575149;font-size:.88rem;line-height:1.7;word-break:keep-all}
+.destiny-extra-clue-card-v222 details{margin-top:15px;padding-top:12px;border-top:1px solid #d9c9ad}
+.destiny-extra-clue-card-v222 summary{cursor:pointer;color:#805a2a;font-size:.82rem;font-weight:900}
+.destiny-extra-clue-card-v222 details p{margin:10px 0 0;color:#5e574e;font-size:.86rem;line-height:1.72;word-break:keep-all}
+.destiny-extra-clue-card-v222 .destiny-extra-advice-v222{padding:10px 12px;border-left:3px solid #b98742;background:#f2e7d4}
+.destiny-purpose-test-v226{margin-top:18px;padding:16px;border:1px solid #ded0b7;border-radius:12px;background:#fffaf2}
+.destiny-purpose-test-v226 b{color:#755124;font-size:1rem}
+.destiny-purpose-test-v226 p{margin:7px 0 0;color:#5f5a52;font-size:1rem;line-height:1.82;word-break:keep-all}
+.destiny-next-step-v195 ul{display:grid;gap:9px;margin:10px 0 0;padding:0;list-style:none;counter-reset:return-action}
+.destiny-next-step-v195 li{position:relative;padding-left:28px;color:#5f5a52;font-size:1rem;line-height:1.72;word-break:keep-all;counter-increment:return-action}
+.destiny-next-step-v195 li::before{content:counter(return-action);position:absolute;top:.2em;left:0;display:grid;width:20px;height:20px;place-items:center;border-radius:50%;background:#eadcc0;color:#755124;font-size:.7rem;font-weight:900}
+@media(max-width:560px){
+  .destiny-extra-clue-card-v222{padding:20px}
+  .destiny-extra-card-head-v222{grid-template-columns:1fr}
+  .destiny-extra-card-head-v222 em{justify-self:start;text-align:left}
+  .destiny-extra-tags-v222>div{grid-template-columns:82px minmax(0,1fr);gap:12px;padding:15px 0}
+  .destiny-extra-clue-card-v222 dl>div{grid-template-columns:1fr;gap:5px}
+}

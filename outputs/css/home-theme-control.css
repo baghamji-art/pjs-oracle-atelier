@@ -1,0 +1,44 @@
+
+.pjo-theme-control-v236{
+  margin-top:16px;
+  padding:16px;
+  border:1px solid rgba(248,220,145,.24);
+  border-radius:18px;
+  background:rgba(255,255,255,.055);
+}
+.pjo-theme-control-v236>button{
+  width:auto;
+  min-width:118px;
+  margin:0;
+}
+.pjo-theme-picker-v236{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.pjo-theme-picker-v236.hidden{display:none!important}
+.pjo-theme-picker-v236 button{
+  width:100%;
+  min-height:72px;
+  margin:0;
+  padding:12px;
+  border:1px solid rgba(248,220,145,.25);
+  background:rgba(255,255,255,.07);
+  color:var(--text);
+  box-shadow:none;
+}
+.pjo-theme-picker-v236 button.selected{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,#fff3bd,#d99c32);
+  color:#151019;
+}
+.pjo-theme-status-v236{
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:.88rem;
+}
+@media(max-width:480px){
+  .pjo-theme-picker-v236{grid-template-columns:1fr}
+  .pjo-theme-control-v236>button{width:100%}
+}

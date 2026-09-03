@@ -3,30 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<style>
-@font-face{
-  font-family:"Hi Melody";
-  src:url("assets/fonts/hi-melody-v19.ttf") format("truetype");
-  font-style:normal;
-  font-weight:400;
-  font-display:swap;
-}
-@font-face{
-  font-family:"Nanum Gothic Coding";
-  src:url("assets/fonts/nanum-gothic-coding-v27.ttf") format("truetype");
-  font-style:normal;
-  font-weight:400;
-  font-display:swap;
-}
-</style>
+<link rel="stylesheet" href="css/common.css">
 <title>PJ’s Oracle Atelier</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-html:not(.pjoa-ready-v192) body{opacity:0!important}
-:root{--bg:#07081d;--bg2:#17103a;--gold:#f8dc91;--text:#fff8e7;--muted:#d9cfec;--line:rgba(248,220,145,.25);--glass:rgba(255,255,255,.075);--danger:#ffb4c2;--ok:#b9ffd2}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Pretendard,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 12% 8%,rgba(248,220,145,.22),transparent 26%),radial-gradient(circle at 88% 14%,rgba(132,96,255,.25),transparent 32%),linear-gradient(135deg,var(--bg),var(--bg2));overflow-x:hidden}.app{max-width:1120px;margin:0 auto;padding:34px 18px 72px}.hero{text-align:center;padding:36px 10px 22px}.moon{width:82px;height:82px;margin:0 auto 18px;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff8d0,#efc766 54%,#8f5e1b);box-shadow:0 0 46px rgba(248,220,145,.58)}h1{margin:0;font-size:clamp(2.2rem,7vw,4.8rem);line-height:.95;letter-spacing:-.055em}.subtitle{max-width:760px;margin:14px auto 0;color:var(--muted);line-height:1.65}.panel{background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.05));border:1px solid var(--line);border-radius:30px;box-shadow:0 24px 80px rgba(0,0,0,.35);padding:25px;margin:18px auto}.center{max-width:780px;text-align:center}.hidden{display:none!important}label{display:block;margin:12px 0 9px;color:var(--gold);font-weight:850}input,textarea,select{width:100%;border:1px solid rgba(248,220,145,.32);background:rgba(3,4,15,.55);color:var(--text);border-radius:17px;padding:14px 15px;font-size:1rem;outline:none}textarea{min-height:120px;line-height:1.6;resize:vertical}button{border:0;border-radius:999px;padding:13px 20px;margin-top:12px;color:#151019;background:linear-gradient(135deg,#fff3bd,#d99c32);font-weight:950;font-size:1rem;cursor:pointer;box-shadow:0 15px 32px rgba(217,156,50,.25);touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:hover{filter:brightness(1.05);transform:translateY(-1px)}button:disabled{opacity:.45;cursor:not-allowed;transform:none}.ghost{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(248,220,145,.28);box-shadow:none}.mini{margin-top:0;padding:9px 13px;font-size:.88rem}.admin-entry{position:fixed;top:14px;left:14px;z-index:40}.admin-panel{position:fixed;top:58px;left:14px;z-index:41;width:min(900px,calc(100vw - 28px));max-height:calc(100vh - 78px);overflow:auto;background:rgba(6,7,24,.98);border:1px solid rgba(248,220,145,.32);border-radius:24px;padding:20px;box-shadow:0 22px 70px rgba(0,0,0,.5)}.grid,.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.plan-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}.choice,.plan-choice,.stat-card,.home-tile{width:100%;margin:0;text-align:center;padding:22px 14px;border-radius:23px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));border:1px solid rgba(248,220,145,.24);color:var(--text);box-shadow:none}.plan-choice.selected{border-color:var(--gold);background:linear-gradient(145deg,rgba(255,242,189,.2),rgba(255,255,255,.055))}.flag{font-size:2.5rem;margin-bottom:8px}.choice-title{font-weight:950;font-size:1.1rem}.choice-sub{margin-top:6px;color:var(--muted);font-size:.9rem;line-height:1.45}.daily-card,.member-card{max-width:780px;margin:18px auto 0;padding:18px;border-radius:25px;background:var(--glass);border:1px solid var(--line);display:grid;grid-template-columns:72px 1fr;gap:14px;text-align:left;align-items:center}.daily-card-icon{height:72px;border-radius:21px;display:grid;place-items:center;font-size:2.25rem;background:radial-gradient(circle at 50% 30%,rgba(248,220,145,.32),transparent 40%),linear-gradient(135deg,#241654,#080a29);border:1px solid rgba(248,220,145,.3)}.daily-card b,.member-card b{color:var(--gold)}.daily-card p,.member-card p{margin:5px 0 0;color:var(--muted);line-height:1.55}.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.top-actions,.admin-actions,.tabs,.chips,.profile-tags,.row-actions{display:flex;gap:8px;flex-wrap:wrap}.badge{display:inline-flex;border:1px solid rgba(248,220,145,.25);background:rgba(255,255,255,.07);border-radius:999px;padding:8px 12px;color:#ffeab0}.notice{padding:14px 16px;border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:18px;color:var(--muted);line-height:1.6}.step-label{display:inline-flex;margin:0 0 12px;padding:7px 11px;border-radius:999px;background:rgba(248,220,145,.12);border:1px solid rgba(248,220,145,.24);color:#ffe8a8;font-weight:900;font-size:.84rem}.example-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}.example-btn{margin:0;padding:9px 12px;font-size:.86rem}.pick-deck{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-top:14px}.pick-card{aspect-ratio:2/3;border-radius:18px;border:1px solid rgba(248,220,145,.3);background:radial-gradient(circle at 50% 24%,rgba(248,220,145,.28),transparent 32%),linear-gradient(145deg,#241756,#090b2b);display:grid;place-items:center;cursor:pointer;color:#f8dc91;font-size:1.45rem;box-shadow:inset 0 0 18px rgba(0,0,0,.38),0 10px 20px rgba(0,0,0,.22)}.pick-card.selected{background:linear-gradient(145deg,#fff2bd,#b7832c);color:#17123a;transform:translateY(-7px)}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}.tarot-card{min-height:auto;padding:14px;border-radius:25px;border:1px solid rgba(248,220,145,.28);background:linear-gradient(160deg,rgba(255,255,255,.13),rgba(255,255,255,.045));animation:rise .45s ease forwards}@keyframes rise{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}.card-image{height:150px;border-radius:19px;display:grid;place-items:center;margin-bottom:14px;border:1px solid rgba(248,220,145,.32);background:radial-gradient(circle at 50% 22%,rgba(248,220,145,.35),transparent 34%),linear-gradient(145deg,#2a185f,#080a29);position:relative;overflow:hidden}.card-image:before{content:"";position:absolute;inset:10px;border:1px solid rgba(248,220,145,.25);border-radius:15px}.premium-card-art{position:relative;z-index:1;text-align:center;display:grid;gap:6px;place-items:center}.arcana-icon{font-size:2.5rem}.arcana-title{font-size:.58rem;letter-spacing:.12em;color:#ffeab0;font-weight:950;text-transform:uppercase}.arcana-code{font-size:.55rem;color:rgba(255,248,231,.72)}.position{color:var(--gold);font-size:.83rem;font-weight:950;letter-spacing:.08em}.card-title{margin:7px 0 6px;font-size:1.02rem;font-weight:950}.orientation{display:inline-block;padding:5px 10px;border-radius:999px;background:rgba(248,220,145,.13);border:1px solid rgba(248,220,145,.22);color:#ffeab0;font-size:.86rem}.reading{margin-top:20px;display:grid;gap:14px}.reading-box,.profile-box,.member-item,.history-item,.log-item{padding:18px;border-radius:22px;background:rgba(255,255,255,.07);border:1px solid rgba(248,220,145,.2);color:var(--muted);line-height:1.72}.reading-box h3,.profile-box h3{margin:0 0 10px;color:var(--gold)}.reading-section-title{font-size:1.05rem;letter-spacing:.04em}.keyword-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.keyword-pill{display:inline-flex;padding:8px 11px;border-radius:999px;background:rgba(248,220,145,.12);border:1px solid rgba(248,220,145,.24);color:#ffe8a8;font-size:.88rem;font-weight:850}.master-note{font-size:1.02rem;line-height:1.9;color:var(--muted)}.quick-summary{padding:22px;border-radius:26px;background:linear-gradient(145deg,rgba(248,220,145,.18),rgba(255,255,255,.06));border:1px solid rgba(248,220,145,.32)}.score{font-size:1.45rem;letter-spacing:.08em;color:#ffe49c;margin:6px 0}.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.insight-card{padding:15px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(248,220,145,.18);color:var(--muted);line-height:1.62}.insight-card b{display:block;color:var(--gold);margin-bottom:6px}.signal-wrap{margin-top:12px;padding:14px;border-radius:20px;background:rgba(255,255,255,.055);border:1px solid rgba(248,220,145,.18)}.signal-bar{height:13px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}.signal-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#8f6bff,#f8dc91)}.profile-tags span,.chip{padding:7px 10px;border-radius:999px;background:rgba(248,220,145,.1);border:1px solid rgba(248,220,145,.22);color:#ffeab0;font-size:.85rem}.chip.active{background:linear-gradient(135deg,#fff3bd,#d99c32);color:#151019;font-weight:900}.member-list,.history-list,.log-list{display:grid;gap:10px;margin-top:10px}.status-pill{display:inline-flex;padding:5px 10px;border-radius:999px;font-size:.82rem;font-weight:900}.status-pending{background:rgba(255,216,105,.14);color:#ffe28a}.status-active{background:rgba(120,255,172,.14);color:#b8ffd0}.status-expired{background:rgba(255,116,140,.14);color:#ffb4c2}.status-renew{background:rgba(130,180,255,.14);color:#b7d5ff}.divider{height:1px;background:rgba(248,220,145,.18);margin:18px 0}.small-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.error{color:var(--danger)}.ok{color:var(--ok)}.ritual-overlay{position:fixed;inset:0;z-index:99;display:grid;place-items:center;background:rgba(3,4,18,.82)}.ritual-card{width:130px;height:190px;border-radius:22px;border:1px solid rgba(248,220,145,.45);background:radial-gradient(circle at 50% 26%,rgba(248,220,145,.36),transparent 34%),linear-gradient(145deg,#2b1a62,#070821);display:grid;place-items:center;font-size:2.2rem;animation:flip 1.05s ease-in-out infinite}@keyframes flip{0%{transform:rotateY(0)}50%{transform:rotateY(180deg) translateY(-10px)}100%{transform:rotateY(360deg)}}.tab{margin:0;padding:9px 12px}.tab.active{background:linear-gradient(135deg,#fff3bd,#d99c32);color:#151019}.search-row{display:grid;grid-template-columns:1fr 160px;gap:8px}@media(max-width:920px){.grid,.grid2,.stats-grid,.plan-grid,.insight-grid,.search-row,.small-row{grid-template-columns:1fr}.pick-deck{grid-template-columns:repeat(4,1fr)}}@media(max-width:560px){.app{padding:18px 12px 48px}.panel{padding:18px;border-radius:26px}.pick-deck{grid-template-columns:repeat(3,1fr);gap:9px}.cards{grid-template-columns:repeat(3,1fr);gap:8px}.tarot-card{padding:8px;border-radius:16px}.card-image{height:92px;border-radius:13px}.card-title{font-size:.78rem}.position,.orientation{font-size:.68rem;padding:3px 6px}button{width:100%}.topbar{align-items:stretch;flex-direction:column}.mini{width:auto}.daily-card,.member-card{grid-template-columns:1fr;text-align:center}}
-/* Polished conversion layer */
-body{background:#070711;color:#fff9ed}body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 16% 12%,rgba(247,199,116,.24),transparent 26%),radial-gradient(circle at 78% 6%,rgba(108,91,255,.22),transparent 27%),radial-gradient(circle at 50% 86%,rgba(29,194,166,.13),transparent 36%),linear-gradient(145deg,#070711 0%,#131029 46%,#250f2d 100%)}body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.9),transparent 78%)}.app{max-width:1180px;padding:30px 18px 82px}.hero{min-height:56vh;display:grid;align-content:center;text-align:left;padding:62px 10px 34px;position:relative}.hero:before{content:"";position:absolute;right:2%;top:42px;width:min(38vw,380px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 36% 32%,#fff8cf 0 9%,#f5d47c 10% 29%,#9e6727 30% 31%,transparent 32%),radial-gradient(circle,#f8dc91 0 1px,transparent 1.5px);background-size:auto,32px 32px;filter:drop-shadow(0 0 52px rgba(248,220,145,.32));opacity:.72}.hero .moon{width:58px;height:58px;margin:0 0 18px;box-shadow:0 0 36px rgba(248,220,145,.42)}h1{max-width:850px;font-size:clamp(2.7rem,8vw,6.6rem);line-height:.9;letter-spacing:0;text-shadow:0 16px 60px rgba(0,0,0,.55)}.subtitle{margin:18px 0 0;max-width:650px;font-size:1.08rem;color:#e8deef}.hero .subtitle:after{content:"3-card guest reading · 3-card premium report · private archive";display:block;margin-top:16px;color:#f8dc91;font-size:.92rem;font-weight:850;letter-spacing:.04em;text-transform:uppercase}.panel{border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055));backdrop-filter:blur(18px);box-shadow:0 28px 90px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08);padding:30px}.panel.center{max-width:860px}.center h2,.panel h2{margin:0 0 8px;font-size:clamp(1.5rem,3vw,2.15rem);letter-spacing:0}.step-label,.badge{background:rgba(248,220,145,.14);border-color:rgba(248,220,145,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}button{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease,border-color .18s ease}.choice,.plan-choice,.home-tile{position:relative;overflow:hidden;min-height:142px;display:flex;flex-direction:column;justify-content:center;align-items:center;border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.135),rgba(255,255,255,.045));border-color:rgba(248,220,145,.22)}.choice:before,.plan-choice:before,.home-tile:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(248,220,145,.18),transparent 42%,rgba(38,206,178,.09));opacity:0;transition:opacity .18s ease}.choice:hover,.plan-choice:hover,.home-tile:hover{transform:translateY(-4px);border-color:rgba(248,220,145,.55);box-shadow:0 20px 48px rgba(0,0,0,.26)}.choice:hover:before,.plan-choice:hover:before,.home-tile:hover:before{opacity:1}.flag,.choice-title,.choice-sub{position:relative}.choice-title{font-size:1.18rem}.choice-sub{max-width:240px;color:#dfd6ee}.grid,.grid2,.plan-grid{gap:16px}.daily-card,.member-card{max-width:760px;margin:28px 0 0;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.11),rgba(255,255,255,.045));box-shadow:0 18px 54px rgba(0,0,0,.28)}.daily-card-icon{border-radius:16px}.admin-entry{opacity:.42;transition:opacity .18s ease}.admin-entry:hover{opacity:1}input,textarea,select{border-radius:14px;background:rgba(5,6,20,.68);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}input:focus,textarea:focus,select:focus{border-color:rgba(248,220,145,.72);box-shadow:0 0 0 4px rgba(248,220,145,.1)}.pick-card{border-radius:14px;background:linear-gradient(160deg,#2b1b56,#080914 72%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 16px 36px rgba(0,0,0,.34)}.pick-card:before{content:"";width:42%;aspect-ratio:1;border-radius:50%;border:1px solid rgba(248,220,145,.55);box-shadow:0 0 22px rgba(248,220,145,.18)}.pick-card{font-size:0}.pick-card.selected{box-shadow:0 18px 42px rgba(248,220,145,.2);transform:translateY(-8px) rotate(-1deg)}.cards{grid-template-columns:repeat(auto-fit,minmax(178px,1fr))}.tarot-card{border-radius:18px;background:linear-gradient(168deg,rgba(255,255,255,.14),rgba(255,255,255,.045));box-shadow:0 18px 48px rgba(0,0,0,.28)}.card-image{border-radius:14px;background:radial-gradient(circle at 50% 18%,rgba(248,220,145,.38),transparent 30%),linear-gradient(160deg,#351c61,#080914)}.quick-summary,.reading-box,.profile-box,.member-item,.history-item,.log-item{border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045))}.row-actions button:first-child,#memberRequestBtn,#readBtn,#guestEnterBtn,#memberLoginBtn{box-shadow:0 18px 38px rgba(217,156,50,.28),inset 0 1px 0 rgba(255,255,255,.5)}@media(max-width:700px){.hero{min-height:auto;padding:76px 4px 24px;text-align:center}.hero:before{left:50%;right:auto;top:32px;width:230px;transform:translateX(-50%);opacity:.34}.hero .moon{margin:0 auto 16px}.hero .subtitle:after{font-size:.78rem}.daily-card,.member-card{margin-left:auto;margin-right:auto}.panel{padding:22px;border-radius:18px}.choice,.plan-choice,.home-tile{min-height:118px}.grid2{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}}@media(max-width:420px){.cards{grid-template-columns:1fr}.hero .subtitle:after{content:"3-card guest · 3-card premium · private archive"}}
-</style>
+
 </head>
 <body>
 <div class="admin-entry"><button class="ghost mini" id="adminModeBtn" type="button">관리자 모드</button></div>
@@ -291,30 +271,7 @@ function renderReading(cards){
   $('reading').innerHTML=`<div class="quick-summary"><span class="step-label">${c.lead}</span><h3 class="reading-section-title">${t.summaryTitle}</h3><div class="score">${score}</div><p class="master-note">${questionLens(type,q)}</p><p class="master-note">${summary}</p><div class="signal-wrap"><b>${t.signal} · ${sig.score}%</b><div class="signal-bar"><div class="signal-fill" style="width:${sig.score}%"></div></div><div>${signalLine}</div></div></div><div class="reading-box"><h3 class="reading-section-title">${t.keywords}</h3><div class="keyword-grid">${keywords.map(k=>`<span class="keyword-pill">${k}</span>`).join('')}</div></div><div class="reading-box"><h3 class="reading-section-title">${c.spread}</h3><div class="master-note">${detail}</div></div><div class="reading-box"><h3 class="reading-section-title">${c.flow}</h3><p class="master-note">${localizedCombo(cards)}</p></div><div class="reading-box"><h3 class="reading-section-title">${c.action}</h3><p class="master-note">${advice}</p><ul><li><b>${c.now}</b>: ${currentLang==='zh'?'先承认真实感受，但不要马上行动。':currentLang==='en'?'Name the real feeling first, but do not act immediately.':'먼저 진짜 감정을 인정하되, 바로 행동으로 옮기지는 마세요.'}</li><li><b>${c.avoid}</b>: ${currentLang==='zh'?'为了确认而反复试探。':currentLang==='en'?'Testing repeatedly just to feel reassured.':'확인받고 싶어서 반복적으로 떠보는 행동입니다.'}</li><li><b>${c.doThis}</b>: ${currentLang==='zh'?'写下一条最轻、最不后悔的行动。':currentLang==='en'?'Write down the lightest action you will not regret.':'후회가 가장 적은 작은 행동 하나를 적어보세요.'}</li></ul></div><div class="reading-box"><h3 class="reading-section-title">${c.line}</h3><p class="master-note">${oneLine}</p></div>${conversionNote()}`;
 }
 </script>
-<style>
-/* Customer-first result layout */
-#resultScreen .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-top:10px;margin-bottom:12px}
-#resultScreen .tarot-card{padding:9px;border-radius:12px;min-height:0;display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:center}
-#resultScreen .card-image{height:42px;margin:0;border-radius:10px}
-#resultScreen .card-image:before{display:none}
-#resultScreen .premium-card-art{gap:0}
-#resultScreen .arcana-icon{font-size:1.15rem;line-height:1}
-#resultScreen .arcana-title,#resultScreen .arcana-code{display:none}
-#resultScreen .position{font-size:.64rem;letter-spacing:0;line-height:1.15}
-#resultScreen .card-title{font-size:.78rem;line-height:1.2;margin:2px 0;word-break:keep-all}
-#resultScreen .orientation{font-size:.65rem;padding:2px 6px}
-#resultScreen .reading{margin-top:8px}
-#resultScreen .quick-summary{padding:18px}
-#resultScreen .reading-box{padding:16px}
-#resultScreen .master-note{line-height:1.78}
-@media(max-width:560px){
-  #resultScreen .cards{grid-template-columns:repeat(2,1fr);gap:7px}
-  #resultScreen .tarot-card{grid-template-columns:30px 1fr;padding:8px}
-  #resultScreen .card-image{height:36px}
-  #resultScreen .card-title{font-size:.72rem}
-  #resultScreen .position,#resultScreen .orientation{font-size:.6rem}
-}
-</style>
+<link rel="stylesheet" href="css/legacy-overrides.css">
 <script>
 const CARD_I18N={
   zh:{
@@ -590,18 +547,7 @@ function renderReading(cards){
   $('reading').innerHTML=`<div class="quick-summary"><span class="step-label">${c.lead}</span><h3 class="reading-section-title">${t.summaryTitle}</h3><div class="score">${score}</div><p class="master-note">${lead}</p><div class="signal-wrap"><b>${t.signal} · ${sig.score}%</b><div class="signal-bar"><div class="signal-fill" style="width:${sig.score}%"></div></div><div>${signalLine}</div></div></div><div class="reading-box"><h3 class="reading-section-title">${r.flow}</h3><p class="master-note">${flow}</p></div><div class="reading-box"><h3 class="reading-section-title">${r.spread}</h3><div class="master-note">${detail}</div></div><div class="reading-box"><h3 class="reading-section-title">${r.action}</h3><p class="master-note">${advice}</p></div><div class="reading-box"><h3 class="reading-section-title">${r.line}</h3><p class="master-note">${line}</p></div>${currentUser?.type==='member'?'':`<div class="reading-box"><h3 class="reading-section-title">${r.ctaTitle}</h3><p class="master-note">${r.cta}</p></div>`}`;
 }
 </script>
-<style>
-#guestScreen label,#guestCodeInput{display:none!important}
-#guestScreen .subtitle-free{margin:0 0 18px;color:var(--muted);line-height:1.7}
-#reading .reading-box{padding:20px}
-#reading .reading-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
-#reading .reading-mini{border:1px solid rgba(216,182,111,.2);background:rgba(255,255,255,.045);border-radius:8px;padding:16px}
-#reading .reading-mini h4{margin:0 0 8px;color:var(--gold);font-size:14px}
-#reading .reading-mini p{margin:0;color:#efe7df;line-height:1.75}
-#reading .card-evidence p{margin:0 0 14px}
-#reading .card-evidence p:last-child{margin-bottom:0}
-@media(max-width:760px){#reading .reading-grid{grid-template-columns:1fr}.result-layout{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.tarot-card{grid-template-columns:72px 1fr}.card-image{width:72px;height:104px}.premium-card-art{min-height:104px}.arcana-icon{font-size:28px}.arcana-title{font-size:10px}}
-</style>
+
 <script>
 const guestNoCodeApplyLanguageV3=applyLanguage;
 applyLanguage=function(){
@@ -802,23 +748,7 @@ function renderReading(cards){
 }
 applyLanguage();
 </script>
-<style>
-#resultScreen .cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-#resultScreen .tarot-card{display:grid!important;grid-template-columns:64px minmax(0,1fr)!important;gap:12px!important;align-items:center!important;padding:12px!important;border-radius:14px!important;min-height:92px!important}
-#resultScreen .card-image{width:64px!important;height:88px!important;margin:0!important;border-radius:12px!important;overflow:hidden!important;background:linear-gradient(180deg,#39205f 0%,#120b22 100%)!important;box-shadow:inset 0 0 0 1px rgba(248,220,145,.36),0 12px 26px rgba(0,0,0,.25)!important}
-#resultScreen .card-image:before{display:block!important;inset:6px!important;border-radius:9px!important;border-color:rgba(248,220,145,.32)!important}
-#resultScreen .premium-card-art{width:100%!important;height:100%!important;min-height:0!important;display:grid!important;grid-template-rows:1fr auto!important;place-items:center!important;padding:8px 5px!important;gap:2px!important}
-#resultScreen .premium-card-art:before{content:"";position:absolute;inset:12px 16px;border-radius:50%;background:radial-gradient(circle,rgba(248,220,145,.42),transparent 64%);filter:blur(1px)}
-#resultScreen .arcana-icon{position:relative;font-size:30px!important;line-height:1!important;text-shadow:0 0 16px rgba(248,220,145,.45)}
-#resultScreen .arcana-title{position:relative;max-width:54px;font-size:8px!important;line-height:1.15!important;letter-spacing:0!important;text-transform:none!important;white-space:normal!important;overflow:hidden!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-#resultScreen .arcana-code{display:none!important}
-#resultScreen .card-title{font-size:.94rem!important;line-height:1.35!important;margin:4px 0!important;word-break:keep-all}
-#resultScreen .position{font-size:.74rem!important;line-height:1.25!important;letter-spacing:0!important}
-#resultScreen .orientation{font-size:.74rem!important;padding:4px 8px!important}
-#reading .reading-intro{padding:22px;border-radius:18px;background:linear-gradient(145deg,rgba(248,220,145,.14),rgba(255,255,255,.05));border:1px solid rgba(248,220,145,.28);color:var(--muted);line-height:1.85}
-#reading .reading-intro b{color:var(--gold)}
-@media(max-width:520px){#resultScreen .cards{grid-template-columns:1fr}#resultScreen .tarot-card{grid-template-columns:58px minmax(0,1fr)!important}#resultScreen .card-image{width:58px!important;height:80px!important}}
-</style>
+
 <script>
 const POSITION_ROLE_COPY_V5={
   ko:{
@@ -892,20 +822,7 @@ function renderReading(cards){
   $('reading').innerHTML=`<div class="quick-summary"><span class="step-label">${c.lead}</span><h3 class="reading-section-title">${r.core}</h3><div class="score">${score}</div><p class="master-note">${core}</p><div class="signal-wrap"><b>${t.signal} · ${sig.score}%</b><div class="signal-bar"><div class="signal-fill" style="width:${sig.score}%"></div></div><div>${sig.score>=75?c.signalGood:sig.score>=55?c.signalMid:c.signalLow}</div></div></div><div class="reading-intro"><b>${currentLang==='zh'?'整体牌流':currentLang==='en'?'Overall Flow':'전체 카드 흐름'}</b><br>${intro}</div><div class="reading-grid"><div class="reading-mini"><h4>${r.mind}</h4><p>${mind}</p></div><div class="reading-mini"><h4>${r.possibility}</h4><p>${possibility}</p></div><div class="reading-mini"><h4>${r.block}</h4><p>${block}</p></div><div class="reading-mini"><h4>${r.action}</h4><p>${action}</p></div></div><div class="reading-box card-evidence"><h3 class="reading-section-title">${r.basis}</h3>${basis}</div>${currentUser?.type==='member'?'':`${locked}<div class="reading-box"><h3 class="reading-section-title">${g.ctaTitle}</h3><p class="master-note">${g.cta}</p></div>`}`;
 }
 </script>
-<style>
-#reading .mode-panel{padding:20px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(248,220,145,.22);display:grid;gap:14px}
-#reading .mode-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-#reading .mode-chip{display:inline-flex;width:max-content;padding:7px 11px;border-radius:999px;background:rgba(248,220,145,.14);border:1px solid rgba(248,220,145,.28);color:#ffe8a8;font-size:.86rem;font-weight:900}
-#reading .timeline-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-#reading .timeline-step{padding:14px;border-radius:14px;background:rgba(5,6,20,.34);border:1px solid rgba(248,220,145,.16);line-height:1.65}
-#reading .timeline-step b{display:block;color:var(--gold);margin-bottom:4px}
-#reading .premium-preview{padding:20px;border-radius:18px;background:linear-gradient(145deg,rgba(248,220,145,.18),rgba(255,255,255,.055));border:1px solid rgba(248,220,145,.34)}
-#reading .premium-preview h3{margin:0 0 10px;color:var(--gold)}
-#reading .premium-preview ul{margin:10px 0 0;padding-left:20px;color:var(--muted);line-height:1.75}
-#reading .card-evidence p{padding:14px 0;border-bottom:1px solid rgba(248,220,145,.14)}
-#reading .card-evidence p:last-child{border-bottom:0}
-@media(max-width:760px){#reading .timeline-grid{grid-template-columns:1fr}}
-</style>
+
 <script>
 function questionModeV6(type,q){
   const text=(q||'').toLowerCase();
@@ -1035,13 +952,7 @@ function renderReading(cards){
   $('reading').innerHTML=`<div class="quick-summary"><span class="step-label">${c.lead}</span><h3 class="reading-section-title">${r.core}</h3><div class="score">${score}</div><p class="master-note">${core}</p><div class="signal-wrap"><b>${t.signal} · ${sig.score}%</b><div class="signal-bar"><div class="signal-fill" style="width:${sig.score}%"></div></div><div>${sig.score>=75?c.signalGood:sig.score>=55?c.signalMid:c.signalLow}</div></div></div>${timelineHtml}<div class="reading-intro"><b>${currentLang==='zh'?'整体牌流':currentLang==='en'?'Overall Flow':'전체 카드 흐름'}</b><br>${intro}</div><div class="reading-grid"><div class="reading-mini"><h4>${r.mind}</h4><p>${mind}</p></div><div class="reading-mini"><h4>${r.possibility}</h4><p>${possibility}</p></div><div class="reading-mini"><h4>${r.block}</h4><p>${block}</p></div><div class="reading-mini"><h4>${r.action}</h4><p>${action}</p></div></div><div class="reading-box card-evidence"><h3 class="reading-section-title">${r.basis}</h3>${basis}</div>${previewHtml}`;
 }
 </script>
-<style>
-#reading .action-plan{padding:20px;border-radius:18px;background:rgba(5,6,20,.38);border:1px solid rgba(248,220,145,.22)}
-#reading .action-plan h3{margin:0 0 10px;color:var(--gold)}
-#reading .action-plan ol{margin:0;padding-left:22px;color:var(--muted);line-height:1.82}
-#reading .upgrade-strip{padding:18px;border-radius:18px;border:1px solid rgba(248,220,145,.38);background:linear-gradient(135deg,rgba(248,220,145,.2),rgba(38,206,178,.08));color:var(--muted);line-height:1.75}
-#reading .upgrade-strip b{color:var(--gold)}
-</style>
+
 <script>
 function normalizedQuestionV7(){
   return ($('question')?.value||'').toLowerCase().replace(/\s+/g,' ');
@@ -1352,19 +1263,7 @@ function cardEvidenceV6(c,i,cards,type){
   return `<p><b>${head}</b><br>${roleByPositionV5(pos)} ${mood}</p>`;
 }
 </script>
-<style>
-#vipSpreadControl{margin:16px 0;padding:16px;border-radius:18px;border:1px solid rgba(248,220,145,.24);background:rgba(255,255,255,.055);text-align:left}
-#vipSpreadControl .spread-options{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
-#vipSpreadControl button{width:100%;margin:0;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(248,220,145,.24);box-shadow:none}
-#vipSpreadControl button.active{background:linear-gradient(135deg,#fff3bd,#d99c32);color:#151019}
-#reading .analysis-report{display:grid;gap:14px}
-#reading .analysis-section{padding:20px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.04));border:1px solid rgba(248,220,145,.18);line-height:1.85;color:var(--muted)}
-#reading .analysis-section h3{margin:0 0 9px;color:var(--gold);font-size:1.05rem}
-#reading .signal-cloud{display:flex;gap:8px;flex-wrap:wrap}
-#reading .signal-cloud span{display:inline-flex;padding:8px 11px;border-radius:999px;background:rgba(248,220,145,.12);border:1px solid rgba(248,220,145,.24);color:#ffe8a8;font-weight:850;font-size:.88rem}
-#reading .card-evidence{display:none!important}
-@media(max-width:620px){#vipSpreadControl .spread-options{grid-template-columns:repeat(2,1fr)}}
-</style>
+
 <script>
 let VIP_SPREAD_COUNT=3;
 function isVipUserV10(){return currentUser?.type==='member'&&(currentUser.tier==='vip'||String(tiers[currentUser.tier||'']?.label||'').toLowerCase().includes('vip'))}
@@ -1657,18 +1556,7 @@ function renderReading(cards){
   $('reading').innerHTML=`<div class="quick-summary"><span class="step-label">${labels.title}</span><h3 class="reading-section-title">${labels.summary}</h3><div class="score">${score}</div><p class="master-note">${r.summary}</p><div class="signal-wrap"><b>${t.signal} · ${sig.score}%</b><div class="signal-bar"><div class="signal-fill" style="width:${sig.score}%"></div></div><div>${labels.note}</div></div></div><div class="reading-box"><h3 class="reading-section-title">${labels.actual}</h3><p class="master-note">${r.actual}</p></div><div class="reading-box"><h3 class="reading-section-title">${labels.psych}</h3><p class="master-note">${r.psych}</p></div><div class="reading-box"><h3 class="reading-section-title">${labels.action}</h3><p class="master-note">${r.action}</p></div><div class="mode-panel"><div class="mode-head"><span class="mode-chip">${labels.next}</span></div><div class="timeline-grid">${timeline.map(x=>`<div class="timeline-step"><b>${x[0]}</b>${x[1]}</div>`).join('')}</div><ul>${nextHtml}</ul></div>${upgradeHtml}`;
 }
 </script>
-<style>
-.member-item.simple-admin-card{display:grid;gap:12px}
-.admin-member-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.admin-member-main{display:grid;gap:5px}
-.admin-member-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.admin-member-meta span,.admin-code-box{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(248,220,145,.16);color:var(--muted)}
-.admin-code-box b{display:block;color:var(--gold);margin-bottom:4px}
-.admin-code-value{font-size:1.08rem;color:#fff4bf;font-weight:950;letter-spacing:.04em;word-break:break-all}
-.admin-approve-btn{width:auto;margin-top:0;white-space:nowrap}
-.admin-empty-note{color:var(--muted);line-height:1.6}
-@media(max-width:640px){.admin-member-meta{grid-template-columns:1fr}.admin-approve-btn{width:100%}}
-</style>
+
 <script>
 function adminStatusTextV15(status){
   const statusMap={pending:'승인 대기',approved:'승인 완료',active:'이용 중',expiring_soon:'만료 임박',expired:'만료',renew_pending:'재신청 대기'};
@@ -1705,13 +1593,7 @@ function approveMember(id){
   $('adminSaved').textContent=`${id} 승인 완료 · 고유번호가 자동 발급되었습니다.`;
 }
 </script>
-<style>
-#loginLogs,#loginLogs+h4,#clearLogsBtn{display:none!important}
-#clearMembersBtn{display:none!important}
-.admin-delete-btn{width:auto;margin-top:0;border-color:rgba(255,116,140,.34)!important;color:#ffccd5!important;background:rgba(255,116,140,.08)!important}
-.admin-member-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-@media(max-width:640px){.admin-delete-btn{width:100%}.admin-member-actions{width:100%}}
-</style>
+
 <script>
 function renderLogs(){const box=$('loginLogs');if(box)box.innerHTML=''}
 function deleteMemberV16(id){
@@ -1746,18 +1628,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(logTitle)logTitle.style.display='none';
 });
 </script>
-<style>
-#guestScreen label,#guestCodeInput,#guestScreen .error{display:none!important}
-#guestCode1,#guestCode2,#guestCode3,#randomGuestCodesBtn,#randomSaveGuestCodesBtn,#saveGuestCodesBtn{display:none!important}
-.member-feedback-box{margin-top:16px;padding:18px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));border:1px solid rgba(248,220,145,.2)}
-.member-feedback-box h3{margin:0 0 8px;color:var(--gold)}
-.member-feedback-box textarea{min-height:88px}
-.member-feedback-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.member-feedback-msg{color:var(--ok);font-weight:800}
-.feedback-list{display:grid;gap:10px;margin-top:10px}
-.feedback-item{padding:14px;border-radius:16px;background:rgba(255,255,255,.055);border:1px solid rgba(248,220,145,.16);line-height:1.65;color:var(--muted)}
-.feedback-item b{color:var(--gold)}
-</style>
+
 <script>
 const FEEDBACK_ACTION_V17='Member feedback';
 function hideGuestCodeAdminV17(){
@@ -1861,9 +1732,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderFeedbackAdminV17();
 });
 </script>
-<style>
-#loginLogs.feedback-list{display:grid!important}
-</style>
+
 <script>
 guestTrialUsedV4=function(){return false}
 markGuestTrialUsedV4=function(){}
@@ -1905,73 +1774,8 @@ handleAction=function(el){
   if(act==='send-feedback'){saveFeedbackV17();renderFeedbackAdminV17();return}
 }
 </script>
-<style>
-#adminPanel .stats-grid{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:8px!important;
-}
-#adminPanel .stat-card{
-  min-height:70px!important;
-  padding:12px 10px!important;
-  border-radius:14px!important;
-}
-#adminPanel .stat-card .choice-title{
-  font-size:1.18rem!important;
-  line-height:1.1!important;
-}
-#adminPanel .stat-card .choice-sub{
-  margin-top:4px!important;
-  font-size:.78rem!important;
-  line-height:1.25!important;
-}
-#adminPanel .tabs{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:8px!important;
-}
-#adminPanel .tab{
-  width:100%!important;
-  margin:0!important;
-  padding:10px 8px!important;
-  border-radius:12px!important;
-  font-size:.86rem!important;
-  white-space:nowrap!important;
-}
-#adminPanel h4{
-  margin:14px 0 10px!important;
-}
-@media(max-width:520px){
-  #adminPanel .stats-grid,#adminPanel .tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
-  #adminPanel .tab{font-size:.76rem!important;padding:9px 4px!important}
-  #adminPanel .stat-card{padding:10px 6px!important}
-  #adminPanel .stat-card .choice-title{font-size:1rem!important}
-  #adminPanel .stat-card .choice-sub{font-size:.68rem!important}
-}
-</style>
-<style>
-.access-grid{
-  display:grid;
-  grid-template-columns:minmax(180px,.8fr) minmax(260px,1fr) minmax(300px,1.25fr);
-  gap:14px;
-  align-items:stretch;
-  margin-top:18px;
-}
-.access-card{
-  padding:18px;
-  border-radius:18px;
-  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));
-  border:1px solid rgba(248,220,145,.2);
-}
-.access-card h3{margin:0 0 8px;color:var(--gold)}
-.access-card .plan-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.access-card .plan-choice{min-height:86px;padding:12px 8px;border-radius:14px}
-.access-card .choice-sub{font-size:.78rem}
-.guest-access{display:grid;align-items:stretch}
-.guest-access .choice{height:100%;min-height:100%;border-radius:16px}
-@media(max-width:980px){.access-grid{grid-template-columns:1fr}.access-card .plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:520px){.access-card .plan-grid{grid-template-columns:1fr}}
-</style>
+
+
 <script>
 const prevApplyLanguageV18=applyLanguage;
 applyLanguage=function(){
@@ -2150,71 +1954,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if($('memberRequestBtn'))$('memberRequestBtn').onclick=requestMemberSafeV20;
 });
 </script>
-<style>
-#memberHomeScreen{
-  max-width:880px;
-}
-#memberHomeScreen .topbar{
-  margin-bottom:10px;
-}
-#memberHomeScreen #memberPeriod.member-card{
-  max-width:none;
-  margin:10px 0 14px;
-  padding:14px;
-  border-radius:16px;
-  grid-template-columns:56px 1fr;
-  gap:12px;
-}
-#memberHomeScreen #memberPeriod .daily-card-icon{
-  width:56px;
-  height:56px;
-  font-size:1.8rem;
-  border-radius:14px;
-}
-#memberHomeScreen #memberPeriod p{
-  margin-top:3px;
-  line-height:1.45;
-  font-size:.9rem;
-}
-#memberHomeScreen .grid,#memberHomeScreen .grid2{
-  display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  gap:10px!important;
-  margin-top:10px!important;
-}
-#memberHomeScreen .home-tile{
-  min-height:92px!important;
-  padding:14px 10px!important;
-  border-radius:15px!important;
-}
-#memberHomeScreen .home-tile .flag{
-  font-size:1.9rem!important;
-  margin-bottom:6px!important;
-}
-#memberHomeScreen .home-tile .choice-title{
-  font-size:1rem!important;
-}
-#memberHomeScreen .home-tile[data-action="reading-start"]{
-  min-height:112px!important;
-  background:linear-gradient(145deg,rgba(248,220,145,.22),rgba(255,255,255,.06));
-  border-color:rgba(248,220,145,.45);
-}
-#memberHomeScreen .member-feedback-box{
-  margin-top:12px;
-  padding:14px;
-  border-radius:16px;
-}
-#memberHomeScreen .member-feedback-box textarea{
-  min-height:70px;
-}
-@media(max-width:560px){
-  #memberHomeScreen .grid,#memberHomeScreen .grid2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  #memberHomeScreen .home-tile{min-height:84px!important;padding:12px 6px!important}
-  #memberHomeScreen .home-tile .choice-title{font-size:.9rem!important}
-  #memberHomeScreen #memberPeriod.member-card{grid-template-columns:1fr;text-align:center}
-  #memberHomeScreen #memberPeriod .daily-card-icon{margin:0 auto}
-}
-</style>
+
 <script>
 const prevRenderMemberHomeV21=renderMemberHome;
 renderMemberHome=function(){
@@ -2252,28 +1992,7 @@ applyLanguage=function(){
   if(homeTitles[6])homeTitles[6].textContent=T().monthly;
 }
 </script>
-<style>
-#memberHomeScreen .secondary-member-menu{
-  display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  gap:10px!important;
-  margin-top:10px!important;
-}
-#memberHomeScreen .secondary-member-menu .home-tile{
-  min-height:86px!important;
-  background:rgba(255,255,255,.055)!important;
-  border-color:rgba(248,220,145,.18)!important;
-}
-#memberHomeScreen .primary-member-menu{
-  display:grid!important;
-  grid-template-columns:1fr!important;
-  gap:10px!important;
-}
-#memberHomeScreen .primary-member-menu .home-tile[data-action="reading-start"]{
-  min-height:118px!important;
-}
-@media(max-width:560px){#memberHomeScreen .secondary-member-menu{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
-</style>
+
 <script>
 const prevRenderMemberHomeV22=renderMemberHome;
 renderMemberHome=function(){
@@ -2320,10 +2039,7 @@ applyLanguage=function(){
   if(profile)profile.textContent='Oracle Profile';
 }
 </script>
-<style>
-body[data-screen="pickScreen"] #dailyCard,body[data-screen="resultScreen"] #dailyCard{display:none!important}
-body[data-screen="pickScreen"] .hero,body[data-screen="resultScreen"] .hero{padding-bottom:8px!important}
-</style>
+
 <script>
 const prevShowV23=show;
 show=function(id){
@@ -2750,10 +2466,7 @@ situationReadingV24=function(type,cards){
   return enrichReadingV26(situationReadingBaseV26(type,cards),type,cards);
 };
 </script>
-<style>
-#uniqueCodeInput,.unique-login-field,.admin-code-box{display:none!important}
-.approval-note-v27{color:var(--muted);line-height:1.55;margin:8px 0 0}
-</style>
+
 <script>
 function loginCopyV27(){
   if(currentLang==='zh')return {
@@ -3303,10 +3016,7 @@ getType=function(){
   return getTypeBaseV30();
 };
 </script>
-<style>
-.card-title .card-original-name{display:block;margin-top:3px;font-size:.72rem;color:var(--muted);font-weight:750;line-height:1.25}
-.card-title .card-local-name{display:block;line-height:1.25}
-</style>
+
 <script>
 function localizedPositionV31(pos){
   if(currentLang==='zh'){
@@ -5453,6 +5163,7 @@ function installLoveOnlyLayoutV60(){
       localStorage.setItem('pjoa_lang',currentLang);
       wrap.classList.remove('open');
       applyLanguage();
+      if(currentUser?.type==='member'&&document.body.dataset.screen==='memberHomeScreen'&&typeof renderMemberHome==='function')renderMemberHome();
       renderLoveOnlyQuestionsV60();
     }));
     document.addEventListener('click',()=>wrap.classList.remove('open'));
@@ -8079,25 +7790,20 @@ function installLuckyAndLanguageV94(){
     '.lucky-copy-v94 span{display:block!important;margin-bottom:3px!important;color:rgba(255,255,255,.45)!important;font-size:.68rem!important;font-weight:950!important;letter-spacing:.14em!important}',
     '.lucky-copy-v94 em{display:block!important;margin:0 0 8px!important;color:#ffeab0!important;font-style:normal!important;font-size:1.32rem!important;font-weight:950!important;line-height:1.08!important}',
     '.lucky-copy-v94 strong{display:block!important;color:#fff!important;font-size:1.08rem!important;font-weight:850!important;line-height:1.5!important;word-break:keep-all!important}',
-    '.language-menu-v60 button[data-lang=\"zh\"],.language-menu-v60 button[data-lang=\"en\"]{opacity:.56!important;cursor:not-allowed!important;filter:grayscale(.25)!important}',
-    '.language-menu-v60 button.lang-locked-v94:after{content:\" 🔒\";float:right;color:#ffeab0}',
-    '.language-menu-v60 button[data-lang=\"ko\"]{border-color:rgba(248,220,145,.5)!important;background:rgba(248,220,145,.16)!important;color:#ffeab0!important}',
+    '.language-menu-v60 button[data-lang]{opacity:1!important;cursor:pointer!important;filter:none!important}',
+    '.language-menu-v60 button.lang-locked-v94:after{content:none!important}',
+    '.language-menu-v60 button[aria-current=\"true\"]{border-color:rgba(248,220,145,.5)!important;background:rgba(248,220,145,.16)!important;color:#ffeab0!important}',
     '@media(max-width:560px){.lucky-premium-v94{padding:20px!important;border-radius:24px!important}.lucky-grid-premium-v94{gap:10px!important}.lucky-premium-tile-v94{grid-template-columns:1fr!important;min-height:132px!important;padding:15px!important}.lucky-orb-v94{width:44px!important;height:44px!important;border-radius:15px!important}.lucky-copy-v94 em{font-size:1.12rem!important}.lucky-copy-v94 strong{font-size:.94rem!important}}'
   ].join('');
   document.head.appendChild(style);
 }
 function enforceKoreanOnlyV94(){
-  if(currentLang!=='ko'){
-    currentLang='ko';
-    localStorage.setItem('pjoa_lang','ko');
-  }
-  document.documentElement.lang='ko';
+  currentLang=['ko','zh','en'].includes(currentLang)?currentLang:'ko';
+  document.documentElement.lang=currentLang;
   document.querySelectorAll('[data-action="select-language"]').forEach(btn=>{
-    const locked=btn.dataset.lang!=='ko';
-    btn.classList.toggle('lang-locked-v94',locked);
-    btn.setAttribute('aria-disabled',locked?'true':'false');
-    const sub=btn.querySelector('.choice-sub');
-    if(locked&&sub)sub.textContent='준비중';
+    btn.classList.remove('lang-locked-v94');
+    btn.setAttribute('aria-disabled','false');
+    btn.setAttribute('aria-current',btn.dataset.lang===currentLang?'true':'false');
   });
   const switcher=document.querySelector('.language-switcher-v60');
   if(switcher){
@@ -8108,32 +7814,15 @@ function enforceKoreanOnlyV94(){
       toggle.setAttribute('title','언어 선택');
     }
     switcher.querySelectorAll('[data-lang]').forEach(btn=>{
-      const locked=btn.dataset.lang!=='ko';
-      btn.classList.toggle('lang-locked-v94',locked);
-      btn.setAttribute('aria-disabled',locked?'true':'false');
-      if(locked&&!btn.dataset.lockedTextV94){
-        btn.dataset.lockedTextV94='1';
-      }
+      btn.classList.remove('lang-locked-v94');
+      btn.setAttribute('aria-disabled','false');
+      btn.setAttribute('aria-current',btn.dataset.lang===currentLang?'true':'false');
     });
   }
 }
-document.addEventListener('click',e=>{
-  const langBtn=e.target.closest('[data-lang]');
-  if(langBtn&&langBtn.dataset.lang!=='ko'){
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    e.stopPropagation();
-    enforceKoreanOnlyV94();
-  }
-},true);
 if(typeof handleAction==='function'){
   const handleActionBaseV94=handleAction;
   handleAction=function(el){
-    const lang=el.closest&&el.closest('[data-action="select-language"]');
-    if(lang&&lang.dataset.lang!=='ko'){
-      enforceKoreanOnlyV94();
-      return;
-    }
     handleActionBaseV94(el);
     enforceKoreanOnlyV94();
   };
@@ -8141,16 +7830,12 @@ if(typeof handleAction==='function'){
 if(typeof applyLanguage==='function'){
   const applyLanguageBaseV94=applyLanguage;
   applyLanguage=function(){
-    currentLang='ko';
-    localStorage.setItem('pjoa_lang','ko');
     applyLanguageBaseV94();
     installLuckyAndLanguageV94();
     enforceKoreanOnlyV94();
   };
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  currentLang='ko';
-  localStorage.setItem('pjoa_lang','ko');
   installLuckyAndLanguageV94();
   enforceKoreanOnlyV94();
 });
@@ -9243,14 +8928,7 @@ if(typeof applyLanguage==='function'){
 document.addEventListener('DOMContentLoaded',makeLockedQuestionsAdminEnterableV109);
 </script>
 
-<style>
-/* V110: remove the admin summary statistic boxes above member management. */
-#adminEditBox > #stats,
-#adminEditBox > #stats.stats-grid,
-#adminEditBox > #stats + .divider {
-  display:none!important;
-}
-</style>
+
 
 <script>
 // V111: add an admissions-focused question without mixing it into love readings.
@@ -12961,10 +12639,13 @@ async function requestHybridAiReportV185(cards){
   if(!dbReport)return;
   root.dataset.hybridAiBusyV185='1';
   renderHybridAiReportV185({loading:true});
+  const controller=typeof AbortController==='function'?new AbortController():null;
+  const timeoutId=setTimeout(()=>controller?.abort(),22000);
   try{
     const res=await fetch(HYBRID_AI_ENDPOINT_V185,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
+      signal:controller?.signal,
       body:JSON.stringify({
         question:$('question')?.value?.trim()||lastReadingData?.q||'',
         qtype:selectedQuestionTypeV185(),
@@ -12981,6 +12662,7 @@ async function requestHybridAiReportV185(cards){
     console.warn('AI hybrid reading failed',e);
     renderHybridAiReportV185({error:true,message:e.message||String(e)});
   }finally{
+    clearTimeout(timeoutId);
     root.dataset.hybridAiBusyV185='0';
   }
 }
@@ -13130,87 +12812,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 setTimeout(revealOracleAppV192,1800);
 </script>
 
-<style>
-/* V193: compact logged-in home so primary actions fit above the fold. */
-body[data-screen="memberHomeScreen"] .app{
-  padding-top:10px!important;
-}
-body[data-screen="memberHomeScreen"] .hero{
-  min-height:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  padding:8px 10px 12px!important;
-  margin:0 auto 8px!important;
-  text-align:center!important;
-}
-body[data-screen="memberHomeScreen"] .hero:before,
-body[data-screen="memberHomeScreen"] .hero .moon,
-body[data-screen="memberHomeScreen"] .hero .subtitle,
-body[data-screen="memberHomeScreen"] #dailyCard{
-  display:none!important;
-}
-body[data-screen="memberHomeScreen"] .hero h1{
-  max-width:none!important;
-  margin:0!important;
-  font-size:clamp(2.15rem,5.3vw,3.65rem)!important;
-  line-height:1!important;
-  text-align:center!important;
-  text-shadow:0 10px 28px rgba(0,0,0,.35)!important;
-}
-body[data-screen="memberHomeScreen"] #memberHomeScreen{
-  margin-top:6px!important;
-  padding:16px!important;
-}
-body[data-screen="memberHomeScreen"] #memberHomeScreen .topbar{
-  margin-bottom:8px!important;
-}
-body[data-screen="memberHomeScreen"] #memberHomeScreen .grid,
-body[data-screen="memberHomeScreen"] #memberHomeScreen .primary-member-menu,
-body[data-screen="memberHomeScreen"] #memberHomeScreen .secondary-member-menu{
-  margin-top:8px!important;
-  gap:10px!important;
-}
-body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile{
-  min-height:86px!important;
-  padding:12px 8px!important;
-}
-body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile .flag{
-  font-size:1.55rem!important;
-  margin-bottom:5px!important;
-}
-body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile .choice-title{
-  font-size:.98rem!important;
-  line-height:1.2!important;
-}
-body[data-screen="memberHomeScreen"] #memberHomeScreen .member-feedback-box,
-body[data-screen="memberHomeScreen"] #memberHomeScreen .private-consult-home-row{
-  margin-top:10px!important;
-}
-@media(max-width:560px){
-  body[data-screen="memberHomeScreen"] .app{padding:8px 10px 36px!important}
-  body[data-screen="memberHomeScreen"] .hero{padding:6px 4px 10px!important}
-  body[data-screen="memberHomeScreen"] .hero h1{font-size:clamp(2rem,11vw,3.05rem)!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen{padding:13px!important;border-radius:18px!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen .topbar{gap:6px!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen .badge{padding:7px 9px!important;font-size:.82rem!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen .mini{padding:7px 10px!important;font-size:.8rem!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile{min-height:74px!important;padding:10px 6px!important;border-radius:14px!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile .flag{font-size:1.35rem!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen .home-tile .choice-title{font-size:.9rem!important}
-}
-</style>
 
-<style>
-/* V194: remove the default hero description and daily card teaser. */
-.hero>.subtitle,
-#dailyCard{
-  display:none!important;
-}
-.hero{
-  padding-bottom:14px!important;
-}
-</style>
+
+
 
 <script src="assets/destiny-one-reading-v195.js"></script>
 <script src="assets/destiny-connection-ko-v201.js"></script>
@@ -13777,6 +13381,29 @@ function destinyPresenceAnswerV202(label){
     '현재는 보이지 않음':'이번 생에는 아직 특정 인물이 뚜렷하게 보이지 않아요'
   }[label]||label;
 }
+function destinyRelationSafeCurrentEchoV241(value,relationType,index=0){
+  const original=String(value||'').trim();
+  if(!original||relationType!=='family')return original;
+
+  /* A direct-family relationship cannot begin through SNS or an online first meeting.
+     Keep the source DB intact and repair only the rendered clue for this relation. */
+  if(/SNS로\s*먼저\s*알|온라인(?:에서|으로)?\s*먼저\s*(?:만|알)|처음\s*(?:만났|알게)|소개팅|데이트\s*앱/i.test(original)){
+    return [
+      '지금도 같은 가족에게서 “오랫동안 떨어져 지낸 뒤에도 먼저 안부를 물어”와 “가족 행사나 집안일이 생기면 다시 함께 움직여”가 함께 보이는지 확인해 봐.',
+      '이번 생에서는 “가족이라는 이유로 책임을 한쪽에 미루지 않아”와 “돈·돌봄·연락의 몫을 함께 정해”가 반복되는지 봐.',
+      '마지막에는 “가족의 정을 이용해 선택을 강요하지 않아”와 “각자의 생활 경계를 존중해”가 실제 행동으로 이어지는지 봐.'
+    ][index]||'가족이라는 이유만으로 단정하지 말고, 오래 이어진 생활 습관과 실제로 책임을 나누는 모습을 확인해 봐.';
+  }
+
+  return original
+    .replaceAll('SNS로 계속 확인해','직접 묻지 않고 다른 가족을 통해 계속 확인해')
+    .replaceAll('온라인 연락이 중심이야','멀리 살아도 가족 단체 대화와 안부 연락이 이어져')
+    .replaceAll('온라인 대화가 길어','가족 사이에 미뤄 둔 대화가 길게 이어져')
+    .replaceAll('온라인에서 먼저 관찰해','직접 묻기보다 다른 가족에게 먼저 사정을 물어봐')
+    .replaceAll('직접 만남이 적어','멀리 살아도 명절이나 가족 행사에서 다시 마주쳐')
+    .replaceAll('관계 정의는 없어','가족인데도 서로 맡을 책임이 분명하지 않아')
+    .replaceAll('새 관계와 비교해','다른 가족과 대우를 비교해');
+}
 function renderDestinyOneReportV195(cards){
   const db=window.PJ_DESTINY_ONE_DB_V195;
   const root=$('reading');
@@ -13802,7 +13429,7 @@ function renderDestinyOneReportV195(cards){
     const relationSummary=destinyConnection?.relationSummaries?.find(item=>item.type===relationId)||null;
     const databaseStory=typeof window.generatePastLifeCardStoryV217==='function'?window.generatePastLifeCardStoryV217(cards,relationId):null;
     return '<div class="destiny-story-relation-panel-v205 '+(relationIndex===0?'active':'')+'" data-destiny-story-panel-v205="'+relationId+'"><div class="destiny-story-progress-v203"><span data-destiny-story-count-v203>1 / 3</span><div>'+cards.slice(0,3).map((_,index)=>'<i class="'+(index===0?'active':'')+'" data-destiny-story-dot-v203="'+index+'"></i>').join('')+'</div></div><div class="destiny-card-grid-v195 destiny-story-slider-v203" data-destiny-story-index-v203="0">'+
-      cards.slice(0,3).map((card,index)=>{const insight=destinyCardInsightV195(card,index,storyAnalysis),stages=['전반 · 인연의 시작','중반 · 두 사람의 관계','후반 · 남겨진 약속'],exactSource=destinyConnection?.cardReadings?.find(item=>item.index===index&&item.relationType===relationId),storySource=exactSource||relationSummary,chapter=databaseStory?.chapters?.[index],storyText=chapter?.story||destinyPastLifeChapterV203(card,index,storyAnalysis,relationId,storySource);return '<article class="destiny-card-proof-v195 destiny-story-slide-v203 '+(index===0?'active':'')+'" data-destiny-story-slide-v203="'+index+'"><div class="destiny-story-stage-v203">'+stages[index]+'</div><div class="destiny-card-art-v195"><span>'+esc(card.icon)+'</span><small>'+esc(card.en)+'</small></div><h4>'+esc(card.ko)+' <small>· '+(card.rev?'역방향':'정방향')+'</small></h4>'+(chapter?'<div class="destiny-story-scene-v209"><small>'+destinyStoryLocationHtmlV230(chapter)+'</small><b>'+esc(destinySceneTitleV216(chapter.sceneTitle))+'</b></div>':'<p>'+esc(destinyCasualTextV220(insight.short))+'</p>')+'<details><summary>전생 이야기 펼쳐보기</summary>'+(chapter?.roles&&index===0?'<div class="destiny-story-roles-v209">'+esc(chapter.roles)+'</div>':'')+'<p>'+esc(destinyStoryTextPlaceCommaV231(storyText,chapter))+'</p>'+(chapter?.currentEcho?'<div class="destiny-story-echo-v209"><b>이번 생에서 확인할 모습</b><span>'+esc(destinyCasualTextV220(destinyHumanCurrentEchoV214(chapter.currentEcho,index)))+'</span></div>':'')+'</details></article>'}).join('')+
+      cards.slice(0,3).map((card,index)=>{const insight=destinyCardInsightV195(card,index,storyAnalysis),stages=['전반 · 인연의 시작','중반 · 두 사람의 관계','후반 · 남겨진 약속'],exactSource=destinyConnection?.cardReadings?.find(item=>item.index===index&&item.relationType===relationId),storySource=exactSource||relationSummary,chapter=databaseStory?.chapters?.[index],storyText=chapter?.story||destinyPastLifeChapterV203(card,index,storyAnalysis,relationId,storySource);return '<article class="destiny-card-proof-v195 destiny-story-slide-v203 '+(index===0?'active':'')+'" data-destiny-story-slide-v203="'+index+'"><div class="destiny-story-stage-v203">'+stages[index]+'</div><div class="destiny-card-art-v195"><span>'+esc(card.icon)+'</span><small>'+esc(card.en)+'</small></div><h4>'+esc(card.ko)+' <small>· '+(card.rev?'역방향':'정방향')+'</small></h4>'+(chapter?'<div class="destiny-story-scene-v209"><small>'+destinyStoryLocationHtmlV230(chapter)+'</small><b>'+esc(destinySceneTitleV216(chapter.sceneTitle))+'</b></div>':'<p>'+esc(destinyCasualTextV220(insight.short))+'</p>')+'<details><summary>전생 이야기 펼쳐보기</summary>'+(chapter?.roles&&index===0?'<div class="destiny-story-roles-v209">'+esc(chapter.roles)+'</div>':'')+'<p>'+esc(destinyStoryTextPlaceCommaV231(storyText,chapter))+'</p>'+(chapter?.currentEcho?'<div class="destiny-story-echo-v209"><b>이번 생에서 확인할 모습</b><span>'+esc(destinyCasualTextV220(destinyHumanCurrentEchoV214(destinyRelationSafeCurrentEchoV241(chapter.currentEcho,relationId,index),index)))+'</span></div>':'')+'</details></article>'}).join('')+
       '</div><div class="destiny-story-nav-v203"><button type="button" data-action="destiny-story-prev-v203" disabled aria-label="이전 카드">‹ <span>이전</span></button><button type="button" data-action="destiny-story-next-v203" aria-label="다음 카드"><span>다음</span> ›</button></div></div>';
   }).join('');
   result.classList.remove('question-one-love-v141','study-one-visual-v127');
@@ -13951,434 +13578,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
-<style>
-/* V195: Destiny 1 visual system. */
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .app{padding-top:8px!important}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero{
-  min-height:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  padding:7px 10px 11px!important;
-  margin:0 auto 8px!important;
-  text-align:center!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero:before,
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero .moon,
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero .subtitle{
-  display:none!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero h1{
-  max-width:none!important;
-  margin:0!important;
-  font-size:clamp(2.1rem,5vw,3.35rem)!important;
-  line-height:1!important;
-  text-align:center!important;
-  text-shadow:0 10px 28px rgba(0,0,0,.35)!important;
-}
-#resultScreen.destiny-one-v195{
-  max-width:1080px!important;
-  color:#f6f0ff!important;
-  background:linear-gradient(180deg,#21172e 0%,#171321 58%,#111018 100%)!important;
-  border:1px solid rgba(221,195,143,.2)!important;
-  box-shadow:0 28px 90px rgba(0,0,0,.42)!important;
-  overflow-x:hidden!important;
-}
-#resultScreen.destiny-one-v195 #cards{display:none!important}
-.destiny-question-top-v195{padding:12px 2px 24px;text-align:left}
-.destiny-question-top-v195 h2{max-width:820px;margin:0;color:#fff8e9;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:clamp(2rem,5vw,3.7rem);font-weight:500;line-height:1.2;letter-spacing:0;word-break:keep-all;text-wrap:balance}
-.destiny-report-v195{display:grid;gap:16px;min-width:0}
-.destiny-overview-v195,.destiny-section-v195{min-width:0;padding:26px;border:1px solid rgba(221,195,143,.17);border-radius:18px;background:#211a2b;box-shadow:0 16px 40px rgba(0,0,0,.2)}
-.destiny-overview-v195{background:linear-gradient(145deg,#342540,#211a2b 72%);border-color:rgba(230,204,151,.3)}
-.destiny-kicker-v195,.destiny-section-head-v195>span{display:block;margin:0 0 7px;color:#d9bb7e;font-size:.76rem;font-weight:900;letter-spacing:.1em}
-.destiny-overview-v195 h3,.destiny-section-head-v195 h3{margin:0;color:#fff8eb;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-weight:500;letter-spacing:0;line-height:1.25}
-.destiny-overview-v195 h3{font-size:clamp(1.7rem,4vw,2.55rem)}
-.destiny-section-head-v195 h3{font-size:clamp(1.42rem,3vw,2rem)}
-.destiny-overview-prose-v208{max-width:820px;margin-top:22px}
-.destiny-overview-prose-v208 p{margin:0;color:#5f5a52;font-size:1.03rem;line-height:1.82;word-break:keep-all;overflow-wrap:anywhere}
-.destiny-overview-prose-v208 p+p{margin-top:12px}
-.destiny-overview-prose-v208 p strong{color:#8f642d;font-size:1.08em;font-weight:900}
-.destiny-overview-v195>p,.destiny-section-v195>p,.destiny-relation-panel-v195>p,.destiny-temperature-v195>p,.destiny-next-step-v195>p{margin:18px 0 0;color:#e9e1ef;font-size:1.03rem;line-height:1.88;word-break:keep-all;overflow-wrap:anywhere}
-.destiny-overview-grid-v195{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
-.destiny-overview-grid-v195>div{min-width:0;padding:15px 14px;border:1px solid rgba(230,204,151,.17);border-radius:12px;background:rgba(10,8,15,.25)}
-.destiny-overview-grid-v195 small{display:block;color:#a99fb2;font-size:.75rem;font-weight:800}
-.destiny-overview-grid-v195 b{display:block;margin-top:6px;color:#efd393;font-size:1.06rem;line-height:1.35;word-break:keep-all}
-.destiny-overview-grid-v195 .destiny-why-v204{grid-column:1/-1;display:grid;grid-template-columns:180px minmax(0,1fr);align-items:start;gap:14px}
-.destiny-overview-grid-v195 .destiny-why-v204 b{margin:0;font-size:1rem;line-height:1.65}
-.destiny-overview-intro-v205{margin-bottom:12px!important}
-.destiny-person-grid-v205{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
-.destiny-person-grid-v205.single{grid-template-columns:1fr}
-.destiny-person-grid-v205 article{min-width:0;padding:17px;border:1px solid rgba(157,113,52,.2);border-radius:13px;background:#f7f1e6}
-.destiny-person-grid-v205 h4{margin:0;color:#8f642d;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:1.13rem;font-weight:500;line-height:1.4}
-.destiny-person-grid-v205 dl{display:grid;gap:0;margin:13px 0 0}
-.destiny-person-grid-v205 dl>div{display:grid;grid-template-columns:132px minmax(0,1fr);gap:13px;padding:11px 0;border-top:1px solid #e2d6bf}
-.destiny-person-grid-v205 dt{color:#8f642d;font-size:.8rem;font-weight:900;line-height:1.55}
-.destiny-person-grid-v205 dd{min-width:0;margin:0;color:#4f4a43;font-size:.94rem;line-height:1.72;word-break:keep-all;overflow-wrap:anywhere}
-.destiny-person-grid-v205 ul{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
-.destiny-person-grid-v205 li{padding:5px 9px;border-radius:999px;background:#eee5d5;color:#5a5043;font-size:.82rem;line-height:1.4}
-.destiny-card-grid-v195{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px}
-.destiny-card-proof-v195{min-width:0;padding:13px;border:1px solid rgba(221,195,143,.16);border-radius:14px;background:#17131e}
-.destiny-card-art-v195{display:grid;place-items:center;align-content:center;aspect-ratio:2/3;padding:10px;border:1px solid rgba(236,210,158,.26);border-radius:10px;background:linear-gradient(155deg,#4d365b,#1a1421);text-align:center;overflow:hidden}
-.destiny-card-art-v195>span{font-size:clamp(2.6rem,6vw,4.8rem);line-height:1}
-.destiny-card-art-v195>small{max-width:100%;margin-top:12px;color:#f4dca7;font-family:Georgia,serif;font-size:.78rem;line-height:1.25;overflow-wrap:anywhere}
-.destiny-role-v195{margin-top:13px;color:#d8bb7f;font-size:.8rem;font-weight:900}
-.destiny-card-proof-v195 h4{margin:6px 0 9px;color:#fff8ec;font-size:1rem;line-height:1.35;word-break:keep-all}
-.destiny-card-proof-v195 h4 small{color:#a99fb2;font-size:.74rem;font-weight:700}
-.destiny-card-proof-v195>p,.destiny-card-proof-v195 details p{margin:0;color:#ddd4e4;font-size:.91rem;line-height:1.72;word-break:keep-all}
-.destiny-card-proof-v195 details{margin-top:12px;padding-top:10px;border-top:1px solid rgba(221,195,143,.12)}
-.destiny-card-proof-v195 summary{cursor:pointer;color:#d9bb7e;font-size:.8rem;font-weight:850}
-.destiny-card-proof-v195 details p{margin-top:10px;color:#cfc5d6}
-.destiny-story-progress-v203{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:620px;margin:20px auto 10px;color:#9f93aa;font-size:.78rem;font-weight:850}
-.destiny-story-relation-tabs-v205{display:flex;justify-content:center;gap:8px;overflow-x:auto;margin:20px 0 4px;padding-bottom:3px;scrollbar-width:none}
-.destiny-story-relation-tabs-v205::-webkit-scrollbar{display:none}
-.destiny-story-relation-tabs-v205 button{width:auto;min-width:112px;margin:0;padding:10px 16px;border:1px solid #cfbb91;border-radius:999px;background:#fbf6ed;color:#6b5a42;box-shadow:none;white-space:nowrap}
-.destiny-story-relation-tabs-v205 button.active{background:#a77c3f;color:#fffaf1;border-color:#a77c3f}
-.destiny-story-relation-panel-v205{display:none}
-.destiny-story-relation-panel-v205.active{display:block}
-.destiny-story-progress-v203>div{display:flex;align-items:center;gap:7px}
-.destiny-story-progress-v203 i{display:block;width:7px;height:7px;border-radius:50%;background:#c9c0cd;transition:width .2s ease,background .2s ease}
-.destiny-story-progress-v203 i.active{width:24px;border-radius:999px;background:#b07e3c}
-.destiny-story-slider-v203{display:block;max-width:620px;margin:0 auto}
-.destiny-story-slide-v203{display:none;padding:18px}
-.destiny-story-slide-v203.active{display:grid;grid-template-columns:minmax(180px,250px) minmax(0,1fr);column-gap:24px;align-items:start;animation:destinyStoryInV203 .24s ease both}
-.destiny-story-slide-v203 .destiny-story-stage-v203,.destiny-story-slide-v203 .destiny-card-art-v195{grid-column:1}
-.destiny-story-slide-v203 h4,.destiny-story-slide-v203>p,.destiny-story-slide-v203 details,.destiny-story-slide-v203 .destiny-story-scene-v209{grid-column:2}
-.destiny-story-stage-v203{margin:0 0 10px;color:#9d7134;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:1.08rem;font-weight:500}
-.destiny-story-slide-v203 h4{margin:2px 0 12px;font-size:1.28rem}
-.destiny-story-slide-v203>p{font-size:1rem;line-height:1.75}
-.destiny-story-slide-v203 details{margin-top:17px;padding:14px 0 0}
-.destiny-story-slide-v203 summary{font-size:.92rem;line-height:1.45}
-.destiny-story-slide-v203 details>p{font-family:"Nanum Gothic Coding","Apple SD Gothic Neo",monospace;font-size:1.35rem;font-weight:400;line-height:1.85}
-.destiny-story-scene-v209{margin:0 0 2px;padding:13px 14px;border-left:3px solid #a77c3f;background:#f2eadb}
-.destiny-story-scene-v209 b{display:block;margin-top:8px;color:#8a8176;font-family:"Apple SD Gothic Neo",Pretendard,sans-serif;font-size:1rem;font-weight:500;line-height:1.5;word-break:keep-all}
-.destiny-story-scene-v209 small{display:block;margin:0;color:#332c24;font-family:"Hi Melody","Apple SD Gothic Neo",sans-serif;font-size:1.5rem;font-weight:800;line-height:1.42;word-break:keep-all}
-.destiny-story-scene-v209 small>span{display:block}
-.destiny-story-place-v230{margin-top:.18em}
-.destiny-story-roles-v209{margin:12px 0 0;padding:10px 12px;border-radius:8px;background:#eee5d5;color:#655744;font-family:"Hi Melody","Apple SD Gothic Neo",sans-serif;font-size:1.5rem;font-weight:400;line-height:1.6;word-break:keep-all}
-.destiny-story-echo-v209{display:grid;gap:5px;margin-top:14px;padding:12px 13px;border-top:1px solid #d8c7a6;color:#5d5245}
-.destiny-story-echo-v209 b{color:#8f642d;font-size:.78rem}
-.destiny-story-echo-v209 span{font-size:.86rem;line-height:1.65;word-break:keep-all}
-.destiny-story-nav-v203{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:620px;margin:12px auto 0}
-.destiny-story-nav-v203 button{min-height:44px;margin:0;padding:9px 16px;border:1px solid #cfbb91;border-radius:999px;background:#fbf6ed;color:#5e503e;box-shadow:none;font-size:1.12rem}
-.destiny-story-nav-v203 button span{font-size:.86rem;font-weight:850;vertical-align:1px}
-.destiny-story-nav-v203 button:disabled{opacity:.35;cursor:default}
-@keyframes destinyStoryInV203{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
-.destiny-relation-tabs-v195{display:flex;gap:8px;overflow-x:auto;margin-top:18px;padding-bottom:3px;scrollbar-width:none}
-.destiny-relation-tabs-v195::-webkit-scrollbar{display:none}
-.destiny-relation-tabs-v195 button,.destiny-reflection-options-v195 button{width:auto;margin:0;padding:10px 14px;border:1px solid rgba(221,195,143,.18);border-radius:999px;background:#17131e;color:#bdb2c6;box-shadow:none;white-space:nowrap}
-.destiny-relation-tabs-v195 button.active,.destiny-reflection-options-v195 button.active{background:#d7b873;color:#1b1420;border-color:#e4cc97}
-.destiny-relation-panel-v195{display:none;margin-top:14px;padding:18px;border:1px solid rgba(221,195,143,.14);border-radius:14px;background:#19141f}
-.destiny-relation-panel-v195.active{display:block}
-.destiny-relation-panel-v195>span{color:#9f93aa;font-size:.75rem;font-weight:800}
-.destiny-relation-panel-v195 h4{margin:6px 0 0;color:#efd393;font-size:1.35rem}
-.destiny-relation-detail-v218{margin-top:16px;padding-top:15px;border-top:1px solid rgba(221,195,143,.14)}
-.destiny-relation-detail-v218>b{display:block;color:#d7b873;font-size:.84rem}
-.destiny-relation-detail-v218 p{margin:8px 0 0;color:#d7cedd;font-size:.94rem;line-height:1.75;word-break:keep-all}
-.destiny-relation-detail-v218 ul{display:grid;gap:8px;margin:10px 0 0;padding-left:20px;color:#d7cedd;font-size:.92rem;line-height:1.68}
-.destiny-relation-detail-v218 .destiny-shared-experience-v224{margin-top:10px;padding:14px 15px;border-radius:10px;background:rgba(255,255,255,.04);line-height:1.85}
-.destiny-blend-note-v195{padding:13px 15px;border-left:3px solid #d7b873;background:#19141f!important;color:#e8dfec!important}
-.destiny-signal-pair-v195{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
-.destiny-signal-pair-v195>div{min-width:0;padding:14px;border:1px solid rgba(221,195,143,.12);border-radius:12px;background:#151119}
-.destiny-signal-pair-v195 b{color:#d9bb7e;font-size:.82rem}
-.destiny-signal-pair-v195 p{margin:7px 0 0;color:#d4cbd9;line-height:1.7;word-break:keep-all}
-.destiny-clues-v195{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0 0;padding:0;list-style:none}
-.destiny-clues-v195 li{position:relative;min-width:0;padding:15px 15px 15px 38px;border:1px solid rgba(221,195,143,.13);border-radius:12px;background:#17131e;color:#e3dbe8;line-height:1.65;word-break:keep-all}
-.destiny-clues-v195 li:before{content:'✓';position:absolute;left:15px;top:15px;color:#d9bb7e;font-weight:900}
-.destiny-purpose-v195>strong{display:inline-block;margin-top:18px;color:#efd393;font-family:"Jeju Hallasan","JejuHallasan","Apple SD Gothic Neo",sans-serif;font-size:1.65rem;font-weight:500}
-.destiny-next-step-v195,.destiny-temperature-v195{margin-top:18px;padding:16px;border-left:3px solid #d7b873;background:#17131e}
-.destiny-next-step-v195 b,.destiny-temperature-v195 b{color:#efd393;font-size:1rem}
-.destiny-next-step-v195 p,.destiny-temperature-v195 p{margin-top:7px!important}
-.destiny-reflection-options-v195{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.destiny-reflection-answer-v195{margin-top:15px;padding:17px;border:1px solid rgba(221,195,143,.14);border-radius:14px;background:#17131e}
-.destiny-reflection-answer-v195>p{margin:0 0 12px;color:#fff1cf;font-size:1.02rem;line-height:1.65;font-weight:800}
-.destiny-reflection-answer-v195 textarea{min-height:90px;background:#100d14;border-color:rgba(221,195,143,.2);color:#f2ebf5}
-.destiny-reflection-answer-v195 button{width:auto;margin-top:10px;padding:10px 14px}
-.destiny-reflection-answer-v195 small{display:block;margin-top:9px;color:#a99fb2;line-height:1.5}
-.destiny-grounding-v195{margin:2px 4px 0!important;color:#92889b!important;font-size:.78rem!important;line-height:1.62!important}
-#resultScreen.destiny-one-v195 .reading-review-v117{background:#211a2b!important;border-color:rgba(221,195,143,.17)!important;color:#e8dfed!important}
-#resultScreen.destiny-one-v195 .reading-review-v117 h3{color:#fff8eb!important}
-#resultScreen.destiny-one-v195 .row-actions{margin-top:18px}
-@media(max-width:640px){
-  body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) #adminModeBtn{display:none!important}
-  body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .app{padding:7px 8px 34px!important}
-  body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero{justify-content:flex-start!important;padding:7px 154px 9px 7px!important;text-align:left!important}
-  body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero h1{font-size:clamp(1.18rem,5.4vw,1.42rem)!important;line-height:1.05!important;text-align:left!important;white-space:nowrap!important}
-  #resultScreen.destiny-one-v195{padding:16px!important;border-radius:18px!important}
-  .destiny-question-top-v195{padding:8px 0 18px}
-  .destiny-question-top-v195 h2{font-size:clamp(1.65rem,8vw,2.3rem)}
-  .destiny-overview-v195,.destiny-section-v195{padding:18px;border-radius:14px}
-  .destiny-overview-prose-v208{margin-top:17px}
-  .destiny-overview-prose-v208 p{font-size:.96rem;line-height:1.76}
-  .destiny-overview-prose-v208 p+p{margin-top:10px}
-  .destiny-overview-grid-v195{grid-template-columns:1fr;gap:7px}
-  .destiny-overview-grid-v195>div{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:8px;padding:11px 12px}
-  .destiny-overview-grid-v195 b{margin:0;font-size:.96rem}
-  .destiny-overview-grid-v195 .destiny-why-v204{grid-column:auto;grid-template-columns:110px minmax(0,1fr);gap:8px}
-  .destiny-overview-grid-v195 .destiny-why-v204 b{font-size:.94rem;line-height:1.55}
-  .destiny-person-grid-v205{grid-template-columns:1fr}
-  .destiny-person-grid-v205 article{padding:14px}
-  .destiny-person-grid-v205 h4{font-size:1.02rem}
-  .destiny-person-grid-v205 dl>div{grid-template-columns:1fr;gap:5px;padding:10px 0}
-  .destiny-person-grid-v205 dt{font-size:.78rem}
-  .destiny-person-grid-v205 dd{font-size:.91rem;line-height:1.68}
-  .destiny-story-relation-tabs-v205{justify-content:flex-start;margin-top:17px}
-  .destiny-card-grid-v195{gap:6px}
-  .destiny-card-proof-v195{padding:7px;border-radius:10px}
-  .destiny-card-art-v195{padding:5px;border-radius:7px}
-  .destiny-card-art-v195>span{font-size:2rem}
-  .destiny-card-art-v195>small{margin-top:6px;font-size:.55rem}
-  .destiny-story-progress-v203{margin-top:17px}
-  .destiny-story-slide-v203.active{display:block;padding:12px}
-  .destiny-story-slide-v203 .destiny-card-art-v195{width:min(76%,260px);margin:0 auto 15px}
-  .destiny-story-stage-v203{text-align:center;font-size:1rem}
-  .destiny-story-slide-v203 h4{font-size:1.05rem;text-align:center}
-  .destiny-story-slide-v203 h4 small{display:inline;margin:0;font-size:.72rem}
-  .destiny-story-slide-v203>p{font-size:.92rem;line-height:1.72}
-  .destiny-story-slide-v203 summary{font-size:.82rem}
-  .destiny-story-slide-v203 details>p{font-size:1.35rem;line-height:1.78}
-  .destiny-story-scene-v209{margin-top:10px;padding:12px}
-  .destiny-story-scene-v209 b{font-size:.92rem}
-  .destiny-story-scene-v209 small{font-size:1.5rem}
-  .destiny-role-v195{margin-top:8px;font-size:.62rem}
-  .destiny-card-proof-v195 h4{font-size:.72rem;line-height:1.3}
-  .destiny-card-proof-v195 h4 small{display:block;margin-top:2px;font-size:.58rem}
-  .destiny-card-proof-v195>p{font-size:.72rem;line-height:1.55}
-  .destiny-card-proof-v195 summary{font-size:.66rem;line-height:1.4}
-  .destiny-card-proof-v195 details p{font-size:.72rem;line-height:1.55}
-  .destiny-signal-pair-v195,.destiny-clues-v195{grid-template-columns:1fr}
-  .destiny-overview-v195>p,.destiny-section-v195>p,.destiny-relation-panel-v195>p{font-size:.96rem;line-height:1.8}
-}
-</style>
 
-<style>
-/* V196: warm ivory palette for Destiny 1; layout remains unchanged. */
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)){
-  background:#f3ecdf!important;
-  color:#1c1915!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)):before{
-  background:#f3ecdf!important;
-  opacity:1!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)):after{display:none!important}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .hero h1{
-  color:#4c4740!important;
-  text-shadow:none!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .language-toggle-v60{
-  background:#f8f2e7!important;
-  color:#39342e!important;
-  border-color:#cdb98f!important;
-  box-shadow:0 8px 24px rgba(92,72,42,.12)!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .language-menu-v60{
-  background:#fffaf1!important;
-  border-color:#d8c49b!important;
-  box-shadow:0 16px 38px rgba(92,72,42,.16)!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .language-menu-v60 button{
-  background:#f7f0e4!important;
-  color:#39342e!important;
-  border-color:#ddd0b5!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) .admin-entry{
-  opacity:.7!important;
-}
-body[data-screen="resultScreen"]:has(#resultScreen.destiny-one-v195:not(.hidden)) #adminModeBtn{
-  background:#f8f2e7!important;
-  color:#4a443c!important;
-  border-color:#cdb98f!important;
-}
-#resultScreen.destiny-one-v195{
-  color:#1d1a16!important;
-  background:#f6efe3!important;
-  border-color:#cbb786!important;
-  box-shadow:0 24px 70px rgba(93,71,36,.16)!important;
-}
-#resultScreen.destiny-one-v195>.topbar{border-bottom-color:#ded0b4!important}
-#resultScreen.destiny-one-v195>.topbar .badge{
-  background:#fbf6ed!important;
-  border-color:#d4c19a!important;
-  color:#4f473c!important;
-  box-shadow:none!important;
-}
-#resultScreen.destiny-one-v195 .top-actions .ghost,
-#resultScreen.destiny-one-v195 .row-actions .ghost{
-  background:#fbf6ed!important;
-  color:#39342e!important;
-  border-color:#cfbb91!important;
-  box-shadow:none!important;
-}
-#resultScreen.destiny-one-v195 .row-actions button:not(.ghost){
-  background:#a77c3f!important;
-  color:#fffaf1!important;
-  box-shadow:0 12px 26px rgba(129,91,38,.18)!important;
-}
-.destiny-question-top-v195 h2{color:#171512!important}
-.destiny-overview-v195,.destiny-section-v195{
-  border-color:#d5c39d!important;
-  background:#fffaf2!important;
-  box-shadow:0 14px 34px rgba(94,73,42,.1)!important;
-}
-.destiny-overview-v195{background:#fffaf2!important;border-color:#c9b17e!important}
-.destiny-kicker-v195,.destiny-section-head-v195>span{color:#9d7134!important}
-.destiny-overview-v195 h3,.destiny-section-head-v195 h3{color:#181512!important}
-.destiny-overview-v195>p,.destiny-section-v195>p,.destiny-relation-panel-v195>p,.destiny-temperature-v195>p,.destiny-next-step-v195>p{color:#5f5a52!important}
-.destiny-overview-grid-v195>div{
-  border-color:#ddd0b7!important;
-  background:#f2eee2!important;
-}
-.destiny-overview-grid-v195 small{color:#777169!important}
-.destiny-overview-grid-v195 b{color:#8f642d!important}
-.destiny-card-proof-v195{
-  border-color:#ccb485!important;
-  background:#f9f4ea!important;
-  box-shadow:0 12px 28px rgba(102,79,43,.08)!important;
-}
-.destiny-card-art-v195{
-  border-color:#a97734!important;
-  background:#dfe9e5!important;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.65)!important;
-}
-.destiny-card-art-v195>span{filter:saturate(.72) sepia(.14)}
-.destiny-card-art-v195>small{color:#795624!important}
-.destiny-role-v195{color:#8f642d!important}
-.destiny-card-proof-v195 h4{color:#28231d!important}
-.destiny-card-proof-v195 h4 small{color:#777169!important}
-.destiny-card-proof-v195>p,.destiny-card-proof-v195 details p{color:#625d55!important}
-.destiny-card-proof-v195 details{border-top-color:#ddd0b7!important}
-.destiny-card-proof-v195 summary{color:#8f642d!important}
-.destiny-card-proof-v195 details p{color:#686259!important}
-.destiny-relation-tabs-v195 button,.destiny-reflection-options-v195 button{
-  background:#f7f1e6!important;
-  color:#332f2a!important;
-  border-color:#ccb98f!important;
-}
-.destiny-relation-tabs-v195 button.active,.destiny-reflection-options-v195 button.active{
-  background:#ead5ae!important;
-  color:#2e261c!important;
-  border-color:#9f7137!important;
-  box-shadow:none!important;
-}
-.destiny-relation-panel-v195{
-  border-color:#dfd2bb!important;
-  background:#fffaf2!important;
-}
-.destiny-relation-panel-v195>span{color:#777169!important}
-.destiny-relation-panel-v195 h4{color:#29241e!important}
-.destiny-relation-detail-v218{border-top-color:#ddd2c1}
-.destiny-relation-detail-v218>b{color:#8f642d}
-.destiny-relation-detail-v218 p,.destiny-relation-detail-v218 ul{color:#5f5a52}
-.destiny-relation-detail-v218 .destiny-shared-experience-v224{background:#f4ecdf}
-.destiny-blend-note-v195{
-  border-left-color:#a77c3f!important;
-  background:#f0eadc!important;
-  color:#4f4a43!important;
-}
-.destiny-signal-pair-v195>div{
-  border-color:#e0d5c0!important;
-  background:#f4f0e6!important;
-}
-.destiny-signal-pair-v195 b{color:#8e642d!important}
-.destiny-signal-pair-v195 p{color:#625d55!important}
-.destiny-clues-v195 li{
-  border-color:#dfd3bd!important;
-  background:#fbf7ef!important;
-  color:#514c45!important;
-}
-.destiny-clues-v195 li:before{color:#9c7137!important}
-.destiny-purpose-v195>strong{color:#8f642d!important}
-.destiny-next-step-v195,.destiny-temperature-v195{
-  border-left-color:#a77c3f!important;
-  background:#f1ede1!important;
-}
-.destiny-next-step-v195 b,.destiny-temperature-v195 b{color:#755124!important}
-.destiny-reflection-answer-v195{
-  border-color:#d8c7a5!important;
-  background:#fbf7ef!important;
-}
-.destiny-reflection-answer-v195>p{color:#28231d!important}
-.destiny-reflection-answer-v195 textarea{
-  background:#fffdf8!important;
-  border-color:#cdb98f!important;
-  color:#2d2822!important;
-}
-.destiny-reflection-answer-v195 button{
-  background:#a77c3f!important;
-  color:#fffaf1!important;
-  box-shadow:none!important;
-}
-.destiny-reflection-answer-v195 small,.destiny-grounding-v195{color:#79736a!important}
-#resultScreen.destiny-one-v195 .reading-review-v117{
-  background:#fffaf2!important;
-  border-color:#d5c39d!important;
-  color:#5f5a52!important;
-  box-shadow:0 14px 34px rgba(94,73,42,.08)!important;
-}
-#resultScreen.destiny-one-v195 .reading-review-v117 h3{color:#181512!important}
-#resultScreen.destiny-one-v195 .reading-review-v117 p{color:#686259!important}
-#resultScreen.destiny-one-v195 .study-star-v115{color:#b29362!important;text-shadow:none!important}
-#resultScreen.destiny-one-v195 .reading-review-v117 textarea{
-  background:#fffdf8!important;
-  color:#2d2822!important;
-  border-color:#cdb98f!important;
-}
-#resultScreen.destiny-one-v195 .reading-review-v117 button:not(.study-star-v115){
-  background:#a77c3f!important;
-  color:#fffaf1!important;
-  box-shadow:none!important;
-}
-#resultScreen.destiny-one-v195>.subtitle{color:#777169!important}
-</style>
 
-<style>
-/* V197: use a compact masthead on the PJ reading selection screen. */
-body[data-screen="questionScreen"] .app{
-  padding-top:8px!important;
-}
-body[data-screen="questionScreen"] .hero{
-  min-height:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  margin:0 auto 6px!important;
-  padding:7px 118px 9px!important;
-  text-align:center!important;
-}
-body[data-screen="questionScreen"] .hero:before,
-body[data-screen="questionScreen"] .hero .moon,
-body[data-screen="questionScreen"] .hero .subtitle,
-body[data-screen="questionScreen"] #dailyCard{
-  display:none!important;
-}
-body[data-screen="questionScreen"] .hero h1{
-  width:auto!important;
-  max-width:none!important;
-  margin:0!important;
-  font-size:clamp(1.75rem,3.2vw,2.45rem)!important;
-  line-height:1!important;
-  letter-spacing:.01em!important;
-  text-align:center!important;
-  white-space:nowrap!important;
-  text-shadow:0 8px 24px rgba(0,0,0,.3)!important;
-}
-body[data-screen="questionScreen"] #questionScreen{
-  margin-top:4px!important;
-}
-@media(max-width:640px){
-  body[data-screen="questionScreen"] .app{padding:7px 10px 38px!important}
-  body[data-screen="questionScreen"] .admin-entry{display:none!important}
-  body[data-screen="questionScreen"] .hero{
-    min-height:40px!important;
-    margin-bottom:3px!important;
-    padding:7px 136px 7px 4px!important;
-  }
-  body[data-screen="questionScreen"] .hero h1{
-    font-size:clamp(1.1rem,5vw,1.34rem)!important;
-  }
-  body[data-screen="questionScreen"] #questionScreen{margin-top:2px!important}
-}
-</style>
+
+
+
 
 <script>
 // V199: persist the active member on this browser until the user logs out.
@@ -14437,516 +13641,15 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
-<style>
-/* V200: keep question cards focused on the question title. */
-#questionScreen .love-card-copy-v62 small{
-  display:none!important;
-}
-#questionScreen>.step-label{
-  display:none!important;
-}
-</style>
 
-<style>
-/* V213: a quiet, wave-like invitation on the past-life story disclosure. */
-.destiny-one-v195 .destiny-story-slide-v203 summary{
-  position:relative;
-  isolation:isolate;
-  display:inline-flex;
-  align-items:center;
-  min-height:42px;
-  padding:9px 16px;
-  overflow:hidden;
-  border:1px solid rgba(167,124,63,.3);
-  border-radius:999px;
-  background:rgba(255,250,240,.72);
-  box-shadow:0 5px 16px rgba(137,102,49,.06);
-  list-style:none;
-}
-.destiny-one-v195 .destiny-story-slide-v203 summary::-webkit-details-marker{display:none}
-.destiny-one-v195 .destiny-story-slide-v203 summary::before{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  top:-55%;
-  bottom:-55%;
-  left:-48%;
-  width:42%;
-  border-radius:50%;
-  background:linear-gradient(100deg,transparent,rgba(238,207,145,.08),rgba(255,246,209,.5),rgba(238,207,145,.08),transparent);
-  filter:blur(7px);
-  transform:translateX(0) skewX(-12deg);
-  animation:destinyStoryAuraV213 5.4s ease-in-out infinite;
-  pointer-events:none;
-}
-.destiny-one-v195 .destiny-story-slide-v203 summary::after{
-  content:"⌄";
-  margin-left:8px;
-  color:#a77c3f;
-  font-size:.92rem;
-  transition:transform .24s ease;
-}
-.destiny-one-v195 .destiny-story-slide-v203 details[open] summary::before{animation:none;opacity:0}
-.destiny-one-v195 .destiny-story-slide-v203 details[open] summary::after{transform:rotate(180deg)}
-@keyframes destinyStoryAuraV213{
-  0%,18%{transform:translateX(0) skewX(-12deg);opacity:0}
-  28%{opacity:.45}
-  62%{opacity:.72}
-  82%,100%{transform:translateX(355%) skewX(-12deg);opacity:0}
-}
-@media (prefers-reduced-motion:reduce){
-  .destiny-one-v195 .destiny-story-slide-v203 summary::before{animation:none;opacity:0}
-}
-</style>
 
-<style>
-/* V220: improve overview scanning without changing its sentences. */
-.destiny-one-v195 .destiny-overview-v195{
-  padding:30px!important;
-  background:linear-gradient(145deg,#fffaf2 0%,#f5ead7 100%)!important;
-}
-.destiny-one-v195 .destiny-overview-v195 h3{
-  padding-bottom:17px;
-  border-bottom:1px solid #d9c6a2;
-}
-.destiny-one-v195 .destiny-overview-prose-v208{
-  display:grid;
-  gap:12px;
-  max-width:none;
-  margin-top:18px;
-}
-.destiny-one-v195 .destiny-overview-prose-v208 p,
-.destiny-one-v195 .destiny-overview-prose-v208 p+p{
-  margin:0;
-  padding:20px 22px;
-  border:1px solid #ded0b7;
-  border-left:4px solid #c49a57;
-  border-radius:14px;
-  background:rgba(255,255,255,.7);
-  box-shadow:0 8px 22px rgba(98,73,37,.06);
-  color:#4f4941;
-  font-size:1.07rem;
-  line-height:1.9;
-}
-.destiny-one-v195 .destiny-overview-prose-v208 p::before{
-  content:none;
-  display:none;
-}
-@media(max-width:560px){
-  .destiny-one-v195 .destiny-overview-v195{padding:21px!important}
-  .destiny-one-v195 .destiny-overview-prose-v208 p,
-  .destiny-one-v195 .destiny-overview-prose-v208 p+p{padding:17px 16px;font-size:1rem;line-height:1.82}
-}
-</style>
 
-<style>
-/* V222: card-matched recognition database beneath the three primary clues. */
-.destiny-extra-clues-v222{margin-top:24px;padding-top:22px;border-top:1px solid #ddcfb4}
-.destiny-extra-clues-head-v222{display:grid;gap:5px;margin-bottom:14px}
-.destiny-extra-clues-head-v222>b{color:#2b261f;font-size:1.08rem}
-.destiny-extra-clues-head-v222>small{color:#766e64;font-size:.78rem;line-height:1.55}
-.destiny-extra-clue-grid-v222{display:grid;gap:12px}
-.destiny-extra-clue-card-v222{min-width:0;padding:24px;border:1px solid rgba(157,113,52,.18);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(248,242,231,.78));box-shadow:0 14px 34px rgba(94,73,42,.09)}
-.destiny-extra-card-head-v222{display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:start}
-.destiny-extra-card-head-v222>span{grid-column:1/-1;color:#9d7134;font-size:.74rem;font-weight:900;letter-spacing:.04em}
-.destiny-extra-card-head-v222 h4{margin:0;color:#28231d;font-size:1.2rem}
-.destiny-extra-card-head-v222 em{align-self:center;padding:5px 9px;border-radius:999px;background:#eadcc0;color:#705029;font-size:.72rem;font-style:normal;font-weight:850;text-align:right}
-.destiny-extra-tags-v222{display:grid;gap:0;margin-top:4px}
-.destiny-extra-tags-v222>div{display:grid;grid-template-columns:minmax(100px,.25fr) minmax(0,1fr);gap:18px;align-items:start;padding:17px 0;border-bottom:1px solid rgba(157,113,52,.14)}
-.destiny-extra-tags-v222>div:last-child{border-bottom:0;padding-bottom:2px}
-.destiny-extra-tags-v222 b{color:#8f642d;font-size:clamp(1.12rem,3.2vw,1.4rem);font-weight:900;line-height:1.3;white-space:nowrap}
-.destiny-extra-tags-v222 p{display:flex;flex-wrap:wrap;gap:9px;margin:0;color:#403a33;font-size:clamp(1.04rem,2.5vw,1.16rem);font-weight:800;line-height:1.65;word-break:keep-all}
-.destiny-extra-tags-v222>.destiny-extra-colors-v225{grid-template-columns:1fr;gap:12px}
-.destiny-extra-colors-v225 p{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;width:100%}
-.destiny-extra-color-v225{display:grid;grid-template-rows:auto minmax(30px,auto);gap:8px;align-items:start;min-width:0;text-align:center}
-.destiny-extra-color-v225 i{display:block;width:100%;height:auto;aspect-ratio:1.45/1;border:2px solid rgba(55,39,73,.24);border-radius:9px;background:var(--swatch);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 7px 16px rgba(71,52,93,.12)}
-.destiny-extra-color-v225 em{color:#403a33;font-size:1.03rem;font-style:normal;font-weight:850;line-height:1.3;word-break:keep-all}
-.destiny-extra-clue-card-v222 dl{display:grid;gap:10px;margin:15px 0 0}
-.destiny-extra-clue-card-v222 dl>div{display:grid;grid-template-columns:94px minmax(0,1fr);gap:12px;padding-top:10px;border-top:1px solid #e2d6c2}
-.destiny-extra-clue-card-v222 dt{color:#8f642d;font-size:.8rem;font-weight:900}
-.destiny-extra-clue-card-v222 dd{margin:0;color:#575149;font-size:.88rem;line-height:1.7;word-break:keep-all}
-.destiny-extra-clue-card-v222 details{margin-top:15px;padding-top:12px;border-top:1px solid #d9c9ad}
-.destiny-extra-clue-card-v222 summary{cursor:pointer;color:#805a2a;font-size:.82rem;font-weight:900}
-.destiny-extra-clue-card-v222 details p{margin:10px 0 0;color:#5e574e;font-size:.86rem;line-height:1.72;word-break:keep-all}
-.destiny-extra-clue-card-v222 .destiny-extra-advice-v222{padding:10px 12px;border-left:3px solid #b98742;background:#f2e7d4}
-.destiny-purpose-test-v226{margin-top:18px;padding:16px;border:1px solid #ded0b7;border-radius:12px;background:#fffaf2}
-.destiny-purpose-test-v226 b{color:#755124;font-size:1rem}
-.destiny-purpose-test-v226 p{margin:7px 0 0;color:#5f5a52;font-size:1rem;line-height:1.82;word-break:keep-all}
-.destiny-next-step-v195 ul{display:grid;gap:9px;margin:10px 0 0;padding:0;list-style:none;counter-reset:return-action}
-.destiny-next-step-v195 li{position:relative;padding-left:28px;color:#5f5a52;font-size:1rem;line-height:1.72;word-break:keep-all;counter-increment:return-action}
-.destiny-next-step-v195 li::before{content:counter(return-action);position:absolute;top:.2em;left:0;display:grid;width:20px;height:20px;place-items:center;border-radius:50%;background:#eadcc0;color:#755124;font-size:.7rem;font-weight:900}
-@media(max-width:560px){
-  .destiny-extra-clue-card-v222{padding:20px}
-  .destiny-extra-card-head-v222{grid-template-columns:1fr}
-  .destiny-extra-card-head-v222 em{justify-self:start;text-align:left}
-  .destiny-extra-tags-v222>div{grid-template-columns:82px minmax(0,1fr);gap:12px;padding:15px 0}
-  .destiny-extra-clue-card-v222 dl>div{grid-template-columns:1fr;gap:5px}
-}
-</style>
 
-<style id="pjoCardTableStyleV232">
-/* V232: immersive three-card table, long-press selection, and staged reveal. */
-@property --pjo-hold-v232{syntax:"<percentage>";inherits:false;initial-value:0%}
-body.pjo-pick-active-v232{background:#160d07}
-body.pjo-pick-active-v232:before{
-  background:
-    radial-gradient(circle at 50% -18%,rgba(224,171,77,.14),transparent 38%),
-    linear-gradient(115deg,#0b0704,#25160b 46%,#0d0804)!important;
-}
-body.pjo-pick-active-v232:after{opacity:.06}
-body.pjo-pick-active-v232 .hero{display:none}
-body.pjo-pick-active-v232 .app{max-width:1460px;padding:18px 14px 34px}
-#pickScreen.pjo-card-table-v232{
-  position:relative;
-  isolation:isolate;
-  width:100%;
-  max-width:1380px;
-  min-height:min(860px,calc(100vh - 52px));
-  margin:0 auto;
-  padding:58px 38px 30px;
-  overflow:hidden;
-  border:1px solid rgba(226,177,94,.44);
-  border-radius:42px;
-  background:
-    radial-gradient(ellipse at 50% 18%,rgba(143,83,30,.34),transparent 52%),
-    linear-gradient(108deg,#130b06 0%,#342011 48%,#120b06 100%);
-  box-shadow:0 30px 100px rgba(0,0,0,.58),inset 0 0 0 8px rgba(82,45,19,.48),inset 0 0 80px rgba(0,0,0,.62);
-  color:#382514;
-  backdrop-filter:none;
-}
-#pickScreen.pjo-card-table-v232:before{
-  content:"";
-  position:absolute;
-  z-index:-2;
-  inset:30px -92px 24px;
-  border:2px solid rgba(130,84,34,.5);
-  border-radius:48% / 14%;
-  background:
-    radial-gradient(circle at 22% 38%,rgba(139,97,45,.08) 0 1px,transparent 1.5px) 0 0/9px 9px,
-    radial-gradient(ellipse at 50% 42%,#f8e9c9 0%,#ead1a0 72%,#c79b5f 100%);
-  box-shadow:inset 0 0 68px rgba(104,61,25,.26),0 0 34px rgba(0,0,0,.58);
-}
-#pickScreen.pjo-card-table-v232:after{
-  content:"✦";
-  position:absolute;
-  z-index:-1;
-  top:34px;
-  left:50%;
-  color:rgba(112,72,29,.52);
-  font-size:1.2rem;
-  letter-spacing:.35em;
-  transform:translateX(-50%);
-}
-#pickScreen.pjo-card-table-v232>.step-label{display:none!important}
-#pickScreen.pjo-card-table-v232>h2{
-  position:relative;
-  z-index:3;
-  margin:50px 0 0;
-  color:#34200f;
-  font-family:"Nanum Gothic Coding","Apple SD Gothic Neo",serif;
-  font-size:clamp(1.75rem,3.2vw,2.72rem);
-  font-weight:700;
-  letter-spacing:-.055em;
-  text-shadow:0 1px 0 rgba(255,255,255,.46);
-}
-#pickScreen.pjo-card-table-v232>#pickHelp{
-  position:relative;
-  z-index:3;
-  margin:10px auto 0;
-  color:#6e5030!important;
-  font-size:clamp(.91rem,1.55vw,1.08rem);
-  font-weight:650;
-}
-#pickScreen.pjo-card-table-v232>#readBtn{display:none!important}
-#pickScreen.pjo-card-table-v232>[data-action="question-back"]{
-  position:relative;
-  z-index:5;
-  width:auto;
-  min-width:118px;
-  margin:5px auto 0;
-  padding:9px 15px;
-  border-color:rgba(103,66,28,.3);
-  background:rgba(255,248,230,.46);
-  color:#684923;
-  font-size:.78rem;
-  box-shadow:none;
-}
-#pickScreen.pjo-card-table-v232 .pick-deck{
-  position:relative;
-  z-index:2;
-  display:block;
-  width:100%;
-  min-height:590px;
-  margin:0;
-}
-.pjo-table-inner-v232{position:relative;width:100%;height:590px}
-.pjo-pick-status-v232{
-  position:absolute;
-  z-index:20;
-  top:14px;
-  left:50%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  color:#4a311a;
-  font-family:Georgia,"Times New Roman",serif;
-  transform:translateX(-50%);
-}
-.pjo-pick-status-v232:before,.pjo-pick-status-v232:after{
-  content:"";
-  width:68px;
-  height:1px;
-  background:linear-gradient(90deg,transparent,rgba(102,66,29,.46));
-}
-.pjo-pick-status-v232:after{background:linear-gradient(90deg,rgba(102,66,29,.46),transparent)}
-.pjo-pick-status-v232 b{font-size:1.08rem;white-space:nowrap}
-.pjo-pick-slots-v232{
-  position:absolute;
-  z-index:22;
-  top:54px;
-  left:50%;
-  display:flex;
-  justify-content:center;
-  gap:22px;
-  transform:translateX(-50%);
-}
-.pjo-pick-slot-v232{
-  position:relative;
-  width:92px;
-  height:122px;
-  border:1px solid rgba(108,70,31,.38);
-  border-radius:12px;
-  background:rgba(255,248,228,.15);
-  box-shadow:inset 0 0 18px rgba(108,70,31,.055);
-  perspective:800px;
-  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
-}
-.pjo-pick-slot-v232:before{
-  content:attr(data-number);
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  color:rgba(83,53,24,.64);
-  font-family:Georgia,serif;
-  font-size:1.12rem;
-  transition:opacity .22s ease;
-}
-.pjo-pick-slot-v232.is-target{border-color:#d8a64b;box-shadow:0 0 28px rgba(213,157,64,.3),inset 0 0 18px rgba(213,157,64,.12)}
-.pjo-pick-slot-v232.is-filled:before{opacity:0}
-.pjo-slot-card-v232{
-  position:absolute;
-  inset:3px;
-  opacity:0;
-  transform-style:preserve-3d;
-  transition:transform .72s cubic-bezier(.2,.75,.2,1),opacity .2s ease;
-}
-.pjo-pick-slot-v232.is-filled .pjo-slot-card-v232{opacity:1}
-.pjo-pick-slot-v232.is-revealed .pjo-slot-card-v232{transform:rotateY(180deg)}
-.pjo-slot-back-v232,.pjo-slot-front-v232{
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  border:1px solid #c79a44;
-  border-radius:9px;
-  backface-visibility:hidden;
-}
-.pjo-slot-back-v232{
-  color:#e7bb62;
-  background:
-    radial-gradient(circle at 50% 50%,transparent 0 17px,#b98937 18px 19px,transparent 20px),
-    radial-gradient(circle at 50% 50%,#bc8730 0 2px,transparent 3px),
-    linear-gradient(145deg,#2d261f,#11100e);
-  box-shadow:inset 0 0 0 3px #17130f,inset 0 0 0 4px rgba(218,170,79,.58);
-  font-size:1.35rem;
-}
-.pjo-slot-front-v232{
-  color:#3b250f;
-  background:linear-gradient(145deg,#fff5d8,#d4ac61);
-  font-size:2rem;
-  transform:rotateY(180deg);
-  box-shadow:inset 0 0 0 3px rgba(255,255,255,.28);
-}
-.pjo-fan-stage-v232{
-  position:absolute;
-  z-index:10;
-  inset:180px 0 48px;
-  overflow:visible;
-  touch-action:none;
-}
-.pjo-fan-card-v232{
-  --fan-x-v232:0px;
-  --fan-y-v232:0px;
-  --fan-r-v232:0deg;
-  --react-x-v232:0px;
-  --react-y-v232:0px;
-  --react-r-v232:0deg;
-  position:absolute;
-  left:50%;
-  bottom:18px;
-  width:96px;
-  height:150px;
-  margin:0;
-  padding:0;
-  overflow:visible;
-  border:1px solid rgba(226,177,83,.86);
-  border-radius:12px;
-  background:#17130f;
-  color:#e5b65a;
-  box-shadow:0 17px 25px rgba(60,34,12,.28),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px rgba(218,168,73,.72);
-  transform:
-    translate3d(calc(-50% + var(--fan-x-v232) + var(--react-x-v232)),calc(var(--fan-y-v232) + var(--react-y-v232)),0)
-    rotate(calc(var(--fan-r-v232) + var(--react-r-v232)));
-  transform-origin:50% 115%;
-  transition:filter .2s ease,box-shadow .2s ease,opacity .35s ease;
-  cursor:grab;
-  touch-action:none;
-  user-select:none;
-  -webkit-user-select:none;
-  -webkit-touch-callout:none;
-  will-change:transform;
-}
-.pjo-card-table-v232.is-dealing-v232 .pjo-fan-card-v232{
-  animation:pjoFanDealV232 .95s cubic-bezier(.18,.72,.2,1) var(--fan-delay-v232) backwards;
-}
-@keyframes pjoFanDealV232{
-  0%{opacity:0;transform:translate3d(-50%,160px,0) rotate(0) scale(.34)}
-  56%{opacity:1}
-  100%{
-    opacity:1;
-    transform:translate3d(calc(-50% + var(--fan-x-v232)),var(--fan-y-v232),0) rotate(var(--fan-r-v232)) scale(1)
-  }
-}
-.pjo-card-back-v232{
-  position:absolute;
-  inset:6px;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  border:1px solid rgba(226,177,83,.74);
-  border-radius:8px;
-  background:
-    radial-gradient(circle at 50% 50%,transparent 0 24px,rgba(218,168,73,.72) 25px 26px,transparent 27px),
-    repeating-radial-gradient(circle at 50% 50%,transparent 0 16px,rgba(195,143,53,.2) 17px 18px),
-    linear-gradient(155deg,#2c251d,#0d0d0c 70%);
-}
-.pjo-card-back-v232:before,.pjo-card-back-v232:after{
-  content:"";
-  position:absolute;
-  width:1px;
-  height:78%;
-  background:linear-gradient(transparent,rgba(220,171,78,.72),transparent);
-}
-.pjo-card-back-v232:after{width:72%;height:1px}
-.pjo-card-sigil-v232{
-  position:relative;
-  z-index:2;
-  display:grid;
-  width:42px;
-  height:42px;
-  place-items:center;
-  border:1px solid rgba(226,177,83,.76);
-  border-radius:50%;
-  background:#17130f;
-  box-shadow:0 0 18px rgba(226,177,83,.14);
-  font-family:Georgia,serif;
-  font-size:1.28rem;
-}
-.pjo-hold-ring-v232{
-  --pjo-hold-v232:0%;
-  position:absolute;
-  z-index:6;
-  inset:-5px;
-  border-radius:16px;
-  background:conic-gradient(from -90deg,#fff0a9 var(--pjo-hold-v232),transparent 0);
-  filter:drop-shadow(0 0 7px rgba(255,207,95,.72));
-  opacity:0;
-  pointer-events:none;
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;
-  mask-composite:exclude;
-  padding:3px;
-}
-.pjo-fan-card-v232.is-holding-v232,.pjo-fan-card-v232.is-dragging-v232{z-index:80!important;filter:brightness(1.12);box-shadow:0 24px 42px rgba(82,48,14,.42),0 0 18px rgba(235,184,78,.25),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px #e2b153}
-.pjo-fan-card-v232.is-holding-v232 .pjo-hold-ring-v232{
-  opacity:1;
-  animation:pjoHoldFillV232 .9s linear forwards;
-}
-.pjo-fan-card-v232.is-dragging-v232{cursor:grabbing}
-.pjo-fan-card-v232.is-dragging-v232 .pjo-hold-ring-v232{
-  --pjo-hold-v232:100%;
-  opacity:1;
-  animation:none;
-}
-.pjo-fan-card-v232.is-ready-v232{filter:brightness(1.28);box-shadow:0 25px 48px rgba(82,48,14,.5),0 0 30px rgba(244,198,94,.68),inset 0 0 0 3px #0d0d0c,inset 0 0 0 4px #ffdc83}
-@keyframes pjoHoldFillV232{to{--pjo-hold-v232:100%}}
-.pjo-fan-card-v232.is-picked-v232{opacity:0;pointer-events:none}
-.pjo-fan-card-v232:focus-visible{outline:3px solid #f2bd59;outline-offset:5px;z-index:90!important}
-.pjo-pick-hint-v232{
-  position:absolute;
-  z-index:25;
-  right:0;
-  bottom:2px;
-  left:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  min-height:30px;
-  color:#73522d;
-  font-size:.82rem;
-  font-weight:750;
-  letter-spacing:.01em;
-}
-.pjo-pick-hint-v232:before{content:"◉";color:#a17435;font-size:.72rem}
-.pjo-flight-card-v232{
-  position:fixed!important;
-  z-index:9999!important;
-  margin:0!important;
-  pointer-events:none!important;
-  transform-origin:center!important;
-  transition:none!important;
-}
-@media(max-width:720px){
-  body.pjo-pick-active-v232 .app{padding:0}
-  #pickScreen.pjo-card-table-v232{
-    min-height:100svh;
-    padding:28px 10px 18px;
-    border:0;
-    border-radius:0;
-    box-shadow:inset 0 0 0 6px rgba(82,45,19,.42),inset 0 0 64px rgba(0,0,0,.58);
-  }
-  #pickScreen.pjo-card-table-v232:before{inset:14px -92px 16px;border-radius:48% / 10%}
-  #pickScreen.pjo-card-table-v232:after{top:23px}
-  #pickScreen.pjo-card-table-v232>h2{margin-top:39px;font-size:clamp(1.55rem,7vw,2rem)}
-  #pickScreen.pjo-card-table-v232>#pickHelp{margin-top:7px;font-size:.86rem}
-  #pickScreen.pjo-card-table-v232 .pick-deck{min-height:535px}
-  .pjo-table-inner-v232{height:535px}
-  .pjo-pick-status-v232{top:13px}
-  .pjo-pick-status-v232:before,.pjo-pick-status-v232:after{width:38px}
-  .pjo-pick-slots-v232{top:51px;gap:12px}
-  .pjo-pick-slot-v232{width:72px;height:96px;border-radius:10px}
-  .pjo-slot-card-v232{inset:2px}
-  .pjo-fan-stage-v232{inset:156px -4px 43px}
-  .pjo-fan-card-v232{width:62px;height:101px;border-radius:9px}
-  .pjo-card-back-v232{inset:4px;border-radius:6px}
-  .pjo-card-sigil-v232{width:31px;height:31px;font-size:1rem}
-  .pjo-hold-ring-v232{inset:-4px;border-radius:13px}
-  .pjo-pick-hint-v232{font-size:.75rem}
-}
-@media(max-width:380px){
-  #pickScreen.pjo-card-table-v232{padding-right:5px;padding-left:5px}
-  .pjo-pick-slots-v232{gap:9px}
-  .pjo-pick-slot-v232{width:67px;height:91px}
-}
-@media(prefers-reduced-motion:reduce){
-  .pjo-card-table-v232.is-dealing-v232 .pjo-fan-card-v232{animation-duration:.01ms;animation-delay:0ms}
-  .pjo-slot-card-v232{transition-duration:.01ms}
-  .pjo-flight-card-v232{display:none!important}
-}
-</style>
+
+
+
+
+<link rel="stylesheet" href="css/card-table.css" id="pjoCardTableStyleV232">
 
 <script>
 // V232: preserve the reading DB and replace only the card-picking interaction.
@@ -15139,6 +13842,15 @@ body.pjo-pick-active-v232 .app{max-width:1460px;padding:18px 14px 34px}
     var from=card.getBoundingClientRect();
     var to=slot.getBoundingClientRect();
     var clone=card.cloneNode(true);
+    var finished=false;
+    var watchdog=null;
+    function finishFlightV232(){
+      if(finished)return;
+      finished=true;
+      clearTimeout(watchdog);
+      clone.remove();
+      done();
+    }
     clone.className='pjo-fan-card-v232 pjo-flight-card-v232';
     clone.style.left=from.left+'px';
     clone.style.top=from.top+'px';
@@ -15147,16 +13859,21 @@ body.pjo-pick-active-v232 .app{max-width:1460px;padding:18px 14px 34px}
     clone.style.height=from.height+'px';
     clone.style.transform='none';
     document.body.appendChild(clone);
+    watchdog=setTimeout(finishFlightV232,1000);
     var dx=to.left-from.left+(to.width-from.width)/2;
     var dy=to.top-from.top+(to.height-from.height)/2;
     requestAnimationFrame(function(){
-      var animation=clone.animate([
-        {transform:'translate3d(0,0,0) rotate(0deg) scale(1)',filter:'brightness(1)'},
-        {offset:.42,transform:'translate3d('+(dx*.46)+'px,'+(dy*.42-34)+'px,0) rotate(-2deg) scale(1.08)',filter:'brightness(1.18)'},
-        {transform:'translate3d('+dx+'px,'+dy+'px,0) rotate(0deg) scale('+(to.width/from.width)+')',filter:'brightness(1.05)'}
-      ],{duration:620,easing:'cubic-bezier(.2,.75,.2,1)',fill:'forwards'});
-      animation.onfinish=function(){clone.remove();done()};
-      animation.oncancel=function(){clone.remove();done()};
+      try{
+        var animation=clone.animate([
+          {transform:'translate3d(0,0,0) rotate(0deg) scale(1)',filter:'brightness(1)'},
+          {offset:.42,transform:'translate3d('+(dx*.46)+'px,'+(dy*.42-34)+'px,0) rotate(-2deg) scale(1.08)',filter:'brightness(1.18)'},
+          {transform:'translate3d('+dx+'px,'+dy+'px,0) rotate(0deg) scale('+(to.width/from.width)+')',filter:'brightness(1.05)'}
+        ],{duration:620,easing:'cubic-bezier(.2,.75,.2,1)',fill:'forwards'});
+        animation.onfinish=finishFlightV232;
+        animation.oncancel=finishFlightV232;
+      }catch(e){
+        finishFlightV232();
+      }
     });
   }
 
@@ -15304,542 +14021,7 @@ body.pjo-pick-active-v232 .app{max-width:1460px;padding:18px 14px 34px}
 })();
 </script>
 
-<style id="pjoMemberHomeAtelierStyleV234">
-/* V234: logged-in atelier home based on the ivory-and-walnut reference. */
-body[data-screen="memberHomeScreen"]{
-  background:#1b1008!important;
-  color:#2f2114!important;
-}
-body[data-screen="memberHomeScreen"]:before{
-  opacity:1!important;
-  background:
-    linear-gradient(90deg,rgba(0,0,0,.3),transparent 4%,transparent 96%,rgba(0,0,0,.32)),
-    repeating-linear-gradient(8deg,rgba(255,255,255,.015) 0 1px,transparent 1px 6px),
-    linear-gradient(110deg,#160c06,#3a2111 48%,#160d07)!important;
-}
-body[data-screen="memberHomeScreen"]:after{opacity:.04!important}
-body[data-screen="memberHomeScreen"] .admin-entry{display:none!important}
-body[data-screen="memberHomeScreen"] .app{
-  width:min(100%,960px)!important;
-  max-width:960px!important;
-  margin:0 auto!important;
-  padding:12px!important;
-}
-body[data-screen="memberHomeScreen"] .hero{
-  position:relative!important;
-  z-index:2!important;
-  min-height:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:20px!important;
-  margin:0!important;
-  padding:25px 36px 26px!important;
-  border:1px solid rgba(214,167,83,.42)!important;
-  border-bottom:2px solid #b48238!important;
-  border-radius:18px 18px 0 0!important;
-  background:
-    repeating-linear-gradient(7deg,rgba(255,255,255,.018) 0 1px,transparent 1px 7px),
-    linear-gradient(110deg,#1c0f08,#3c2212 50%,#170c06)!important;
-  box-shadow:0 18px 45px rgba(0,0,0,.3),inset 0 0 0 4px rgba(0,0,0,.18)!important;
-  text-align:left!important;
-}
-body[data-screen="memberHomeScreen"] .hero:before,
-body[data-screen="memberHomeScreen"] .hero .moon,
-body[data-screen="memberHomeScreen"] .hero .subtitle,
-body[data-screen="memberHomeScreen"] #dailyCard{display:none!important}
-body[data-screen="memberHomeScreen"] .hero h1{
-  max-width:none!important;
-  margin:0!important;
-  color:#f0d39a!important;
-  font-family:Georgia,"Times New Roman","AppleMyungjo",serif!important;
-  font-size:clamp(2rem,5.2vw,3.35rem)!important;
-  font-weight:500!important;
-  line-height:1!important;
-  letter-spacing:-.035em!important;
-  text-align:left!important;
-  text-shadow:0 2px 0 #0f0804,0 0 24px rgba(226,180,91,.12)!important;
-}
-.pjo-home-language-v234{display:none!important}
-body[data-screen="memberHomeScreen"] .pjo-home-language-v234{
-  display:grid!important;
-  flex:0 0 auto!important;
-  width:58px!important;
-  height:58px!important;
-  min-width:58px!important;
-  margin:0!important;
-  padding:0!important;
-  place-items:center!important;
-  border:1px solid #e0b866!important;
-  border-radius:50%!important;
-  background:rgba(20,11,5,.36)!important;
-  color:#f0cf8c!important;
-  box-shadow:inset 0 0 0 4px rgba(215,167,76,.08)!important;
-  font-family:Georgia,serif!important;
-  font-size:1.55rem!important;
-  font-weight:400!important;
-}
-.pjo-home-language-v234:hover{transform:rotate(8deg)!important}
-body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234{
-  position:relative!important;
-  isolation:isolate!important;
-  display:grid!important;
-  width:100%!important;
-  max-width:none!important;
-  margin:0!important;
-  padding:42px 38px 44px!important;
-  overflow:hidden!important;
-  border:1px solid #bb8a45!important;
-  border-top:0!important;
-  border-radius:0 0 24px 24px!important;
-  background:
-    radial-gradient(circle at 18% 12%,rgba(151,103,46,.075) 0 1px,transparent 1.5px) 0 0/10px 10px,
-    linear-gradient(145deg,#fff8e7,#f0dfbd 68%,#e5c99a)!important;
-  box-shadow:0 30px 75px rgba(0,0,0,.38),inset 0 0 60px rgba(117,72,28,.12)!important;
-  color:#332315!important;
-  backdrop-filter:none!important;
-}
-body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234:before{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  inset:8px;
-  border:1px solid rgba(154,103,47,.24);
-  border-radius:0 0 18px 18px;
-  pointer-events:none;
-}
-#memberHomeScreen.pjo-home-v234 .topbar{
-  order:1;
-  display:grid!important;
-  grid-template-columns:1fr!important;
-  gap:16px!important;
-  margin:0 0 26px!important;
-}
-#memberHomeScreen.pjo-home-v234 #memberBadge{
-  display:flex!important;
-  width:100%!important;
-  min-height:88px!important;
-  align-items:center!important;
-  gap:17px!important;
-  padding:14px 22px!important;
-  border:1px solid rgba(164,113,53,.44)!important;
-  border-radius:18px!important;
-  background:rgba(255,250,237,.34)!important;
-  color:#342315!important;
-  box-shadow:inset 0 1px rgba(255,255,255,.72)!important;
-  font-family:Georgia,"AppleMyungjo",serif!important;
-  font-size:clamp(1.2rem,3vw,1.55rem)!important;
-  font-weight:700!important;
-}
-.pjo-home-avatar-v234{
-  position:relative;
-  display:block;
-  flex:0 0 auto;
-  width:56px;
-  height:56px;
-  border:1px solid #be914a;
-  border-radius:50%;
-  background:linear-gradient(145deg,#42280f,#160d07);
-  box-shadow:0 7px 15px rgba(65,38,15,.22),inset 0 0 0 3px rgba(245,211,140,.08);
-}
-.pjo-home-avatar-v234:before{
-  content:"";
-  position:absolute;
-  top:12px;
-  left:20px;
-  width:15px;
-  height:15px;
-  border-radius:50%;
-  background:#e9c578;
-}
-.pjo-home-avatar-v234:after{
-  content:"";
-  position:absolute;
-  right:12px;
-  bottom:10px;
-  left:12px;
-  height:18px;
-  border-radius:18px 18px 7px 7px;
-  background:#e9c578;
-}
-#memberHomeScreen.pjo-home-v234 .top-actions{
-  display:flex!important;
-  justify-content:flex-start!important;
-  gap:14px!important;
-}
-#memberHomeScreen.pjo-home-v234 .top-actions .mini{
-  width:auto!important;
-  min-width:118px!important;
-  margin:0!important;
-  padding:12px 23px!important;
-  border:1px solid #ba8843!important;
-  border-radius:18px!important;
-  background:linear-gradient(180deg,#fff9e9,#ebd5aa)!important;
-  color:#342315!important;
-  box-shadow:0 6px 12px rgba(88,56,24,.17),inset 0 1px #fff!important;
-  font-family:"AppleMyungjo",Georgia,serif!important;
-  font-size:1rem!important;
-}
-#memberHomeScreen.pjo-home-v234 #memberPeriod{display:none!important}
-#memberHomeScreen.pjo-home-v234 .primary-member-menu{
-  order:3;
-  display:grid!important;
-  grid-template-columns:1fr!important;
-  margin:0!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234{
-  position:relative!important;
-  isolation:isolate!important;
-  display:grid!important;
-  width:100%!important;
-  min-height:470px!important;
-  margin:0!important;
-  padding:32px 24px 28px!important;
-  overflow:hidden!important;
-  place-items:center!important;
-  border:2px solid #b7893f!important;
-  border-radius:26px!important;
-  background:
-    radial-gradient(circle at 50% 40%,rgba(212,164,73,.08),transparent 38%),
-    repeating-linear-gradient(12deg,rgba(255,255,255,.012) 0 1px,transparent 1px 7px),
-    linear-gradient(145deg,#171611,#090a08)!important;
-  color:#e7c177!important;
-  box-shadow:0 12px 24px rgba(66,41,17,.25),inset 0 0 0 5px #11110e,inset 0 0 0 6px rgba(218,172,83,.52)!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:before{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  top:92px;
-  left:50%;
-  width:68%;
-  height:170px;
-  border:1px solid rgba(218,169,73,.5);
-  border-radius:50%;
-  background:none!important;
-  opacity:.72!important;
-  transform:translateX(-50%) rotate(-12deg);
-  box-shadow:150px -6px 0 -149px #ffd983,-165px 15px 0 -164px #ffd983;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:after{
-  content:"✦";
-  position:absolute;
-  right:0;
-  bottom:103px;
-  left:0;
-  height:1px;
-  color:#e6bd70;
-  background:linear-gradient(90deg,transparent,rgba(203,154,68,.58),transparent);
-  font-size:1rem;
-  line-height:1px;
-  text-align:center;
-  opacity:1;
-}
-.pjo-home-card-back-v234{
-  position:relative;
-  z-index:2;
-  display:grid;
-  width:148px;
-  height:230px;
-  place-items:center;
-  border:1px solid #d0a351;
-  border-radius:12px;
-  background:
-    radial-gradient(circle at 50% 50%,transparent 0 42px,rgba(208,159,70,.56) 43px 44px,transparent 45px),
-    repeating-radial-gradient(circle at 50% 50%,transparent 0 28px,rgba(196,144,57,.16) 29px 30px),
-    linear-gradient(150deg,#26231d,#0c0c0a);
-  box-shadow:0 16px 28px rgba(0,0,0,.4),inset 0 0 0 5px #0d0d0b,inset 0 0 0 6px rgba(222,176,83,.74);
-}
-.pjo-home-card-back-v234:before{
-  content:"✦";
-  position:absolute;
-  top:13px;
-  color:#e4b968;
-  font-size:1.1rem;
-}
-.pjo-home-card-back-v234:after{
-  content:"✦";
-  position:absolute;
-  bottom:13px;
-  color:#e4b968;
-  font-size:1.1rem;
-}
-.pjo-home-card-sun-v234{
-  display:grid;
-  width:76px;
-  height:76px;
-  place-items:center;
-  border:1px solid #d0a351;
-  border-radius:50%;
-  background:repeating-conic-gradient(from 0deg,#d8ab57 0 2deg,transparent 2deg 14deg);
-  box-shadow:inset 0 0 0 19px #15140f,inset 0 0 0 20px #d0a351;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234 .choice-title{
-  position:relative!important;
-  z-index:2!important;
-  align-self:end!important;
-  margin-top:26px!important;
-  color:#e8c47e!important;
-  font-family:"AppleMyungjo",Georgia,serif!important;
-  font-size:clamp(2rem,5vw,2.8rem)!important;
-  font-weight:600!important;
-  letter-spacing:.02em!important;
-  text-shadow:0 1px #000!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:hover{
-  filter:brightness(1.08)!important;
-  transform:translateY(-3px)!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-row-v234{
-  order:4;
-  width:100%;
-  margin:28px 0 0!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234{
-  position:relative!important;
-  display:grid!important;
-  width:100%!important;
-  min-height:230px!important;
-  margin:0!important;
-  padding:25px 24px!important;
-  place-items:center!important;
-  border:1px solid #b88743!important;
-  border-radius:24px!important;
-  background:rgba(255,250,237,.44)!important;
-  color:#382618!important;
-  box-shadow:0 8px 16px rgba(94,58,25,.16),inset 0 0 0 5px rgba(255,255,255,.24)!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:before{
-  content:"";
-  position:absolute;
-  inset:10px;
-  border:1px solid rgba(160,110,51,.2);
-  border-radius:17px;
-  background:none!important;
-  opacity:1!important;
-}
-.pjo-home-consult-mark-v234{
-  position:relative;
-  display:grid;
-  width:70px;
-  height:70px;
-  place-items:center;
-  border:1px solid #9b6b31;
-  border-radius:35px 35px 15px 15px;
-  color:#8e5c27;
-  font-family:Georgia,serif;
-  font-size:1.4rem;
-}
-.pjo-home-consult-mark-v234:before,.pjo-home-consult-mark-v234:after{
-  content:"";
-  position:absolute;
-  bottom:9px;
-  width:18px;
-  height:22px;
-  border:2px solid #9b6b31;
-  border-top:0;
-}
-.pjo-home-consult-mark-v234:before{left:-29px;transform:skewY(10deg)}
-.pjo-home-consult-mark-v234:after{right:-29px;transform:skewY(-10deg)}
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234 .choice-title{
-  position:relative!important;
-  margin-top:12px!important;
-  color:#352315!important;
-  font-family:"AppleMyungjo",Georgia,serif!important;
-  font-size:clamp(1.7rem,4vw,2.35rem)!important;
-  font-weight:650!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234 .choice-sub{
-  position:relative!important;
-  max-width:none!important;
-  margin-top:7px!important;
-  color:#5c4228!important;
-  font-size:clamp(.92rem,2.2vw,1.08rem)!important;
-  font-weight:600!important;
-}
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu{
-  order:5;
-  display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  gap:20px!important;
-  margin:28px 0 0!important;
-}
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile{
-  position:relative!important;
-  display:grid!important;
-  min-height:172px!important;
-  margin:0!important;
-  padding:23px 18px!important;
-  place-items:center!important;
-  border:1px solid #b88743!important;
-  border-radius:22px!important;
-  background:rgba(255,250,237,.42)!important;
-  color:#382618!important;
-  box-shadow:0 7px 14px rgba(94,58,25,.15),inset 0 0 0 4px rgba(255,255,255,.24)!important;
-}
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile:before{
-  content:"";
-  position:absolute;
-  inset:8px;
-  border:1px solid rgba(160,110,51,.2);
-  border-radius:15px;
-  background:none!important;
-  opacity:1!important;
-}
-.pjo-home-book-v234{
-  position:relative;
-  width:74px;
-  height:47px;
-  margin-bottom:10px;
-}
-.pjo-home-book-v234:before,.pjo-home-book-v234:after{
-  content:"";
-  position:absolute;
-  top:0;
-  width:36px;
-  height:45px;
-  border:2px solid #936128;
-  background:repeating-linear-gradient(#f8eacb 0 8px,#b98a4b 9px 10px);
-}
-.pjo-home-book-v234:before{left:1px;border-radius:6px 1px 4px 8px;transform:skewY(5deg)}
-.pjo-home-book-v234:after{right:1px;border-radius:1px 6px 8px 4px;transform:skewY(-5deg)}
-.pjo-home-profile-v234{
-  position:relative;
-  display:grid;
-  width:64px;
-  height:64px;
-  margin-bottom:8px;
-  place-items:center;
-  border:1px solid #956329;
-  border-radius:50%;
-  color:#9a672d;
-  font-family:Georgia,serif;
-  font-size:1.5rem;
-}
-.pjo-home-profile-v234:before{content:"✦";position:absolute;top:-9px;color:#a47235;font-size:1.15rem}
-.pjo-home-profile-v234:after{content:"●";position:absolute;bottom:7px;font-size:1.65rem}
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu .choice-title{
-  position:relative!important;
-  color:#392719!important;
-  font-family:"AppleMyungjo",Georgia,serif!important;
-  font-size:clamp(1.35rem,3vw,1.75rem)!important;
-  font-weight:650!important;
-}
-#memberHomeScreen.pjo-home-v234 #memberFeedbackBox{
-  order:6;
-  position:relative!important;
-  margin:30px 0 0!important;
-  padding:34px!important;
-  overflow:hidden!important;
-  border:1px solid #b88743!important;
-  border-radius:24px!important;
-  background:rgba(255,250,237,.46)!important;
-  box-shadow:0 8px 16px rgba(94,58,25,.15),inset 0 0 0 5px rgba(255,255,255,.24)!important;
-}
-#memberHomeScreen.pjo-home-v234 #memberFeedbackBox:after{
-  content:"❧";
-  position:absolute;
-  right:24px;
-  top:66px;
-  color:rgba(165,111,50,.22);
-  font-family:Georgia,serif;
-  font-size:6rem;
-  transform:rotate(-18deg);
-  pointer-events:none;
-}
-#memberHomeScreen.pjo-home-v234 #memberFeedbackBox h3{
-  position:relative;
-  z-index:1;
-  margin:0!important;
-  color:#352315!important;
-  font-family:"AppleMyungjo",Georgia,serif!important;
-  font-size:clamp(1.55rem,3.5vw,2rem)!important;
-  font-weight:700!important;
-}
-#memberHomeScreen.pjo-home-v234 #memberFeedbackBox .choice-sub{
-  position:relative;
-  z-index:1;
-  max-width:650px!important;
-  margin:13px 0 20px!important;
-  color:#5b4128!important;
-  font-size:1rem!important;
-  font-weight:600!important;
-  line-height:1.75!important;
-}
-#memberHomeScreen.pjo-home-v234 #memberFeedbackInput{
-  position:relative;
-  z-index:1;
-  min-height:118px!important;
-  border:1px solid #b78a48!important;
-  border-radius:18px!important;
-  background:linear-gradient(145deg,#181611,#0b0c0a)!important;
-  color:#f0d9aa!important;
-  box-shadow:inset 0 0 0 4px #10100d!important;
-  font-size:.95rem!important;
-  line-height:1.7!important;
-}
-#memberHomeScreen.pjo-home-v234 #memberFeedbackInput::placeholder{color:#c7ad7c!important}
-#memberHomeScreen.pjo-home-v234 .member-feedback-row{
-  position:relative;
-  z-index:1;
-  display:flex!important;
-  align-items:center!important;
-  gap:14px!important;
-}
-#memberHomeScreen.pjo-home-v234 [data-action="send-feedback"]{
-  width:auto!important;
-  margin:14px 0 0!important;
-  padding:11px 21px!important;
-  border:1px solid #a97834!important;
-  border-radius:14px!important;
-  background:linear-gradient(180deg,#efd093,#c59543)!important;
-  color:#2b1c0f!important;
-  box-shadow:0 6px 12px rgba(73,44,18,.18)!important;
-}
-#memberHomeScreen.pjo-home-v234 .consult-box-v97,
-#memberHomeScreen.pjo-home-v234 [id*="privateConsultThread"]{order:7}
-@media(max-width:700px){
-  body[data-screen="memberHomeScreen"] .app{padding:0!important}
-  body[data-screen="memberHomeScreen"] .hero{
-    padding:21px 20px!important;
-    border-right:0!important;
-    border-left:0!important;
-    border-radius:0!important;
-  }
-  body[data-screen="memberHomeScreen"] .hero h1{font-size:clamp(1.75rem,8vw,2.45rem)!important}
-  .pjo-home-language-v234{width:48px!important;height:48px!important;min-width:48px!important;font-size:1.3rem!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234{
-    padding:28px 18px 34px!important;
-    border-right:0!important;
-    border-left:0!important;
-    border-radius:0!important;
-  }
-  #memberHomeScreen.pjo-home-v234 #memberBadge{min-height:76px!important;padding:11px 14px!important}
-  .pjo-home-avatar-v234{width:48px;height:48px}
-  .pjo-home-avatar-v234:before{top:10px;left:17px;width:13px;height:13px}
-  #memberHomeScreen.pjo-home-v234 .top-actions{gap:10px!important}
-  #memberHomeScreen.pjo-home-v234 .top-actions .mini{min-width:104px!important;padding:10px 16px!important}
-  #memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234{min-height:390px!important;padding:28px 18px 24px!important}
-  .pjo-home-card-back-v234{width:126px;height:196px}
-  #memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:before{top:80px;width:85%;height:140px}
-  #memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234{min-height:205px!important}
-  #memberHomeScreen.pjo-home-v234 .secondary-member-menu{gap:12px!important}
-  #memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile{min-height:150px!important;padding:18px 10px!important}
-  #memberHomeScreen.pjo-home-v234 #memberFeedbackBox{padding:26px 20px!important}
-  #memberHomeScreen.pjo-home-v234 #memberFeedbackBox:after{right:8px;font-size:4.6rem}
-}
-@media(max-width:420px){
-  body[data-screen="memberHomeScreen"] .hero{padding:18px 14px!important}
-  body[data-screen="memberHomeScreen"] .hero h1{font-size:1.7rem!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234{padding:24px 13px 30px!important}
-  #memberHomeScreen.pjo-home-v234 .top-actions .mini{min-width:0!important;flex:1!important}
-  #memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234{min-height:360px!important}
-  #memberHomeScreen.pjo-home-v234 .secondary-member-menu .choice-title{font-size:1.15rem!important}
-}
-@media(prefers-reduced-motion:reduce){
-  #memberHomeScreen.pjo-home-v234 .home-tile,.pjo-home-language-v234{transition:none!important}
-}
-</style>
+<link rel="stylesheet" href="css/member-home-atelier.css" id="pjoMemberHomeAtelierStyleV234">
 
 <script>
 // V234: decorate the existing member-home actions without changing their handlers.
@@ -15959,209 +14141,9 @@ body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234:before{
 })();
 </script>
 
-<style id="pjoHomeReferenceButtonsV235">
-/* V235: use the supplied main-page artwork itself as the button artwork. */
-body[data-screen="memberHomeScreen"] .language-toggle-v60{display:none!important}
-#memberHomeScreen.pjo-home-v234 > .private-consult-row:empty{
-  display:none!important;
-  margin:0!important;
-}
-#memberHomeScreen.pjo-home-v234{
-  grid-template-columns:minmax(0,1fr)!important;
-}
-#memberHomeScreen.pjo-home-v234 > *{
-  min-width:0!important;
-}
-.pjo-home-sr-v235{
-  position:absolute!important;
-  width:1px!important;
-  height:1px!important;
-  padding:0!important;
-  margin:-1px!important;
-  overflow:hidden!important;
-  clip:rect(0,0,0,0)!important;
-  white-space:nowrap!important;
-  border:0!important;
-}
-body[data-screen="memberHomeScreen"] .pjo-home-language-v234,
-#memberHomeScreen.pjo-home-v234 [data-action="account"],
-#memberHomeScreen.pjo-home-v234 [data-action="logout"],
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234,
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234,
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"],
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]{
-  min-height:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background-color:transparent!important;
-  background-image:url("assets/main-page-reference-v235.png")!important;
-  background-repeat:no-repeat!important;
-  box-shadow:none!important;
-  color:transparent!important;
-  font-size:0!important;
-}
-body[data-screen="memberHomeScreen"] .pjo-home-language-v234:before,
-body[data-screen="memberHomeScreen"] .pjo-home-language-v234:after,
-#memberHomeScreen.pjo-home-v234 [data-action="account"]:before,
-#memberHomeScreen.pjo-home-v234 [data-action="account"]:after,
-#memberHomeScreen.pjo-home-v234 [data-action="logout"]:before,
-#memberHomeScreen.pjo-home-v234 [data-action="logout"]:after,
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:before,
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:after,
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:before,
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:after,
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]:before,
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]:after,
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]:before,
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]:after{
-  display:none!important;
-  content:none!important;
-}
-body[data-screen="memberHomeScreen"] .pjo-home-language-v234{
-  width:76px!important;
-  height:auto!important;
-  min-width:0!important;
-  aspect-ratio:76/76!important;
-  background-size:1134.2105% auto!important;
-  background-position:95.5471% 1.3736%!important;
-}
-#memberHomeScreen.pjo-home-v234 [data-action="account"]{
-  width:145px!important;
-  min-width:0!important;
-  aspect-ratio:145/64!important;
-  background-size:594.4828% auto!important;
-  background-position:6.5551% 15.1136%!important;
-}
-#memberHomeScreen.pjo-home-v234 [data-action="logout"]{
-  width:140px!important;
-  min-width:0!important;
-  aspect-ratio:140/64!important;
-  background-size:615.7143% auto!important;
-  background-position:27.8393% 15.1136%!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234{
-  width:100%!important;
-  aspect-ratio:764/554!important;
-  background-size:112.8272% auto!important;
-  background-position:50% 27.6378%!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234{
-  width:100%!important;
-  aspect-ratio:762/300!important;
-  background-size:113.1234% auto!important;
-  background-position:50% 61.5488%!important;
-}
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]{
-  width:100%!important;
-  aspect-ratio:370/176!important;
-  background-size:232.973% auto!important;
-  background-position:10.1626% 77.0364%!important;
-}
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]{
-  width:100%!important;
-  aspect-ratio:371/176!important;
-  background-size:232.345% auto!important;
-  background-position:89.8167% 77.0364%!important;
-}
-#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:hover,
-#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:hover,
-#memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile:hover,
-#memberHomeScreen.pjo-home-v234 .top-actions .mini:hover,
-body[data-screen="memberHomeScreen"] .pjo-home-language-v234:hover{
-  filter:brightness(1.025)!important;
-  transform:translateY(-2px)!important;
-}
-@media(max-width:700px){
-  body[data-screen="memberHomeScreen"] .pjo-home-language-v234{width:58px!important;height:auto!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234{
-    padding-right:clamp(18px,5.6vw,24px)!important;
-    padding-left:clamp(18px,5.6vw,24px)!important;
-  }
-  #memberHomeScreen.pjo-home-v234 .top-actions{flex-wrap:nowrap!important}
-  #memberHomeScreen.pjo-home-v234 [data-action="account"]{width:145px!important;max-width:45%!important}
-  #memberHomeScreen.pjo-home-v234 [data-action="logout"]{width:140px!important;max-width:44%!important}
-  #memberHomeScreen.pjo-home-v234 .pjo-home-consult-row-v234{margin-top:16px!important}
-  body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234 .secondary-member-menu{margin-top:14px!important}
-  #memberHomeScreen.pjo-home-v234 #memberFeedbackBox{margin-top:16px!important}
-  #memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234,
-  #memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234,
-  #memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile{min-height:0!important;padding:0!important}
-}
-#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini,
-#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini{
-  min-height:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background-color:transparent!important;
-  background-image:url("assets/main-page-reference-v235.png")!important;
-  background-repeat:no-repeat!important;
-  box-shadow:none!important;
-  color:transparent!important;
-  font-size:0!important;
-}
-#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini{
-  width:145px!important;
-  min-width:0!important;
-  aspect-ratio:145/64!important;
-  background-size:594.4828% auto!important;
-  background-position:6.5551% 15.1136%!important;
-}
-#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini{
-  width:140px!important;
-  min-width:0!important;
-  aspect-ratio:140/64!important;
-  background-size:615.7143% auto!important;
-  background-position:27.8393% 15.1136%!important;
-}
-</style>
+<link rel="stylesheet" href="css/home-reference-buttons.css" id="pjoHomeReferenceButtonsV235">
 
-<style id="pjoHomeThemeControlStyleV236">
-.pjo-theme-control-v236{
-  margin-top:16px;
-  padding:16px;
-  border:1px solid rgba(248,220,145,.24);
-  border-radius:18px;
-  background:rgba(255,255,255,.055);
-}
-.pjo-theme-control-v236>button{
-  width:auto;
-  min-width:118px;
-  margin:0;
-}
-.pjo-theme-picker-v236{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-  margin-top:12px;
-}
-.pjo-theme-picker-v236.hidden{display:none!important}
-.pjo-theme-picker-v236 button{
-  width:100%;
-  min-height:72px;
-  margin:0;
-  padding:12px;
-  border:1px solid rgba(248,220,145,.25);
-  background:rgba(255,255,255,.07);
-  color:var(--text);
-  box-shadow:none;
-}
-.pjo-theme-picker-v236 button.selected{
-  border-color:var(--gold);
-  background:linear-gradient(135deg,#fff3bd,#d99c32);
-  color:#151019;
-}
-.pjo-theme-status-v236{
-  margin:10px 0 0;
-  color:var(--muted);
-  font-size:.88rem;
-}
-@media(max-width:480px){
-  .pjo-theme-picker-v236{grid-template-columns:1fr}
-  .pjo-theme-control-v236>button{width:100%}
-}
-</style>
+<link rel="stylesheet" href="css/home-theme-control.css" id="pjoHomeThemeControlStyleV236">
 
 <script>
 // V236: switch the member home between the original theme and supplied artwork theme.
@@ -16175,9 +14157,9 @@ function pjoThemeCopyV236(){
   return {theme:'테마',basic:'기본 테마',atelier:'새 디자인',current:'현재 테마'};
 }
 function pjoBaseHomeCopyV236(){
-  if(currentLang==='zh')return {reading:'开始解读',archive:'我的收藏',profile:'Oracle Profile'};
-  if(currentLang==='en')return {reading:'Start Reading',archive:'My Archive',profile:'Oracle Profile'};
-  return {reading:'리딩 시작',archive:'내 보관함',profile:'Oracle Profile'};
+  if(currentLang==='zh')return {account:'我的账户',logout:'退出',reading:'开始解读',archive:'我的收藏',profile:'Oracle Profile'};
+  if(currentLang==='en')return {account:'My Account',logout:'Log Out',reading:'Start Reading',archive:'My Archive',profile:'Oracle Profile'};
+  return {account:'내 계정',logout:'나가기',reading:'리딩 시작',archive:'내 보관함',profile:'Oracle Profile'};
 }
 function pjoRestoreBasicHomeV236(){
   const screen=$('memberHomeScreen');
@@ -16188,6 +14170,10 @@ function pjoRestoreBasicHomeV236(){
   document.querySelector('.pjo-home-language-v234')?.remove();
   const badge=$('memberBadge');
   if(badge)badge.textContent='👤 '+(currentUser?.id||'Member')+' · '+tier;
+  const account=screen.querySelector('[data-action="account"]');
+  if(account)account.textContent=copy.account;
+  const logout=screen.querySelector('[data-action="logout"]');
+  if(logout)logout.textContent=copy.logout;
   const reading=screen.querySelector('[data-action="reading-start"]');
   if(reading){
     reading.classList.remove('pjo-home-reading-v234');
@@ -16281,6 +14267,140 @@ document.addEventListener('click',function(event){
 document.addEventListener('DOMContentLoaded',function(){
   pjoApplyHomeThemeV236();
 });
+</script>
+
+<link rel="stylesheet" href="css/home-gap-guard.css" id="pjoHomeGapGuardStyleV237">
+
+<script>
+// V237: keep the consultation and archive rows adjacent after every login/render.
+(function(){
+  function pjoNormalizeHomeRowsV237(){
+    const home=$('memberHomeScreen');
+    if(!home)return;
+    const rows=Array.from(home.querySelectorAll(':scope > .private-consult-row'));
+    const consult=home.querySelector('[data-action="private-consult"]');
+    const activeRow=consult?.closest('.private-consult-row')||null;
+    rows.forEach(function(row){
+      if(row!==activeRow)row.remove();
+    });
+    const secondary=home.querySelector(':scope > .secondary-member-menu');
+    if(activeRow&&secondary){
+      activeRow.style.marginTop='';
+      activeRow.style.marginBottom='';
+      if(activeRow.nextElementSibling!==secondary)home.insertBefore(activeRow,secondary);
+    }
+  }
+
+  if(typeof renderMemberHome==='function'){
+    const pjoRenderMemberHomeBaseV237=renderMemberHome;
+    renderMemberHome=function(){
+      const result=pjoRenderMemberHomeBaseV237();
+      pjoNormalizeHomeRowsV237();
+      requestAnimationFrame(pjoNormalizeHomeRowsV237);
+      return result;
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',pjoNormalizeHomeRowsV237);
+})();
+</script>
+
+<link rel="stylesheet" href="css/home-utility-buttons.css" id="pjoHomeUtilityButtonsStyleV238">
+
+<link rel="stylesheet" href="css/entry-atelier.css" id="pjoEntryAtelierStyleV239">
+
+<script>
+// V239: add the access-page welcome copy and a real, reusable corporate footer.
+(function(){
+  const entryWelcomeV239={
+    ko:'당신의 통찰이 빛나는, 오라클 아틀리에에 오신 것을 환영합니다.',
+    zh:'欢迎来到让你的洞察闪耀的神谕工作室。',
+    en:'Welcome to the Oracle Atelier, where your insight shines.'
+  };
+  const entryPanelV239={
+    ko:['바로 시작하세요','회원 로그인 또는 계정 만들기로 바로 시작하세요.'],
+    zh:['立即开始','登录会员账号或创建新账号即可开始。'],
+    en:['Begin Your Journey','Log in or create an account to begin.']
+  };
+  function pjoEnsureCorporateFooterV239(){
+    let footer=document.getElementById('pjoCorporateFooterV239');
+    if(!footer){
+      footer=document.createElement('footer');
+      footer.id='pjoCorporateFooterV239';
+      footer.className='pjo-corporate-footer-v239';
+      footer.setAttribute('aria-label','Contact');
+      footer.innerHTML='<a href="mailto:baghamji@gmail.com">contact: baghamji@gmail.com</a>';
+      document.body.appendChild(footer);
+    }
+    return footer;
+  }
+  function pjoApplyEntryCopyV239(){
+    pjoEnsureCorporateFooterV239();
+    const lang=(typeof currentLang==='string'&&entryWelcomeV239[currentLang])?currentLang:'ko';
+    const heroSub=document.querySelector('.hero > .subtitle');
+    const entry=document.getElementById('entryScreen');
+    if(heroSub)heroSub.textContent=entryWelcomeV239[lang];
+    if(entry){
+      const title=entry.querySelector('h2');
+      const sub=entry.querySelector(':scope > .subtitle');
+      if(title)title.textContent=entryPanelV239[lang][0];
+      if(sub)sub.textContent=entryPanelV239[lang][1];
+    }
+  }
+  if(typeof applyLanguage==='function'){
+    const pjoApplyLanguageBaseV239=applyLanguage;
+    applyLanguage=function(){
+      const result=pjoApplyLanguageBaseV239();
+      pjoApplyEntryCopyV239();
+      return result;
+    };
+  }
+  if(typeof show==='function'){
+    const pjoShowBaseV239=show;
+    show=function(id){
+      const result=pjoShowBaseV239(id);
+      if(id==='entryScreen')pjoApplyEntryCopyV239();
+      return result;
+    };
+  }
+  document.addEventListener('DOMContentLoaded',pjoApplyEntryCopyV239);
+})();
+</script>
+
+<link rel="stylesheet" href="css/private-atelier.css" id="pjoPrivateAtelierStyleV240">
+
+<script>
+// V240: keep the private-session heading concise without changing stored conversations.
+(function(){
+  function pjoApplyPrivateSessionCopyV240(){
+    const screen=document.getElementById('privateConsultScreen');
+    if(!screen)return;
+    const intro=screen.querySelector('.private-consult-intro');
+    if(intro)intro.textContent='현재 상황과 가장 궁금한 질문을 남겨주세요.\n타로사가 확인 후 이곳에서 답변드립니다.';
+    const title=document.querySelector('#privateConsultThreadV97 > h3');
+    if(title)title.textContent='상담 교류 창';
+  }
+  if(typeof renderPrivateConsultThreadV97==='function'){
+    const pjoRenderPrivateConsultThreadBaseV240=renderPrivateConsultThreadV97;
+    renderPrivateConsultThreadV97=function(){
+      const result=pjoRenderPrivateConsultThreadBaseV240();
+      pjoApplyPrivateSessionCopyV240();
+      requestAnimationFrame(function(){
+        document.querySelectorAll('#privateConsultScreen .consult-scroll-v103').forEach(function(box){box.scrollTop=box.scrollHeight});
+      });
+      return result;
+    };
+  }
+  if(typeof show==='function'){
+    const pjoShowBaseV240=show;
+    show=function(id){
+      const result=pjoShowBaseV240(id);
+      if(id==='privateConsultScreen')pjoApplyPrivateSessionCopyV240();
+      return result;
+    };
+  }
+  document.addEventListener('DOMContentLoaded',pjoApplyPrivateSessionCopyV240);
+})();
 </script>
 
 </body>
