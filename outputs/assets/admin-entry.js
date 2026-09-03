@@ -17,6 +17,7 @@
 
   function setError(message) {
     var error = element('adminError');
+    if (error) error.textContent = message || '';
   }
 
   function setBusy(busy) {
