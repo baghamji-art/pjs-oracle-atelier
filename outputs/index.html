@@ -12872,9 +12872,33 @@ function renderHybridAiReportV185(data){
   latestSummary=report+'\n\n'+(latestSummary||'');
   updateLatestSavedReadingWithAiV185(report);
 }
+function applyDestinyOneAiV234(data){
+  const root=$('reading');
+  const result=$('resultScreen');
+  if(!root||!result?.classList.contains('destiny-one-v195')||!data)return false;
+  const sections=Array.isArray(data.sections)?data.sections.filter(section=>section&&String(section.body||'').trim()):[];
+  const findSection=(pattern,fallbackIndex)=>sections.find(section=>pattern.test(String(section.heading||'')))||sections[fallbackIndex]||null;
+  const overview=findSection(/한눈에|결론|인연/,0);
+  const relation=findSection(/특징|관계|사람/,1);
+  const purpose=findSection(/왜 다시|만난 이유|목적/,2);
+  const overviewRoot=root.querySelector('.destiny-overview-prose-v208');
+  const overviewBody=String(overview?.body||'').trim();
+  const headline=String(data.headline||'').trim();
+  if(overviewRoot&&(headline||overviewBody)){
+    overviewRoot.innerHTML=(headline?'<p class="sentence-1"><strong>'+esc(headline)+'</strong></p>':'')+(overviewBody?'<p class="sentence-2">'+esc(overviewBody)+'</p>':'');
+  }
+  const relationBody=String(relation?.body||'').trim();
+  const relationParagraph=root.querySelector('.destiny-relation-panels-v195 .destiny-relation-panel-v195.active > p');
+  if(relationParagraph&&relationBody)relationParagraph.textContent=relationBody;
+  const purposeBody=String(purpose?.body||'').trim();
+  const purposeParagraph=root.querySelector('.destiny-purpose-v195 > p');
+  if(purposeParagraph&&purposeBody)purposeParagraph.textContent=purposeBody;
+  return true;
+}
 function applyHybridAiIntoExistingReportV187(data){
   const root=$('reading');
   if(!root||!data)return;
+  if(applyDestinyOneAiV234(data))return;
   const sections=Array.isArray(data.sections)?data.sections.filter(s=>s&&String(s.body||'').trim()):[];
   if(!sections.length&&!data.headline)return;
   const candidates=[...root.querySelectorAll('.reading-box,.quick-summary,.study-box-v112,.pj-section-v67,.dating-section-v70,.dating-copy-card-v70,.dating-advice-card-v70')].filter(el=>{
@@ -13829,7 +13853,6 @@ if(typeof renderReading==='function'){
 if(typeof requestHybridAiReportV185==='function'){
   const requestHybridAiReportBaseV195=requestHybridAiReportV185;
   requestHybridAiReportV185=async function(cards){
-    if(isDestinyOneReadingV195())return;
     return requestHybridAiReportBaseV195(cards);
   };
 }
@@ -15882,7 +15905,8 @@ body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234:before{
     const reading=screen.querySelector('[data-action="reading-start"]');
     if(reading){
       reading.classList.add('pjo-home-reading-v234');
-      reading.innerHTML='<span class="pjo-home-card-back-v234" aria-hidden="true"><i class="pjo-home-card-sun-v234"></i></span><span class="choice-title">'+copy.reading+'</span>';
+      reading.innerHTML='<span class="pjo-home-sr-v235">'+copy.reading+'</span>';
+      reading.setAttribute('aria-label',copy.reading);
     }
 
     const consult=screen.querySelector('[data-action="private-consult"]');
@@ -15890,16 +15914,19 @@ body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234:before{
       consult.classList.add('pjo-home-consult-v234');
       const row=consult.parentElement;
       if(row)row.classList.add('pjo-home-consult-row-v234');
-      consult.innerHTML='<span class="pjo-home-consult-mark-v234" aria-hidden="true">1:1</span><span class="choice-title">'+copy.consult+'</span><span class="choice-sub">'+copy.consultSub+'</span>';
+      consult.innerHTML='<span class="pjo-home-sr-v235">'+copy.consult+' · '+copy.consultSub+'</span>';
+      consult.setAttribute('aria-label',copy.consult+' · '+copy.consultSub);
     }
 
     const archive=screen.querySelector('[data-action="archive"]');
     if(archive){
-      archive.innerHTML='<span class="pjo-home-book-v234" aria-hidden="true"></span><span class="choice-title">'+copy.archive+'</span>';
+      archive.innerHTML='<span class="pjo-home-sr-v235">'+copy.archive+'</span>';
+      archive.setAttribute('aria-label',copy.archive);
     }
     const profile=screen.querySelector('[data-action="profile"]');
     if(profile){
-      profile.innerHTML='<span class="pjo-home-profile-v234" aria-hidden="true"></span><span class="choice-title">'+copy.profile+'</span>';
+      profile.innerHTML='<span class="pjo-home-sr-v235">'+copy.profile+'</span>';
+      profile.setAttribute('aria-label',copy.profile);
     }
   }
 
@@ -15930,6 +15957,330 @@ body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234:before{
     if(currentUser?.type==='member')pjoDecorateMemberHomeV234();
   });
 })();
+</script>
+
+<style id="pjoHomeReferenceButtonsV235">
+/* V235: use the supplied main-page artwork itself as the button artwork. */
+body[data-screen="memberHomeScreen"] .language-toggle-v60{display:none!important}
+#memberHomeScreen.pjo-home-v234 > .private-consult-row:empty{
+  display:none!important;
+  margin:0!important;
+}
+#memberHomeScreen.pjo-home-v234{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+#memberHomeScreen.pjo-home-v234 > *{
+  min-width:0!important;
+}
+.pjo-home-sr-v235{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234,
+#memberHomeScreen.pjo-home-v234 [data-action="account"],
+#memberHomeScreen.pjo-home-v234 [data-action="logout"],
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234,
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"],
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]{
+  min-height:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  background-image:url("assets/main-page-reference-v235.png")!important;
+  background-repeat:no-repeat!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+}
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234:before,
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234:after,
+#memberHomeScreen.pjo-home-v234 [data-action="account"]:before,
+#memberHomeScreen.pjo-home-v234 [data-action="account"]:after,
+#memberHomeScreen.pjo-home-v234 [data-action="logout"]:before,
+#memberHomeScreen.pjo-home-v234 [data-action="logout"]:after,
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:before,
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:after,
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:before,
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:after,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]:before,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]:after,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]:before,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]:after{
+  display:none!important;
+  content:none!important;
+}
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234{
+  width:76px!important;
+  height:auto!important;
+  min-width:0!important;
+  aspect-ratio:76/76!important;
+  background-size:1134.2105% auto!important;
+  background-position:95.5471% 1.3736%!important;
+}
+#memberHomeScreen.pjo-home-v234 [data-action="account"]{
+  width:145px!important;
+  min-width:0!important;
+  aspect-ratio:145/64!important;
+  background-size:594.4828% auto!important;
+  background-position:6.5551% 15.1136%!important;
+}
+#memberHomeScreen.pjo-home-v234 [data-action="logout"]{
+  width:140px!important;
+  min-width:0!important;
+  aspect-ratio:140/64!important;
+  background-size:615.7143% auto!important;
+  background-position:27.8393% 15.1136%!important;
+}
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234{
+  width:100%!important;
+  aspect-ratio:764/554!important;
+  background-size:112.8272% auto!important;
+  background-position:50% 27.6378%!important;
+}
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234{
+  width:100%!important;
+  aspect-ratio:762/300!important;
+  background-size:113.1234% auto!important;
+  background-position:50% 61.5488%!important;
+}
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="archive"]{
+  width:100%!important;
+  aspect-ratio:370/176!important;
+  background-size:232.973% auto!important;
+  background-position:10.1626% 77.0364%!important;
+}
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu [data-action="profile"]{
+  width:100%!important;
+  aspect-ratio:371/176!important;
+  background-size:232.345% auto!important;
+  background-position:89.8167% 77.0364%!important;
+}
+#memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234:hover,
+#memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234:hover,
+#memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile:hover,
+#memberHomeScreen.pjo-home-v234 .top-actions .mini:hover,
+body[data-screen="memberHomeScreen"] .pjo-home-language-v234:hover{
+  filter:brightness(1.025)!important;
+  transform:translateY(-2px)!important;
+}
+@media(max-width:700px){
+  body[data-screen="memberHomeScreen"] .pjo-home-language-v234{width:58px!important;height:auto!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234{
+    padding-right:clamp(18px,5.6vw,24px)!important;
+    padding-left:clamp(18px,5.6vw,24px)!important;
+  }
+  #memberHomeScreen.pjo-home-v234 .top-actions{flex-wrap:nowrap!important}
+  #memberHomeScreen.pjo-home-v234 [data-action="account"]{width:145px!important;max-width:45%!important}
+  #memberHomeScreen.pjo-home-v234 [data-action="logout"]{width:140px!important;max-width:44%!important}
+  #memberHomeScreen.pjo-home-v234 .pjo-home-consult-row-v234{margin-top:16px!important}
+  body[data-screen="memberHomeScreen"] #memberHomeScreen.pjo-home-v234 .secondary-member-menu{margin-top:14px!important}
+  #memberHomeScreen.pjo-home-v234 #memberFeedbackBox{margin-top:16px!important}
+  #memberHomeScreen.pjo-home-v234 .pjo-home-reading-v234,
+  #memberHomeScreen.pjo-home-v234 .pjo-home-consult-v234,
+  #memberHomeScreen.pjo-home-v234 .secondary-member-menu .home-tile{min-height:0!important;padding:0!important}
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini,
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini{
+  min-height:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  background-image:url("assets/main-page-reference-v235.png")!important;
+  background-repeat:no-repeat!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="account"].mini{
+  width:145px!important;
+  min-width:0!important;
+  aspect-ratio:145/64!important;
+  background-size:594.4828% auto!important;
+  background-position:6.5551% 15.1136%!important;
+}
+#memberHomeScreen.pjo-home-v234 .top-actions [data-action="logout"].mini{
+  width:140px!important;
+  min-width:0!important;
+  aspect-ratio:140/64!important;
+  background-size:615.7143% auto!important;
+  background-position:27.8393% 15.1136%!important;
+}
+</style>
+
+<style id="pjoHomeThemeControlStyleV236">
+.pjo-theme-control-v236{
+  margin-top:16px;
+  padding:16px;
+  border:1px solid rgba(248,220,145,.24);
+  border-radius:18px;
+  background:rgba(255,255,255,.055);
+}
+.pjo-theme-control-v236>button{
+  width:auto;
+  min-width:118px;
+  margin:0;
+}
+.pjo-theme-picker-v236{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.pjo-theme-picker-v236.hidden{display:none!important}
+.pjo-theme-picker-v236 button{
+  width:100%;
+  min-height:72px;
+  margin:0;
+  padding:12px;
+  border:1px solid rgba(248,220,145,.25);
+  background:rgba(255,255,255,.07);
+  color:var(--text);
+  box-shadow:none;
+}
+.pjo-theme-picker-v236 button.selected{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,#fff3bd,#d99c32);
+  color:#151019;
+}
+.pjo-theme-status-v236{
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:.88rem;
+}
+@media(max-width:480px){
+  .pjo-theme-picker-v236{grid-template-columns:1fr}
+  .pjo-theme-control-v236>button{width:100%}
+}
+</style>
+
+<script>
+// V236: switch the member home between the original theme and supplied artwork theme.
+const PJO_HOME_THEME_KEY_V236='pjoa_home_theme_v236';
+function pjoHomeThemeV236(){
+  return localStorage.getItem(PJO_HOME_THEME_KEY_V236)==='basic'?'basic':'atelier';
+}
+function pjoThemeCopyV236(){
+  if(currentLang==='zh')return {theme:'主题',basic:'默认主题',atelier:'新设计',current:'当前主题'};
+  if(currentLang==='en')return {theme:'Theme',basic:'Default theme',atelier:'New design',current:'Current theme'};
+  return {theme:'테마',basic:'기본 테마',atelier:'새 디자인',current:'현재 테마'};
+}
+function pjoBaseHomeCopyV236(){
+  if(currentLang==='zh')return {reading:'开始解读',archive:'我的收藏',profile:'Oracle Profile'};
+  if(currentLang==='en')return {reading:'Start Reading',archive:'My Archive',profile:'Oracle Profile'};
+  return {reading:'리딩 시작',archive:'내 보관함',profile:'Oracle Profile'};
+}
+function pjoRestoreBasicHomeV236(){
+  const screen=$('memberHomeScreen');
+  if(!screen)return;
+  const copy=pjoBaseHomeCopyV236();
+  const tier=tiers?.[currentUser?.tier||'member']?.label||'Member';
+  screen.classList.remove('pjo-home-v234');
+  document.querySelector('.pjo-home-language-v234')?.remove();
+  const badge=$('memberBadge');
+  if(badge)badge.textContent='👤 '+(currentUser?.id||'Member')+' · '+tier;
+  const reading=screen.querySelector('[data-action="reading-start"]');
+  if(reading){
+    reading.classList.remove('pjo-home-reading-v234');
+    reading.innerHTML='<div class="flag">🔮</div><div class="choice-title">'+esc(copy.reading)+'</div>';
+    reading.setAttribute('aria-label',copy.reading);
+  }
+  const consult=screen.querySelector('[data-action="private-consult"]');
+  if(consult){
+    const consultCopy=typeof privateConsultCopyV45==='function'?privateConsultCopyV45():{title:'1:1 심층 상담',sub:'실제 타로사에게 받는 프라이빗 상담'};
+    consult.classList.remove('pjo-home-consult-v234');
+    consult.innerHTML='<div class="flag">✨</div><div class="choice-title">'+esc(consultCopy.title)+'</div><div class="choice-sub">'+esc(consultCopy.sub)+'</div>';
+    consult.parentElement?.classList.remove('pjo-home-consult-row-v234');
+    consult.setAttribute('aria-label',consultCopy.title+' · '+consultCopy.sub);
+  }
+  const archive=screen.querySelector('[data-action="archive"]');
+  if(archive){
+    archive.innerHTML='<div class="flag">📖</div><div class="choice-title">'+esc(copy.archive)+'</div>';
+    archive.setAttribute('aria-label',copy.archive);
+  }
+  const profile=screen.querySelector('[data-action="profile"]');
+  if(profile){
+    profile.innerHTML='<div class="flag">👤</div><div class="choice-title">'+esc(copy.profile)+'</div>';
+    profile.setAttribute('aria-label',copy.profile);
+  }
+}
+function pjoApplyHomeThemeV236(){
+  const theme=pjoHomeThemeV236();
+  const basic=theme==='basic';
+  const atelierStyle=$('pjoMemberHomeAtelierStyleV234');
+  const referenceStyle=$('pjoHomeReferenceButtonsV235');
+  if(atelierStyle)atelierStyle.disabled=basic;
+  if(referenceStyle)referenceStyle.disabled=basic;
+  document.body.classList.toggle('pjo-basic-home-theme-v236',basic);
+  document.querySelectorAll('#memberHomeScreen > .private-consult-row:empty').forEach(row=>row.remove());
+  if(basic)pjoRestoreBasicHomeV236();
+  return theme;
+}
+function pjoRenderThemeControlV236(){
+  const account=$('accountScreen');
+  const box=$('accountBox');
+  if(!account||!box)return;
+  let control=$('pjoThemeControlV236');
+  if(!control){
+    control=document.createElement('div');
+    control.id='pjoThemeControlV236';
+    control.className='pjo-theme-control-v236';
+    box.insertAdjacentElement('afterend',control);
+  }
+  const copy=pjoThemeCopyV236();
+  const theme=pjoHomeThemeV236();
+  control.innerHTML='<button type="button" data-action="theme-toggle-v236">'+esc(copy.theme)+'</button>'+
+    '<div class="pjo-theme-picker-v236 hidden" data-theme-picker-v236>'+
+      '<button type="button" data-action="theme-select-v236" data-theme="basic" class="'+(theme==='basic'?'selected':'')+'">'+esc(copy.basic)+'</button>'+
+      '<button type="button" data-action="theme-select-v236" data-theme="atelier" class="'+(theme==='atelier'?'selected':'')+'">'+esc(copy.atelier)+'</button>'+
+    '</div><p class="pjo-theme-status-v236">'+esc(copy.current)+': '+esc(theme==='basic'?copy.basic:copy.atelier)+'</p>';
+}
+if(typeof renderMemberHome==='function'){
+  const pjoRenderMemberHomeBaseV236=renderMemberHome;
+  renderMemberHome=function(){
+    const result=pjoRenderMemberHomeBaseV236();
+    pjoApplyHomeThemeV236();
+    return result;
+  };
+}
+if(typeof renderAccount==='function'){
+  const pjoRenderAccountBaseV236=renderAccount;
+  renderAccount=function(){
+    const result=pjoRenderAccountBaseV236();
+    pjoRenderThemeControlV236();
+    return result;
+  };
+}
+document.addEventListener('click',function(event){
+  const action=event.target.closest?.('[data-action]');
+  if(!action)return;
+  if(action.dataset.action==='theme-toggle-v236'){
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    action.parentElement?.querySelector('[data-theme-picker-v236]')?.classList.toggle('hidden');
+    return;
+  }
+  if(action.dataset.action==='theme-select-v236'){
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const theme=action.dataset.theme==='basic'?'basic':'atelier';
+    localStorage.setItem(PJO_HOME_THEME_KEY_V236,theme);
+    if(typeof renderMemberHome==='function')renderMemberHome();
+    if(typeof show==='function')show('memberHomeScreen');
+  }
+},true);
+document.addEventListener('DOMContentLoaded',function(){
+  pjoApplyHomeThemeV236();
+});
 </script>
 
 </body>
