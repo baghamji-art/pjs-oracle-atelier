@@ -1,0 +1,23 @@
+/*
+ * Administrator compatibility entry — phase 1.
+ *
+ * The original admin panel styles remain authoritative. Only the user application
+ * surface and its legacy launcher are hidden on admin.html, so the administrator
+ * panel itself keeps the exact existing cascade, sizing, and responsive behavior.
+ */
+body.pjo-admin-app > .app,
+body.pjo-admin-app > .admin-entry,
+body.pjo-admin-app > .language-switcher-v60,
+body.pjo-admin-app > #pjoCorporateFooterV239 {
+  display: none !important;
+}
+
+body.pjo-admin-app:not(.pjo-admin-authorized) #adminEditBox,
+body.pjo-admin-app.pjo-admin-authorized #adminLoginBox {
+  display: none !important;
+}
+
+body.pjo-admin-app #adminCode[aria-busy="true"],
+body.pjo-admin-app #adminEnterBtn[aria-busy="true"] {
+  cursor: wait;
+}
