@@ -1,21 +1,34 @@
 const { parseObjectBody, validateReading } = require('./_request-validation');
+const { validateBrowserMutation } = require('./lib/request-security.cjs');
+const { readBoundedJson } = require('./lib/bounded-json.cjs');
+const { verifyMemberSession } = require('./lib/member-auth.cjs');
 
 exports.handler = async function(event) {
   if (event.httpMethod === 'GET') {
     return json(200, { ok: true, message: 'generate-reading function is alive' });
   }
 
-  if (event.httpMethod === 'OPTIONS') {
-    return json(204, {});
-  }
-
   if (event.httpMethod !== 'POST') {
     return json(405, { error: 'Method not allowed' });
   }
 
+  const rejected = validateBrowserMutation(event);
+  if (rejected) return json(rejected.status, { error: rejected.error });
+  // Emergency operator switch; existing DB reading fallback is unchanged.
+  if (process.env.AI_READING_ENABLED === 'false') {
+    return json(503, { error: 'AI reading is temporarily unavailable', code: 'AI_DISABLED' });
+  }
+
+  // Staged cutover guard. Do NOT enable before member login/data migration.
+  // This is not active authentication while the variable is unset.
+  if (process.env.AI_REQUIRE_MEMBER_SESSION === 'true') {
+    const auth = await verifyMemberSession(event);
+    if (!auth.ok) return json(auth.status, { error: 'Member authentication required', code: auth.code });
+  }
+
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    return json(500, { error: 'OPENAI_API_KEY is not set' });
+    return json(503, { error: 'AI reading is temporarily unavailable', code: 'AI_NOT_CONFIGURED' });
   }
 
   const parsed = parseObjectBody(event, 65536);
@@ -111,6 +124,10 @@ exports.handler = async function(event) {
     dbReport
   ].join('\n');
 
+  const controller = new AbortController();
+  // One deadline across all model fallbacks AND response body reads. Never retry
+  // after timeout/billing/rate-limit failures, which can duplicate paid requests.
+  const timeoutId = setTimeout(() => controller.abort(), 18000);
   try {
     const models = unique([process.env.OPENAI_MODEL, 'gpt-4.1-mini', 'gpt-4o-mini'].filter(Boolean));
     let data = null;
@@ -119,8 +136,6 @@ exports.handler = async function(event) {
 
     for (const model of models) {
       usedModel = model;
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 18000);
       let response;
       try {
         response = await fetch('https://api.openai.com/v1/responses', {
@@ -130,6 +145,7 @@ exports.handler = async function(event) {
             'Content-Type': 'application/json'
           },
           signal: controller.signal,
+          redirect: 'error',
           body: JSON.stringify({
             model,
             input: prompt,
@@ -171,33 +187,38 @@ exports.handler = async function(event) {
           return json(504, { error: 'OpenAI request timed out', model });
         }
         throw error;
-      } finally {
-        clearTimeout(timeoutId);
       }
 
-      data = await response.json();
+      data = await readBoundedJson(response, 524288);
       if (response.ok) {
         lastError = null;
         break;
       }
-      lastError = data.error?.message || 'OpenAI request failed';
-      const retryableModelError = /model|does not exist|not found|unsupported/i.test(lastError);
+      // Use structured codes internally; never echo upstream error messages.
+      lastError = 'AI provider request failed';
+      const retryableModelError = [400, 404].includes(response.status) &&
+        (['model_not_found', 'unsupported_model'].includes(data?.error?.code) || data?.error?.param === 'model');
       if (!retryableModelError) {
-        return json(response.status, { error: lastError, model });
+        return json(response.status === 429 ? 429 : 502, { error: lastError, code: 'AI_PROVIDER_ERROR' });
       }
     }
 
     if (lastError) {
-      return json(500, { error: lastError, model: usedModel });
+      return json(502, { error: lastError, code: 'AI_MODEL_UNAVAILABLE' });
     }
 
     const text = extractOutputText(data);
-    if (!text) {
-      return json(502, { error: 'OpenAI returned an empty response', model: usedModel });
+    if (!validReport(text) || (data.status && data.status !== 'completed')) {
+      return json(502, { error: 'AI returned an invalid report', code: 'AI_RESPONSE_INVALID' });
     }
     return json(200, { result: text, model: usedModel });
   } catch (error) {
-    return json(500, { error: error.message || 'Unknown error' });
+    return json(controller.signal.aborted ? 504 : 502, {
+      error: controller.signal.aborted ? 'AI request timed out' : 'AI reading is temporarily unavailable',
+      code: controller.signal.aborted ? 'AI_TIMEOUT' : 'AI_PROVIDER_ERROR'
+    });
+  } finally {
+    clearTimeout(timeoutId);
   }
 };
 
@@ -207,9 +228,8 @@ function json(statusCode, payload) {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'no-referrer'
     },
     body: JSON.stringify(payload)
   };
@@ -224,15 +244,25 @@ function safeText(value, limit) {
 }
 
 function extractOutputText(data) {
+  if (!data || typeof data !== 'object') return '';
   if (typeof data.output_text === 'string' && data.output_text.trim()) {
     return data.output_text.trim();
   }
   const chunks = [];
-  for (const item of data.output || []) {
-    for (const content of item.content || []) {
-      if (content.type === 'output_text' && content.text) chunks.push(content.text);
-      if (content.type === 'text' && content.text) chunks.push(content.text);
+  for (const item of Array.isArray(data.output) ? data.output : []) {
+    for (const content of Array.isArray(item?.content) ? item.content : []) {
+      if (['output_text', 'text'].includes(content?.type) && typeof content.text === 'string') chunks.push(content.text);
     }
   }
   return chunks.join('\n').trim();
+}
+
+function validReport(text) {
+  if (!text || Buffer.byteLength(text, 'utf8') > 65536) return false;
+  try {
+    const value = JSON.parse(text);
+    return value && typeof value.headline === 'string' && typeof value.closing === 'string' &&
+      Array.isArray(value.sections) && value.sections.length > 0 && value.sections.length <= 20 &&
+      value.sections.every(section => section && typeof section.heading === 'string' && typeof section.body === 'string');
+  } catch (_) { return false; }
 }

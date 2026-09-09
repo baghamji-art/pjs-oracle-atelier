@@ -7965,7 +7965,7 @@ function consultLogsV97(){
   return getLogs().filter(x=>x.action===CONSULT_LOG_ACTION_V97&&x.consultId&&x.message);
 }
 function consultsFromLogsV97(){
-  const map={};
+  const map=Object.create(null);
   consultLogsV97().forEach(x=>{
     const id=x.consultId;
     if(!map[id])map[id]={id,userId:x.userId||x.id||'member',createdAt:x.time,updatedAt:x.time,status:'open',messages:[]};
@@ -7978,7 +7978,7 @@ function consultsFromLogsV97(){
 }
 function getConsultsV97(){
   const local=get(CONSULT_KEY_V97,[]);
-  const byId={};
+  const byId=Object.create(null);
   [...local,...consultsFromLogsV97()].forEach(c=>{
     const old=byId[c.id];
     if(!old){byId[c.id]=c;return}
@@ -8243,7 +8243,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 // V100: dedicated admin consultation request category with user list and chat view.
 let selectedConsultUserV100='';
 function consultUsersV100(){
-  const map={};
+  const map=Object.create(null);
   getConsultsV97().forEach(c=>{
     const id=c.userId||'member';
     if(!map[id])map[id]={id,count:0,pending:0,latest:0};
@@ -8540,7 +8540,7 @@ function mergeMemberRecordV104(a,b){
   };
 }
 function mergeMembersV104(a=[],b=[]){
-  const map={};
+  const map=Object.create(null);
   [...a,...b].forEach(m=>{
     if(!m||!m.id)return;
     map[m.id]=mergeMemberRecordV104(map[m.id],m);
@@ -8560,6 +8560,9 @@ function mergeCodesV104(a=[],b=[]){
   const merged=[...new Set([...(a||[]),...(b||[])].filter(Boolean))];
   return merged.length?merged:DEFAULT_GUEST_CODES;
 }
+function validCloudStateV104(state){
+  return !!state&&state.id==='main'&&Array.isArray(state.members)&&Array.isArray(state.guest_codes)&&Array.isArray(state.logs);
+}
 cloudGetState=async function(){
   if(!CLOUD_ENABLED||!sb)return null;
   try{
@@ -8578,6 +8581,12 @@ cloudSaveState=async function(){
   cloudSaveBusyV104=true;
   try{
     const cloud=await cloudGetState();
+    // Never recreate/overwrite cloud state from a local cache after a failed read.
+    if(!validCloudStateV104(cloud)){
+      cloudLastErrorV104=cloudLastErrorV104||'Cloud state unavailable; upload skipped';
+      cloudSaveQueuedV104=false;
+      return;
+    }
     const merged={
       id:'main',
       members:mergeMembersV104(cloud?.members||[],get(MEMBERS_KEY,[])),
@@ -8604,6 +8613,7 @@ cloudSaveState=async function(){
 };
 hydrateFromCloud=async function(){
   const cloud=await cloudGetState();
+  if(!validCloudStateV104(cloud))return;
   const merged={
     members:mergeMembersV104(cloud?.members||[],get(MEMBERS_KEY,[])),
     guest_codes:mergeCodesV104(cloud?.guest_codes||[],get(GUEST_CODES_KEY,DEFAULT_GUEST_CODES)),
@@ -9733,7 +9743,7 @@ function reviewQuestionKeyV119(log){
   return (log.question||'질문 없음').trim()||'질문 없음';
 }
 function reviewStatsV119(){
-  const map={};
+  const map=Object.create(null);
   reviewLogsV119().forEach(log=>{
     const q=reviewQuestionKeyV119(log);
     if(!map[q])map[q]={question:q,count:0,total:0,ratings:{1:0,2:0,3:0,4:0,5:0},items:[]};

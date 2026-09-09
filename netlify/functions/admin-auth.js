@@ -6,10 +6,12 @@ const {
   securityConfig
 } = require('./_admin-session');
 const { parseObjectBody } = require('./_request-validation');
+const { validateBrowserMutation } = require('./lib/request-security.cjs');
 
 exports.handler = async function (event) {
-  if (event.httpMethod === 'OPTIONS') return json(204, {});
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
+  const rejected = validateBrowserMutation(event);
+  if (rejected) return json(rejected.status, { error: rejected.error });
 
   const config = securityConfig();
   if (!config.valid) {

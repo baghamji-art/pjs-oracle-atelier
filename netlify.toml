@@ -8,3 +8,26 @@
   from = "/admin"
   to = "/admin.html"
   status = 200
+
+# Native edge limits: two rules, compatible with the Free plan's rule count.
+# Exact existing paths; no new API alias that could bypass these rules.
+# Check post-processing deploy logs: invalid rate rules do NOT fail a deploy.
+[[redirects]]
+  from = "/.netlify/functions/generate-reading"
+  to = "/.netlify/functions/generate-reading"
+  status = 200
+  force = true
+  [redirects.rate_limit]
+    window_limit = 12
+    window_size = 60
+    aggregate_by = ["ip", "domain"]
+
+[[redirects]]
+  from = "/.netlify/functions/admin-auth"
+  to = "/.netlify/functions/admin-auth"
+  status = 200
+  force = true
+  [redirects.rate_limit]
+    window_limit = 5
+    window_size = 60
+    aggregate_by = ["ip", "domain"]

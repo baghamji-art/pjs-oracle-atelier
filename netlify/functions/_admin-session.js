@@ -9,17 +9,14 @@ function securityConfig() {
   return {
     adminCode,
     sessionSecret,
-    valid: adminCode.length >= 12 && sessionSecret.length >= 32
+    valid: adminCode.length >= 12 && adminCode.length <= 256 &&
+      sessionSecret.length >= 32 && sessionSecret.length <= 1024
   };
 }
 
 function safeEqual(left, right) {
-  const leftBuffer = Buffer.from(String(left || ''));
-  const rightBuffer = Buffer.from(String(right || ''));
-  if (leftBuffer.length !== rightBuffer.length) {
-    crypto.timingSafeEqual(rightBuffer, rightBuffer);
-    return false;
-  }
+  const leftBuffer = crypto.createHash('sha256').update(String(left || '')).digest();
+  const rightBuffer = crypto.createHash('sha256').update(String(right || '')).digest();
   return crypto.timingSafeEqual(leftBuffer, rightBuffer);
 }
 
@@ -40,15 +37,23 @@ function clearSessionCookie() {
 }
 
 function verifyAdminSession(event, secret) {
-  const cookies = parseCookies(event.headers?.cookie || event.headers?.Cookie || '');
+  if (typeof secret !== 'string' || secret.length < 32 || secret.length > 1024) return null;
+  const header = event.headers?.cookie || event.headers?.Cookie || '';
+  if (typeof header !== 'string' || header.length > 16384) return null;
+  if (header.split(';').filter(pair => pair.trim().startsWith(COOKIE_NAME + '=')).length !== 1) return null;
+  const cookies = parseCookies(header);
   const token = cookies[COOKIE_NAME] || '';
+  if (token.length > 2048 || !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{43}$/.test(token)) return null;
   const parts = token.split('.');
   if (parts.length !== 2 || !safeEqual(parts[1], sign(parts[0], secret))) return null;
 
   try {
     const payload = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8'));
     const now = Math.floor(Date.now() / 1000);
-    if (payload.role !== 'admin' || !Number.isFinite(payload.exp) || payload.exp <= now) return null;
+    if (!payload || payload.role !== 'admin' || !Number.isSafeInteger(payload.iat) ||
+        !Number.isSafeInteger(payload.exp) || payload.iat > now || payload.exp <= now ||
+        payload.exp - payload.iat !== SESSION_SECONDS ||
+        typeof payload.nonce !== 'string' || !/^[A-Za-z0-9_-]{22}$/.test(payload.nonce)) return null;
     return payload;
   } catch (error) {
     return null;
@@ -61,6 +66,8 @@ function json(statusCode, payload, extraHeaders = {}) {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'no-referrer',
       ...extraHeaders
     },
     body: statusCode === 204 ? '' : JSON.stringify(payload)
@@ -94,7 +101,7 @@ function parseCookies(header) {
     const value = pair.slice(separator + 1).trim();
     if (key) cookies[key] = value;
     return cookies;
-  }, {});
+  }, Object.create(null));
 }
 
 module.exports = {

@@ -160,7 +160,8 @@
       await fetch(LOGOUT_URL, {
         method: 'POST',
         credentials: 'same-origin',
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: '{}'
       });
     } catch (error) {
       // The local UI still locks even if the server is temporarily unreachable.

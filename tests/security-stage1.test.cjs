@@ -9,7 +9,7 @@ const fixture = () => ({
   qtype: 'past_life_connection', language: 'ko', userContext: {}, dbReport: '테스트 리딩',
   cards: ['fool', 'magician', 'priestess'].map((key, index) => ({key, nameKo: '테스트 카드', nameEn: 'Fixture', position: String(index), orientation: index ? 'upright' : 'reversed'}))
 });
-const event = body => ({httpMethod:'POST', headers:{}, body:JSON.stringify(body)});
+const event = body => ({httpMethod:'POST', headers:{origin:'https://pjtarot.netlify.app','content-type':'application/json'}, body:JSON.stringify(body)});
 
 test('body parser rejects invalid JSON, null, arrays and oversized input', () => {
   for (const body of ['{', 'null', '[]', '1', '"text"']) assert.equal(parseObjectBody({body}, 64).error, 400);
@@ -40,7 +40,7 @@ test('HTTP handlers reject malformed input before any upstream call; valid reque
   process.env.ADMIN_MASTER_CODE='fixture-admin-code-only';
   process.env.ADMIN_SESSION_SECRET='fixture-session-secret-longer-than-32-characters';
   const report=JSON.stringify({headline:'테스트',sections:[{heading:'결론',body:'테스트 문장'}],closing:'테스트'});
-  global.fetch=async()=>{calls++;return {ok:true,status:200,json:async()=>({output_text:report})};};
+  global.fetch=async()=>{calls++;return new Response(JSON.stringify({output_text:report}));};
   try {
     for(const body of [null,[],{...fixture(),cards:[null,null,null]}]) assert.equal((await reading(event(body))).statusCode,400);
     assert.equal((await reading(event({...fixture(),extra:'x'.repeat(70000)}))).statusCode,413);

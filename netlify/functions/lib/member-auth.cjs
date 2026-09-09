@@ -176,4 +176,32 @@ function clearMemberSessionCookie() {
   return serializeCookie('', 0);
 }
 
-module.exports = { authenticateMember, verifyMemberSession, clearMemberSessionCookie };
+async function auditMemberMigration() {
+  // Caller must already be an authenticated administrator. Counts only, never
+  // IDs, passwords, hashes of passwords, messages, or source records.
+  const result = await readMembers();
+  if (result.error) return result.error;
+  const counts = {
+    total: result.members.length, eligibleForPreparedAuth: 0, requiresReview: 0,
+    legacyPlaintextPassword: 0, invalidPasswordFormat: 0, permanent: 0,
+    missingExpiry: 0, invalidExpiryFormat: 0, expired: 0, unpaid: 0
+  };
+  const statuses = { active: 0, approved: 0, expiring_soon: 0, pending: 0,
+    renew_pending: 0, expired: 0, other: 0 };
+  const now = Date.now();
+  for (const member of result.members) {
+    if (eligible(member, now)) counts.eligibleForPreparedAuth++; else counts.requiresReview++;
+    if (boundedString(member.password, 4096)) counts.legacyPlaintextPassword++; else counts.invalidPasswordFormat++;
+    if (member.permanent === true) counts.permanent++;
+    if (member.paid === false) counts.unpaid++;
+    if (member.expiresAt === undefined || member.expiresAt === null) counts.missingExpiry++;
+    else if (!Number.isSafeInteger(member.expiresAt)) counts.invalidExpiryFormat++;
+    else if (member.expiresAt <= now) counts.expired++;
+    const status = typeof member.status === 'string' && Object.hasOwn(statuses, member.status) ? member.status : 'other';
+    statuses[status]++;
+  }
+  return { ok: true, status: 200, code: 'MEMBER_MIGRATION_AUDIT', counts, statuses,
+    mode: 'read-only', dataAccessMigrationComplete: false };
+}
+
+module.exports = { authenticateMember, verifyMemberSession, clearMemberSessionCookie, auditMemberMigration };
