@@ -1,0 +1,252 @@
+/* Scoped administrator visual layer. No user styles or security rules are replaced. */
+body.pjo-admin-app.pjo-admin-workspace {
+  --admin-paper:#f8f5ef; --admin-ink:#30271f; --admin-muted:#857b70;
+  --admin-border:#dfd4c4; --admin-gold:#bc8b40; --admin-dark:#302419;
+  --text:var(--admin-ink); --muted:var(--admin-muted); --line:var(--admin-border);
+  color:var(--admin-ink);background:var(--admin-paper)!important;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Pretendard,Arial,sans-serif;
+}
+body.pjo-admin-workspace::before,body.pjo-admin-workspace::after {display:none!important}
+body.pjo-admin-workspace #adminPanel {
+  position:fixed!important;inset:0!important;transform:none!important;
+  width:100%!important;max-width:none!important;height:100dvh!important;max-height:none!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+  background:radial-gradient(ellipse at 20% 0,#fffdf8 0,transparent 65%),var(--admin-paper)!important;
+  color:var(--admin-ink)!important;box-shadow:none!important;overflow:auto!important;
+  font-size:16px;line-height:1.6;isolation:isolate;
+}
+body.pjo-admin-workspace #adminPanel :is(button,input,textarea,select){font-family:inherit}
+body.pjo-admin-workspace #adminPanel :is(button,a,input,textarea,summary):focus-visible {outline:3px solid #bb8c48!important;outline-offset:4px}
+body.pjo-admin-workspace #adminPanel button {cursor:pointer;text-transform:none;letter-spacing:normal;min-height:44px}
+body.pjo-admin-workspace #adminPanel button:disabled {cursor:wait;opacity:.55}
+body.pjo-admin-workspace #adminPanel svg {width:24px;height:24px;flex:none;vertical-align:middle}
+body.pjo-admin-workspace #adminPanel [hidden] {display:none!important}
+body.pjo-admin-workspace #adminPanel>.pjo-admin-bar {
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:20px max(28px,calc((100% - 1240px)/2));min-height:88px;border-bottom:1px solid #9a773d;
+  color:#ecd49b;background:linear-gradient(110deg,#21190f,#342719 55%,#21190f);
+}
+body.pjo-admin-workspace .pjo-admin-brand {display:flex;align-items:center;gap:18px;font-family:Georgia,"Times New Roman",serif;font-size:30px;white-space:nowrap;letter-spacing:-.5px}
+body.pjo-admin-workspace .pjo-admin-tag {padding:3px 10px;border:1px solid #bc9652;border-radius:5px;font:13px/1.6 Arial,sans-serif;letter-spacing:.03em;color:#ead29b}
+body.pjo-admin-workspace .pjo-admin-nav {display:flex;gap:18px;align-items:center}
+body.pjo-admin-workspace #adminPanel .pjo-admin-icon {display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;min-width:44px;min-height:44px;padding:8px;margin:0;border:0!important;border-radius:8px;background:transparent!important;color:inherit!important;box-shadow:none!important;text-decoration:none}
+body.pjo-admin-workspace .pjo-admin-nav .pjo-admin-icon:hover {background:#ffffff0d!important}
+body.pjo-admin-workspace:not(.pjo-admin-authorized) #adminDoneBtn {display:none!important}
+body.pjo-admin-workspace #adminEditBox {max-width:1296px;margin:0 auto;padding:36px 28px 60px}
+body.pjo-admin-workspace #adminPanel>h3,body.pjo-admin-workspace #adminEditBox>h4:first-of-type,
+body.pjo-admin-workspace #adminEditBox>.notice,body.pjo-admin-workspace #adminEditBox>.divider {display:none!important}
+body.pjo-admin-workspace #adminPanel #adminEditBox>h4:not(:first-of-type) {color:var(--admin-ink);margin:32px 0 12px;font-size:18px}
+body.pjo-admin-workspace .pjo-admin-heading {display:flex;justify-content:space-between;gap:24px;align-items:center;margin-bottom:26px}
+body.pjo-admin-workspace #pjoAdminPageTitle {margin:0;font-size:32px;font-weight:700;line-height:1.35;letter-spacing:-1px;color:var(--admin-ink)}
+body.pjo-admin-workspace #pjoAdminPageIntro {margin:8px 0 0;color:#756859;font-size:15px}
+body.pjo-admin-workspace[data-admin-pane="consult"] #pjoAdminPageIntro,body.pjo-admin-workspace[data-admin-pane="reviews"] #pjoAdminPageIntro {display:none}
+body.pjo-admin-workspace #pjoAdminConnection {display:inline-flex;align-items:center;gap:8px;white-space:nowrap;font-size:14px;color:#6b6257}
+body.pjo-admin-workspace #pjoAdminConnection::before {content:"";width:7px;height:7px;border-radius:50%;background:#a59a88}
+body.pjo-admin-workspace #pjoAdminConnection[data-state="online"]::before {background:#609775}
+body.pjo-admin-workspace #pjoAdminConnection[data-state="error"]::before {background:#ba5549}
+body.pjo-admin-workspace .pjo-admin-numbers {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--admin-border);border-radius:8px;margin:24px 0 28px;background:#fffdf74d}
+body.pjo-admin-workspace .pjo-admin-numbers>div {padding:20px;text-align:center}
+body.pjo-admin-workspace .pjo-admin-numbers>div+div {border-left:1px solid var(--admin-border)}
+body.pjo-admin-workspace .pjo-admin-numbers span {display:block;font-size:14px}
+body.pjo-admin-workspace .pjo-admin-numbers strong {display:block;font-family:Georgia,serif;font-weight:400;font-size:32px;line-height:1.4}
+body.pjo-admin-workspace .pjo-admin-numbers>div:nth-child(2) strong {color:#ab7626}
+body.pjo-admin-workspace .pjo-admin-numbers>div:nth-child(3) strong {color:#b74835}
+body.pjo-admin-workspace #adminPanel #adminEditBox>.tabs {display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:0!important;padding:3px!important;margin:0 0 24px!important;background:var(--admin-dark);border-radius:12px;border:1px solid #322719}
+body.pjo-admin-workspace #adminPanel #adminEditBox>.tabs>.tab {padding:13px 12px!important;border:0!important;background:transparent!important;color:#eddfbc!important;border-radius:9px!important;font-size:16px!important;font-weight:500!important;box-shadow:none!important;white-space:nowrap}
+body.pjo-admin-workspace[data-admin-pane="members"] #adminPanel #adminEditBox>.tabs>.tab[data-tab="all"],
+body.pjo-admin-workspace[data-admin-pane="consult"] #adminPanel #adminEditBox>.tabs>.tab[data-tab="consult_requests"],
+body.pjo-admin-workspace[data-admin-pane="reviews"] #adminPanel #adminEditBox>.tabs>.tab[data-tab="review_stats"] {background:linear-gradient(115deg,#f0dfae,#d3a04f)!important;color:#2a2117!important}
+body.pjo-admin-workspace .pjo-admin-member-filters {display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+body.pjo-admin-workspace #adminPanel .pjo-admin-member-filters>.tab {flex:0 0 auto;width:auto!important;padding:8px 18px!important;border:1px solid var(--admin-border)!important;background:transparent!important;color:#645748!important;border-radius:6px!important;font-size:14px!important;box-shadow:none!important}
+body.pjo-admin-workspace #adminPanel .pjo-admin-member-filters>.tab.active {background:#e8ddc9!important;color:#382c1a!important;border-color:#cbb48e!important}
+body.pjo-admin-workspace #adminEditBox>.search-row {display:flex!important;gap:0;max-width:500px;margin:0 0 18px;position:relative}
+body.pjo-admin-workspace #adminPanel #memberSearch {width:100%;margin:0;padding:12px 56px 12px 16px;min-height:50px;border:1px solid var(--admin-border);border-radius:7px;background:#ffffff70;color:var(--admin-ink);font-size:16px}
+body.pjo-admin-workspace #adminPanel #memberSearchBtn {position:absolute;right:4px;top:3px;bottom:3px;margin:0;width:44px;padding:8px;border:0;background:transparent;color:#554736;box-shadow:none}
+body.pjo-admin-workspace #memberList {display:grid;gap:10px}
+body.pjo-admin-workspace .pjo-member-columns,body.pjo-admin-workspace .pjo-member-row {display:grid;grid-template-columns:minmax(190px,1.7fr) minmax(96px,.75fr) minmax(160px,1.2fr) minmax(100px,.9fr) 20px;gap:18px;align-items:center}
+body.pjo-admin-workspace .pjo-member-columns {padding:8px 20px;color:#8d7e6c;font-size:14px}
+body.pjo-admin-workspace #memberList .member-item {display:block!important;margin:0!important;padding:0!important;border:1px solid #e1d5c5!important;border-radius:9px!important;background:#fffdf73b!important;box-shadow:none!important;color:var(--admin-ink)!important;overflow:hidden}
+body.pjo-admin-workspace .pjo-member-row {list-style:none;cursor:pointer;padding:20px;min-height:82px;font-size:15px}
+body.pjo-admin-workspace .pjo-member-row::-webkit-details-marker {display:none}
+body.pjo-admin-workspace .pjo-member-row:hover {background:#e9dfd125}
+body.pjo-admin-workspace .pjo-member-id {overflow-wrap:anywhere;font-weight:500;font-size:16px;color:#30271f}
+body.pjo-admin-workspace .pjo-member-plan,body.pjo-admin-workspace .pjo-member-access {color:#645949;font-size:14px}
+body.pjo-admin-workspace #memberList .status-pill {width:max-content;max-width:100%;font-size:13px;font-weight:500;line-height:1.4;padding:5px 10px;background:#edf0e6;color:#466441;border:1px solid #cbd8bc;border-radius:5px;white-space:normal}
+body.pjo-admin-workspace #memberList .status-pill.status-pending,body.pjo-admin-workspace #memberList .status-pill.status-renew {color:#a46b1e;background:#fbf1df;border-color:#ead1a2}
+body.pjo-admin-workspace #memberList .status-pill.status-expired {color:#ac4737;background:#fcf0e9;border-color:#e7c9bd}
+body.pjo-admin-workspace .pjo-member-chevron {color:#776650;transform:rotate(90deg);transition:transform .15s}
+body.pjo-admin-workspace .pjo-member-details[open] .pjo-member-chevron {transform:rotate(-90deg)}
+body.pjo-admin-workspace .pjo-member-content {padding:0 20px 20px}
+body.pjo-admin-workspace #memberList .admin-member-meta {display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px;border:1px solid #e0d5c4;border-radius:6px;background:#f3eee43b;color:#756859;font-size:14px}
+body.pjo-admin-workspace .pjo-member-memo {white-space:pre-wrap;overflow-wrap:anywhere;color:#72614b;font-size:14px}
+body.pjo-admin-workspace #memberList .admin-member-actions {display:flex;justify-content:flex-end;gap:10px;padding:16px 0 0}
+body.pjo-admin-workspace #memberList .admin-member-actions button {padding:8px 16px;border:1px solid #c6ad83;border-radius:6px;background:#faf4e7;color:#69512d;box-shadow:none;font-size:14px}
+body.pjo-admin-workspace #memberList .admin-member-actions .admin-delete-btn {border-color:#d79b87;color:#ac4030;background:transparent}
+body.pjo-admin-workspace[data-admin-pane="consult"] :is(#pjoAdminNumbers,#pjoAdminMemberFilters,#adminEditBox>.search-row,#memberList),
+body.pjo-admin-workspace[data-admin-pane="reviews"] :is(#pjoAdminNumbers,#pjoAdminMemberFilters,#adminEditBox>.search-row,#memberList),
+body.pjo-admin-workspace:not([data-admin-pane="consult"]) #adminConsultWorkspaceV100,
+body.pjo-admin-workspace:not([data-admin-pane="reviews"]) #adminReviewStatsWorkspaceV119 {display:none!important}
+body.pjo-admin-workspace[data-admin-pane="members"] #memberList,body.pjo-admin-workspace[data-admin-pane="consult"] #adminConsultWorkspaceV100,body.pjo-admin-workspace[data-admin-pane="reviews"] #adminReviewStatsWorkspaceV119 {display:block!important}
+body.pjo-admin-workspace[data-admin-pane="members"] #memberList {display:grid!important}
+body.pjo-admin-workspace #adminConsultWorkspaceV100 {margin:0}
+body.pjo-admin-workspace .admin-consult-head-v100 {display:none!important}
+body.pjo-admin-workspace .pjo-consult-tools {display:flex;gap:16px;align-items:center;margin-bottom:24px}
+body.pjo-admin-workspace .pjo-consult-search {display:flex;align-items:center;gap:16px;flex:1;min-width:0;margin:0;padding:10px 16px;border:1px solid var(--admin-border);border-radius:12px;color:#8b8174}
+body.pjo-admin-workspace #adminPanel .pjo-consult-search input {margin:0;padding:4px 0;min-width:0;width:100%;border:0;box-shadow:none;background:transparent;color:#3d3126;font-size:16px;border-radius:0}
+body.pjo-admin-workspace #adminPanel .pjo-unread-filter {display:flex;flex:0 0 auto;width:auto!important;gap:8px;align-items:center;padding:10px 16px;font-size:14px;font-weight:400;background:transparent;border:1px solid var(--admin-border);border-radius:24px;color:#5b5145;box-shadow:none;white-space:nowrap}
+body.pjo-admin-workspace #adminPanel .pjo-unread-filter[aria-pressed="true"] {background:#eee0c4;border-color:#bb995b}
+body.pjo-admin-workspace .admin-consult-shell-v100 {display:grid;grid-template-columns:minmax(270px,.82fr) minmax(0,1.5fr);gap:28px;min-height:580px}
+body.pjo-admin-workspace #adminConsultUsersV100,body.pjo-admin-workspace #adminConsultChatV100 {min-width:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+body.pjo-admin-workspace #adminConsultUsersV100 {display:block;max-height:720px;overflow-y:auto}
+body.pjo-admin-workspace #adminPanel #adminConsultUsersV100 .consult-user-v100 {display:flex!important;align-items:center;gap:14px;width:100%;min-height:110px;padding:18px 6px;margin:0;border:0!important;border-bottom:1px solid var(--admin-border)!important;border-radius:0;background:transparent!important;box-shadow:none!important;text-align:left;font-weight:400!important;color:var(--admin-ink)!important}
+body.pjo-admin-workspace #adminPanel #adminConsultUsersV100 .consult-user-v100[hidden] {display:none!important}
+body.pjo-admin-workspace #adminPanel #adminConsultUsersV100 .consult-user-v100:first-child {border-top:1px solid var(--admin-border)!important}
+body.pjo-admin-workspace #adminPanel #adminConsultUsersV100 .consult-user-v100:hover {background:#e9dfd145!important}
+body.pjo-admin-workspace.pjo-admin-chat-open #adminPanel #adminConsultUsersV100 .consult-user-v100.active {background:#e9dfd17a!important}
+body.pjo-admin-workspace #adminPanel .pjo-admin-avatar {display:flex!important;flex-shrink:0;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:linear-gradient(120deg,#523b20,#322417);color:#fff9ee!important;font:32px/1 Georgia,serif!important;margin:0}
+body.pjo-admin-workspace #adminPanel .pjo-consult-person {display:block;min-width:0;flex:1}
+body.pjo-admin-workspace #adminPanel .pjo-consult-line {display:flex;justify-content:space-between;gap:8px;align-items:center;margin:0}
+body.pjo-admin-workspace #adminPanel .pjo-consult-line b {font-size:18px;font-weight:600;color:#30271f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.pjo-admin-workspace #adminPanel .pjo-consult-line time {color:#8a8074;font-size:12px;white-space:nowrap}
+body.pjo-admin-workspace #adminPanel .pjo-consult-preview {font-size:14px;color:#71665a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:6px}
+body.pjo-admin-workspace #adminPanel .pjo-consult-end {display:flex;align-items:center;gap:8px;color:#8b7c68}
+body.pjo-admin-workspace #adminPanel .pjo-consult-badge {width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#bd8b3d;color:white;font-size:13px;margin:0}
+body.pjo-admin-workspace .pjo-consult-arrow svg {width:16px!important;height:16px!important}
+body.pjo-admin-workspace #adminPanel .consult-unread-badge-v114 {display:none!important}
+body.pjo-admin-workspace .pjo-chat-placeholder {display:flex;align-items:center;justify-content:center;min-height:560px;border:1px solid var(--admin-border);border-radius:12px;color:#9d8e7a;font-size:15px}
+body.pjo-admin-workspace #adminConsultChatV100 {display:flex;flex-direction:column;border:1px solid var(--admin-border);border-radius:12px;overflow:hidden;height:680px;height:min(740px,calc(100dvh - 290px));min-height:440px;background:#f9f6f0}
+body.pjo-admin-workspace #adminPanel .admin-consult-selected-v100 {display:flex;align-items:center;justify-content:flex-start;gap:14px;margin:0;padding:18px;border-bottom:1px solid var(--admin-border);flex-shrink:0}
+body.pjo-admin-workspace .pjo-chat-name {min-width:0}
+body.pjo-admin-workspace #adminPanel .pjo-chat-name strong {display:block;overflow-wrap:anywhere;font-size:20px;color:#30271f}
+body.pjo-admin-workspace #adminPanel .pjo-chat-name>span {color:#638068;font-size:13px}
+body.pjo-admin-workspace #adminPanel .admin-consult-messages-v100 {max-height:none!important;overflow-y:auto;flex:1;min-height:0;margin:0;padding:0 20px 20px;scroll-behavior:auto!important}
+body.pjo-admin-workspace .pjo-chat-date {display:flex;align-items:center;gap:14px;margin:28px 0;color:#a59684;font-size:12px;justify-content:center}
+body.pjo-admin-workspace .pjo-chat-date::before,body.pjo-admin-workspace .pjo-chat-date::after {content:"";height:1px;background:#e3d9c9;flex:1;max-width:80px}
+body.pjo-admin-workspace .pjo-message {display:flex;align-items:flex-end;gap:9px;margin:24px 0}
+body.pjo-admin-workspace .pjo-message .pjo-admin-avatar {width:34px!important;height:34px!important;font-size:22px!important;align-self:flex-start}
+body.pjo-admin-workspace .pjo-message-bubble {padding:13px 17px;margin:0;border:1px solid #e1d5c4;border-radius:18px;background:#f1eadd85;color:#393128;font-size:16px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;max-width:72%}
+body.pjo-admin-workspace .pjo-message-time {font-size:11px;line-height:1.5;color:#8a8075;white-space:nowrap;flex-shrink:0;padding-bottom:4px}
+body.pjo-admin-workspace .pjo-message-admin {justify-content:flex-end}
+body.pjo-admin-workspace .pjo-message-admin .pjo-message-bubble {order:2;background:linear-gradient(120deg,#3b2c1c,#493722);color:#fffaf0;border-color:#3d2e1b;border-bottom-right-radius:4px}
+body.pjo-admin-workspace .pjo-message-admin .pjo-message-time {order:1}
+body.pjo-admin-workspace #adminPanel .admin-consult-reply-v100 {display:flex;align-items:flex-end;gap:12px;padding:18px;margin:0;border-top:1px solid var(--admin-border);background:#f9f6f0;flex-shrink:0}
+body.pjo-admin-workspace #adminPanel #adminConsultUserReplyV100 {flex:1;min-width:0;min-height:48px;max-height:180px;resize:vertical;border:1px solid #ddd0bd;border-radius:24px;padding:12px 18px;margin:0;background:#ffffffa6;color:#3f3426;line-height:1.5;font-size:16px}
+body.pjo-admin-workspace #adminPanel [data-action="admin-consult-user-reply-v100"] {width:48px;height:48px;min-height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:0;padding:12px;background:linear-gradient(120deg,#cfaa68,#b98432);border:0;border-radius:50%;color:white;box-shadow:none}
+body.pjo-admin-workspace .pjo-admin-empty,body.pjo-admin-workspace #adminPanel .consult-empty-v97,body.pjo-admin-workspace #adminPanel .admin-empty-note {color:#8c7d69;padding:32px 18px;background:transparent;border:1px solid var(--admin-border);border-radius:8px;font-size:15px}
+body.pjo-admin-workspace #adminEditBox>.admin-actions {display:flex;gap:12px;justify-content:flex-end;margin-top:36px;padding-top:20px;border-top:1px solid var(--admin-border)}
+body.pjo-admin-workspace #adminPanel #adminEditBox>.admin-actions button {background:transparent;border:1px solid #d8b9aa;color:#a75842;font-size:13px;padding:8px 14px;border-radius:6px;box-shadow:none}
+body.pjo-admin-workspace #loginLogs {margin-top:24px}
+body.pjo-admin-workspace #loginLogs .log-item {background:#fffaf0;border:1px solid var(--admin-border);color:#5c4b35;box-shadow:none}
+body.pjo-admin-workspace #adminSaved {font-size:14px;color:#517147;overflow-wrap:anywhere}
+body.pjo-admin-workspace #adminReviewStatsWorkspaceV119 {margin:0;color:var(--admin-ink)}
+body.pjo-admin-workspace .admin-review-head-v119 {margin-bottom:24px}
+body.pjo-admin-workspace #adminPanel .admin-review-head-v119 h4 {display:none}
+body.pjo-admin-workspace #adminPanel .admin-review-head-v119 p {color:#83725e}
+body.pjo-admin-workspace #adminPanel .admin-review-head-v119 button {flex-shrink:0;width:auto!important;white-space:nowrap;background:transparent;border:1px solid var(--admin-border);color:#70562f;box-shadow:none}
+body.pjo-admin-workspace #adminPanel .review-summary-grid-v119 {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+body.pjo-admin-workspace #adminPanel :is(.review-summary-grid-v119 article,.review-question-card-v119,.review-feedback-v119) {border:1px solid var(--admin-border);border-radius:9px;background:#fffdf74d;color:#554735;box-shadow:none}
+body.pjo-admin-workspace #adminPanel :is(.review-summary-grid-v119 b,.review-question-card-v119 h5,.review-feedback-v119 b) {color:#392d1e}
+body.pjo-admin-workspace #adminPanel :is(.review-summary-grid-v119 span,.review-question-card-v119 header span,.review-question-meta-v119,.review-feedback-v119 span,.review-feedback-v119 p,.review-bar-row-v119) {color:#837460}
+body.pjo-admin-workspace #adminPanel :is(.review-stars-v119,.review-question-card-v119 header strong,.review-bar-row-v119 em) {color:#b08234}
+body.pjo-admin-workspace #adminPanel .review-bar-row-v119 div {background:#e9dfcc}
+body.pjo-admin-workspace #adminPanel .review-bar-row-v119 i {background:linear-gradient(90deg,#bc8f46,#e3c17c)}
+body.pjo-admin-workspace #adminPanel :is(.review-question-list-v120,.review-detail-card-v120) {border:1px solid var(--admin-border)!important;background:#fffdf74d!important;border-radius:9px!important;color:var(--admin-ink)!important;box-shadow:none!important}
+body.pjo-admin-workspace #adminPanel :is(.review-question-list-v120 h5,.review-detail-card-v120 h5,.review-detail-card-v120 h6) {color:var(--admin-ink)!important}
+body.pjo-admin-workspace #adminPanel .review-question-button-v120 {border:1px solid var(--admin-border)!important;background:transparent!important;color:var(--admin-ink)!important;border-radius:7px!important;box-shadow:none!important;font-weight:400}
+body.pjo-admin-workspace #adminPanel .review-question-button-v120.active {background:#eee1c6!important;border-color:#c6a971!important}
+body.pjo-admin-workspace #adminPanel .review-question-button-v120 b {color:#493925!important;font-size:15px}
+body.pjo-admin-workspace #adminPanel :is(.review-question-button-v120 span,.review-question-button-v120 em,.review-detail-card-v120 header span) {color:#8f7959!important}
+body.pjo-admin-workspace #adminPanel .review-detail-card-v120 header strong {color:#a8792f!important}
+body.pjo-admin-workspace #adminLoginBox {max-width:480px;margin:8vh auto 32px;padding:36px;border:1px solid var(--admin-border);border-radius:12px;background:#fffdf680;box-shadow:0 16px 60px #5c3a1110}
+body.pjo-admin-workspace .pjo-admin-eyebrow {font-size:12px;letter-spacing:.18em;color:#a77c35}
+body.pjo-admin-workspace #adminLoginBox h1 {font-size:30px;margin:14px 0 8px;color:#33271b}
+body.pjo-admin-workspace #adminLoginBox p {font-size:14px;color:#8b795f}
+body.pjo-admin-workspace #adminLoginBox label {font-size:14px;color:#6b5740;margin-top:28px}
+body.pjo-admin-workspace #adminCode {font-size:16px;padding:13px;background:#fffdf8;border:1px solid #d5c2a5;border-radius:7px;color:#3d2a17}
+body.pjo-admin-workspace #adminLoginBox .admin-actions {display:flex;gap:12px;margin-top:20px}
+body.pjo-admin-workspace #adminLoginBox button {padding:10px 24px;font-size:15px;border:1px solid #c9b089;border-radius:7px;background:#392b1b;color:#f5e7c5;box-shadow:none}
+body.pjo-admin-workspace #adminLoginBox #adminCloseBtn {background:transparent;color:#776147}
+body.pjo-admin-workspace #adminLoginBox #adminError {color:#ad4534}
+@media(max-width:980px) {
+  body.pjo-admin-workspace .admin-consult-shell-v100 {display:block;min-height:0}
+  body.pjo-admin-workspace #adminConsultUsersV100 {max-height:none}
+  body.pjo-admin-workspace:not(.pjo-admin-chat-open) #adminConsultChatV100 {display:none}
+  body.pjo-admin-workspace.pjo-admin-chat-open #adminConsultUsersV100,
+  body.pjo-admin-workspace.pjo-admin-chat-open #pjoConsultTools,
+  body.pjo-admin-workspace.pjo-admin-chat-open #pjoAdminOverview,
+  body.pjo-admin-workspace.pjo-admin-chat-open #adminPanel #adminEditBox>.tabs,
+  body.pjo-admin-workspace.pjo-admin-chat-open #pjoAdminBar,
+  body.pjo-admin-workspace.pjo-admin-chat-open #adminEditBox>.admin-actions,
+  body.pjo-admin-workspace.pjo-admin-chat-open #adminEditBox>h4,
+  body.pjo-admin-workspace.pjo-admin-chat-open #loginLogs,
+  body.pjo-admin-workspace.pjo-admin-chat-open #adminSaved {display:none!important}
+  body.pjo-admin-workspace.pjo-admin-chat-open #adminEditBox {padding:0;max-width:none}
+  body.pjo-admin-workspace.pjo-admin-chat-open #adminConsultChatV100 {border:0;border-radius:0;height:100dvh;min-height:0}
+  body.pjo-admin-workspace .pjo-member-row,body.pjo-admin-workspace .pjo-member-columns {grid-template-columns:minmax(180px,1.5fr) 86px minmax(132px,1fr) 100px 16px;gap:12px}
+}
+@media(min-width:681px) and (max-width:820px) {
+  body.pjo-admin-workspace .pjo-member-columns {display:none}
+  body.pjo-admin-workspace .pjo-member-row {grid-template-columns:minmax(0,1fr) auto 20px;gap:10px;padding:18px}
+  body.pjo-admin-workspace .pjo-member-id {grid-column:1}
+  body.pjo-admin-workspace .pjo-member-row .status-pill {grid-column:2}
+  body.pjo-admin-workspace .pjo-member-plan {grid-column:1}
+  body.pjo-admin-workspace .pjo-member-access {grid-column:2}
+  body.pjo-admin-workspace .pjo-member-chevron {grid-column:3;grid-row:1/3}
+}
+@media(max-width:680px) {
+  body.pjo-admin-workspace #adminPanel>.pjo-admin-bar {padding:14px 18px;min-height:72px;gap:10px}
+  body.pjo-admin-workspace .pjo-admin-brand {font-size:21px;gap:8px;letter-spacing:-.5px}
+  body.pjo-admin-workspace .pjo-admin-tag {font-size:10px;padding:2px 5px}
+  body.pjo-admin-workspace .pjo-admin-nav {gap:4px}
+  body.pjo-admin-workspace #adminPanel .pjo-admin-nav .pjo-admin-icon {min-width:36px;width:36px;flex-basis:36px;padding:5px}
+  body.pjo-admin-workspace #adminPanel .pjo-admin-nav svg {width:22px;height:22px}
+  body.pjo-admin-workspace #adminEditBox {padding:26px 16px 36px}
+  body.pjo-admin-workspace .pjo-admin-heading {gap:10px;margin-bottom:24px;align-items:flex-start}
+  body.pjo-admin-workspace #pjoAdminPageTitle {font-size:27px}
+  body.pjo-admin-workspace #pjoAdminPageIntro {font-size:14px;max-width:230px;margin-top:7px}
+  body.pjo-admin-workspace #pjoAdminConnection {font-size:12px;margin-top:12px;gap:5px}
+  body.pjo-admin-workspace .pjo-admin-numbers>div {padding:14px 5px}
+  body.pjo-admin-workspace .pjo-admin-numbers strong {font-size:28px}
+  body.pjo-admin-workspace .pjo-admin-numbers span {font-size:13px}
+  body.pjo-admin-workspace #adminPanel #adminEditBox>.tabs>.tab {padding:11px 5px!important;font-size:14px!important}
+  body.pjo-admin-workspace #adminPanel .pjo-admin-member-filters>.tab {padding:8px 12px!important;font-size:13px!important}
+  body.pjo-admin-workspace .pjo-member-columns {display:none}
+  body.pjo-admin-workspace .pjo-member-row {grid-template-columns:minmax(0,1fr) auto 16px;gap:10px;padding:16px}
+  body.pjo-admin-workspace .pjo-member-id {font-size:15px;grid-column:1}
+  body.pjo-admin-workspace .pjo-member-row .status-pill {grid-column:2;font-size:12px!important;padding:4px 7px!important}
+  body.pjo-admin-workspace .pjo-member-plan {grid-column:1;font-size:13px}
+  body.pjo-admin-workspace .pjo-member-access {grid-column:2;font-size:12px}
+  body.pjo-admin-workspace .pjo-member-chevron {grid-column:3;grid-row:1/3}
+  body.pjo-admin-workspace .pjo-member-content {padding:0 14px 14px}
+  body.pjo-admin-workspace #memberList .admin-member-meta {grid-template-columns:1fr;font-size:13px;padding:14px}
+  body.pjo-admin-workspace .pjo-consult-tools {flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  body.pjo-admin-workspace .pjo-consult-search {flex-basis:100%;padding:10px 14px}
+  body.pjo-admin-workspace #adminPanel .pjo-unread-filter {margin-left:auto;padding:7px 13px;min-height:38px;font-size:13px}
+  body.pjo-admin-workspace #adminPanel #adminConsultUsersV100 .consult-user-v100 {gap:12px;min-height:100px;padding:17px 3px}
+  body.pjo-admin-workspace #adminPanel .pjo-consult-line b {font-size:18px}
+  body.pjo-admin-workspace #adminPanel .pjo-consult-line time {font-size:12px}
+  body.pjo-admin-workspace #adminPanel .pjo-consult-preview {font-size:14px}
+  body.pjo-admin-workspace #adminPanel .pjo-consult-end {gap:3px}
+  body.pjo-admin-workspace #adminPanel .admin-consult-selected-v100 {padding:14px 12px;gap:10px;min-height:78px}
+  body.pjo-admin-workspace #adminPanel .admin-consult-selected-v100 .pjo-admin-avatar {width:42px;height:42px;font-size:28px!important}
+  body.pjo-admin-workspace #adminPanel .pjo-chat-name strong {font-size:19px}
+  body.pjo-admin-workspace #adminPanel .admin-consult-messages-v100 {padding:0 14px 18px}
+  body.pjo-admin-workspace .pjo-message {gap:6px;margin:26px 0}
+  body.pjo-admin-workspace .pjo-message-bubble {font-size:15px;padding:12px 14px;max-width:68%;line-height:1.75}
+  body.pjo-admin-workspace .pjo-message-time {font-size:10px}
+  body.pjo-admin-workspace #adminPanel .admin-consult-reply-v100 {padding:14px 16px max(14px,env(safe-area-inset-bottom));gap:10px}
+  body.pjo-admin-workspace #adminPanel #adminConsultUserReplyV100 {font-size:16px}
+  body.pjo-admin-workspace #adminPanel .review-summary-grid-v119 {gap:8px}
+  body.pjo-admin-workspace #adminPanel .review-summary-grid-v119 article {padding:14px 8px;text-align:center}
+  body.pjo-admin-workspace #adminPanel .review-summary-grid-v119 b {font-size:26px}
+  body.pjo-admin-workspace #adminPanel .review-summary-grid-v119 span {font-size:12px}
+  body.pjo-admin-workspace #adminLoginBox {margin:9vh 18px 24px;padding:28px 24px}
+}
+@media(max-width:360px) {
+  body.pjo-admin-workspace .pjo-admin-brand {font-size:18px}
+  body.pjo-admin-workspace .pjo-admin-nav {gap:0}
+  body.pjo-admin-workspace #adminPanel>.pjo-admin-bar {padding-inline:12px}
+  body.pjo-admin-workspace #pjoAdminConnection {font-size:11px}
+  body.pjo-admin-workspace #adminPanel .pjo-admin-avatar {width:44px;height:44px}
+}
+@media(prefers-reduced-motion:reduce) {body.pjo-admin-workspace * {scroll-behavior:auto!important;transition:none!important}}
