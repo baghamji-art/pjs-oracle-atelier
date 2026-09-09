@@ -5,6 +5,7 @@ const {
   safeEqual,
   securityConfig
 } = require('./_admin-session');
+const { parseObjectBody } = require('./_request-validation');
 
 exports.handler = async function (event) {
   if (event.httpMethod === 'OPTIONS') return json(204, {});
@@ -15,14 +16,14 @@ exports.handler = async function (event) {
     return json(503, { error: 'Admin security is not configured' });
   }
 
-  let body;
-  try {
-    body = JSON.parse(event.body || '{}');
-  } catch (error) {
-    return json(400, { error: 'Invalid JSON body' });
-  }
+  const parsed = parseObjectBody(event, 4096);
+  if (parsed.error) return json(parsed.error, { error: parsed.error === 413 ? 'Request body too large' : 'Invalid JSON body' });
+  const body = parsed.body;
 
-  const suppliedCode = String(body.code || '').slice(0, 256);
+  if (typeof body.code !== 'string' || body.code.length > 256) {
+    return json(400, { error: 'Invalid administrator credentials' });
+  }
+  const suppliedCode = body.code;
   if (!safeEqual(suppliedCode, config.adminCode)) {
     await minimumFailureDelay();
     return json(401, { error: 'Invalid administrator credentials' });

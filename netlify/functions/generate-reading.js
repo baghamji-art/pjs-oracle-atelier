@@ -1,3 +1,5 @@
+const { parseObjectBody, validateReading } = require('./_request-validation');
+
 exports.handler = async function(event) {
   if (event.httpMethod === 'GET') {
     return json(200, { ok: true, message: 'generate-reading function is alive' });
@@ -16,12 +18,10 @@ exports.handler = async function(event) {
     return json(500, { error: 'OPENAI_API_KEY is not set' });
   }
 
-  let body = {};
-  try {
-    body = JSON.parse(event.body || '{}');
-  } catch (error) {
-    return json(400, { error: 'Invalid JSON body' });
-  }
+  const parsed = parseObjectBody(event, 65536);
+  if (parsed.error) return json(parsed.error, { error: parsed.error === 413 ? 'Request body too large' : 'Invalid JSON body' });
+  const body = parsed.body;
+  if (!validateReading(body)) return json(400, { error: 'Invalid reading request' });
 
   const question = safeText(body.question, 160);
   const qtype = safeText(body.qtype, 80);

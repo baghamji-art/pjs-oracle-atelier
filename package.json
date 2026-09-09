@@ -2,5 +2,10 @@
   "name": "pjs-oracle-atelier",
   "version": "1.0.0",
   "private": true,
-  "type": "commonjs"
+  "type": "commonjs",
+  "scripts": {
+    "test:security": "node --test tests/security-stage1.test.cjs",
+    "test:security:fixture": "node tests/archive-security.fixture.cjs",
+    "test:security:browser": "node tests/archive-security.browser.cjs"
+  }
 }

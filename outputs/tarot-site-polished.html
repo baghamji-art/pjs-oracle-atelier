@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/common.css">
+<script src="assets/vendor/dompurify-3.4.15.min.js"></script>
+<script src="assets/archive-security.js"></script>
 <title>PJ’s Oracle Atelier</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -6583,8 +6585,13 @@ function openArchivedReadingV78(id){
   latestSummary=record.fullSummary||record.summary||'';
   lastReadingData={q:record.q,type:record.type||record.qtype,summary:record.quick||record.summary,score:record.score,cards:record.cards||[],time:record.time};
   if(record.cardsHtml&&record.readingHtml){
-    $('cards').innerHTML=record.cardsHtml;
-    $('reading').innerHTML=record.readingHtml;
+    try{
+      PJArchiveSecurity.restore($('cards'),$('reading'),record.cardsHtml,record.readingHtml);
+    }catch(error){
+      console.warn('Archive snapshot could not be safely restored');
+      alert(currentLang==='en'?'Could not safely open this reading. Please refresh and try again.':currentLang==='zh'?'无法安全打开此解读，请刷新后重试。':'저장된 리딩을 안전하게 열지 못했어. 새로고침 후 다시 시도해줘.');
+      return;
+    }
   }else{
     $('cards').innerHTML='';
     $('reading').innerHTML='<div class="selected-question-result-v64"><span class="result-label-v64">선택한 리딩</span><h2>'+esc(record.q||'저장된 리딩')+'</h2></div><div class="quick-summary"><h3 class="reading-section-title">이전 저장 기록</h3><p class="master-note">이 기록은 화면 그대로 저장 기능을 넣기 전에 만들어져서, 당시 리포트 화면을 다시 불러올 수 없습니다. 새로 보는 리딩부터는 결과 페이지가 그대로 보관함에 저장됩니다.</p></div>';
