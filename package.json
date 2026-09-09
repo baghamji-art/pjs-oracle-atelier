@@ -4,7 +4,7 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "test:security": "node --test tests/security-stage1.test.cjs",
+    "test:security": "node --test tests/security-stage1.test.cjs tests/server-security-check.test.cjs",
     "test:security:fixture": "node tests/archive-security.fixture.cjs",
     "test:security:browser": "node tests/archive-security.browser.cjs"
   }
