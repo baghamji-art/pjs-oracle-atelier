@@ -1,10 +1,11 @@
 'use strict';
 
-// INTERNAL FOUNDATION ONLY. No HTTP handler, route, frontend import or DB writes.
-// Do not expose until rate limiting, authenticated data paths and the coordinated
-// removal of public app_state access are ready. See MEMBER-AUTH-FOUNDATION.md.
+// Internal authentication. HTTP adapters are administrator-gated rehearsals only.
+// No frontend cutover or DB writes. See MEMBER-ACCESS-REHEARSAL.md.
 const crypto = require('node:crypto');
 const { readServerConfig } = require('../_supabase-server-probe');
+const { verifyPassword, hasValidCredential } = require('./member-password.cjs');
+const { projectMemberData } = require('./member-data.cjs');
 
 const COOKIE_NAME = 'pjo_member_session';
 const SESSION_SECONDS = 20 * 60;
@@ -37,7 +38,8 @@ function constantEqual(left, right) {
 
 function credentialVersion(member, secret) {
   // Keyed (not a public password hash): no offline password-check oracle in cookie.
-  return mac(JSON.stringify([member.id, member.password]), secret, 'credential');
+  const credential = Object.hasOwn(member, 'passwordHash') ? ['hash', member.passwordHash] : member.password;
+  return mac(JSON.stringify([member.id, credential]), secret, 'credential');
 }
 
 function eligible(member, now) {
@@ -47,10 +49,10 @@ function eligible(member, now) {
   if (member.expiresAt !== undefined && member.expiresAt !== null) {
     if (!Number.isSafeInteger(member.expiresAt) || member.expiresAt <= now) return false;
   }
-  return boundedString(member.password, 4096);
+  return hasValidCredential(member);
 }
 
-async function readMembers() {
+async function readMembers(includeLogs = false) {
   const config = readServerConfig();
   if (config.error) return { error: fail(503, 'MEMBER_AUTH_NOT_CONFIGURED') };
   const controller = new AbortController();
@@ -58,8 +60,10 @@ async function readMembers() {
   let reader;
   try {
     // Existing schema forces a server-side read of the members array. Never
-    // return it, proxy query parameters, or fetch guest_codes/logs.
-    const response = await fetch(config.origin + '/rest/v1/app_state?select=id,members&id=eq.main&limit=1', {
+    // return it or proxy query parameters. Logs are fetched only for own-data
+    // projection, in the SAME snapshot as the credential/status recheck.
+    const fields = includeLogs ? 'id,members,logs' : 'id,members';
+    const response = await fetch(config.origin + '/rest/v1/app_state?select=' + fields + '&id=eq.main&limit=1', {
       method: 'GET', headers: { apikey: config.key, Accept: 'application/json' },
       redirect: 'error', signal: controller.signal
     });
@@ -92,7 +96,10 @@ async function readMembers() {
       }
       ids.add(member.id);
     }
-    return { members: rows[0].members };
+    if (includeLogs && (!Array.isArray(rows[0].logs) || rows[0].logs.length > 10000)) {
+      return { error: fail(503, 'MEMBER_DATA_INVALID') };
+    }
+    return { members: rows[0].members, ...(includeLogs ? { logs: rows[0].logs } : {}) };
   } catch (_) {
     // Never log or include upstream errors/records/credentials in the response.
     return { error: fail(503, 'MEMBER_AUTH_UNAVAILABLE') };
@@ -122,8 +129,9 @@ async function authenticateMember(credentials) {
   const result = await readMembers();
   if (result.error) return result.error;
   const member = result.members.find(item => item.id === credentials.id.trim());
-  const password = boundedString(member?.password, 4096) ? member.password : '';
-  const matches = constantEqual(credentials.password, password);
+  let matches;
+  try { matches = await verifyPassword(credentials.password, member); }
+  catch (_) { return fail(503, 'MEMBER_AUTH_UNAVAILABLE'); }
   // Same external failure for missing ID, wrong password or ineligible status.
   if (!member || !matches || !eligible(member, Date.now())) return denied();
   const now = Math.floor(Date.now() / 1000);
@@ -158,17 +166,31 @@ function parseSession(event, secret) {
   } catch (_) { return null; }
 }
 
-async function verifyMemberSession(event) {
+async function resolveMemberSession(event, includeLogs = false, allowedIds = null) {
   const secret = sessionSecret();
   if (!secret) return fail(503, 'MEMBER_AUTH_NOT_CONFIGURED');
   const claims = parseSession(event, secret);
   if (!claims) return denied(); // No DB access for an unsigned/invalid caller.
-  const result = await readMembers();
+  if (allowedIds && !allowedIds.has(claims.sub)) return denied();
+  const result = await readMembers(includeLogs);
   if (result.error) return result.error;
   const member = result.members.find(item => item.id === claims.sub);
   if (claims.exp <= Math.floor(Date.now() / 1000) || !member || !eligible(member, Date.now()) ||
       !constantEqual(claims.cv, credentialVersion(member, secret))) return denied();
-  return { ok: true, status: 200, code: 'MEMBER_AUTHENTICATED', member: identity(member) };
+  // Private helper only. Raw record must never cross the HTTP boundary.
+  return { ok: true, member, logs: result.logs };
+}
+
+async function verifyMemberSession(event, allowedIds = null) {
+  const result = await resolveMemberSession(event, false, allowedIds);
+  if (!result.ok) return result;
+  return { ok: true, status: 200, code: 'MEMBER_AUTHENTICATED', member: identity(result.member) };
+}
+
+async function readMemberData(event, resource, readingId, allowedIds) {
+  const result = await resolveMemberSession(event, resource === 'consultations', allowedIds);
+  if (!result.ok) return result;
+  return projectMemberData(result.member, result.logs, resource, readingId);
 }
 
 function clearMemberSessionCookie() {
@@ -183,7 +205,7 @@ async function auditMemberMigration() {
   if (result.error) return result.error;
   const counts = {
     total: result.members.length, eligibleForPreparedAuth: 0, requiresReview: 0,
-    legacyPlaintextPassword: 0, invalidPasswordFormat: 0, permanent: 0,
+    legacyPlaintextPassword: 0, hashedPassword: 0, invalidPasswordFormat: 0, permanent: 0,
     missingExpiry: 0, invalidExpiryFormat: 0, expired: 0, unpaid: 0
   };
   const statuses = { active: 0, approved: 0, expiring_soon: 0, pending: 0,
@@ -191,7 +213,9 @@ async function auditMemberMigration() {
   const now = Date.now();
   for (const member of result.members) {
     if (eligible(member, now)) counts.eligibleForPreparedAuth++; else counts.requiresReview++;
-    if (boundedString(member.password, 4096)) counts.legacyPlaintextPassword++; else counts.invalidPasswordFormat++;
+    if (boundedString(member.password, 4096)) counts.legacyPlaintextPassword++;
+    if (Object.hasOwn(member, 'passwordHash') && hasValidCredential(member)) counts.hashedPassword++;
+    if (!hasValidCredential(member)) counts.invalidPasswordFormat++;
     if (member.permanent === true) counts.permanent++;
     if (member.paid === false) counts.unpaid++;
     if (member.expiresAt === undefined || member.expiresAt === null) counts.missingExpiry++;
@@ -204,4 +228,4 @@ async function auditMemberMigration() {
     mode: 'read-only', dataAccessMigrationComplete: false };
 }
 
-module.exports = { authenticateMember, verifyMemberSession, clearMemberSessionCookie, auditMemberMigration };
+module.exports = { authenticateMember, verifyMemberSession, clearMemberSessionCookie, auditMemberMigration, readMemberData };
