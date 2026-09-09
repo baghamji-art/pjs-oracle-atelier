@@ -55,4 +55,4 @@ async function probeAppState() {
   }
 }
 
-module.exports = { probeAppState };
+module.exports = { probeAppState, readServerConfig };
