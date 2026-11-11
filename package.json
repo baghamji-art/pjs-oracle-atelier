@@ -4,7 +4,10 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "test:security": "node --test tests/security-stage1.test.cjs tests/server-security-check.test.cjs tests/member-auth.test.cjs tests/runtime-security.test.cjs tests/member-access.test.cjs && node scripts/security-scan.cjs",
+    "test:security": "node --test tests/security-stage1.test.cjs tests/server-security-check.test.cjs tests/member-auth.test.cjs tests/runtime-security.test.cjs tests/member-access.test.cjs tests/member-archive.test.cjs tests/consult-write.test.cjs tests/member-management.test.cjs && node scripts/security-scan.cjs",
+    "test:archive:sql": "node --test tests/member-archive-sql.test.cjs",
+    "test:consult:sql": "node --test tests/consult-write-sql.test.cjs",
+    "test:member-management:sql": "node --test tests/member-management-sql.test.cjs",
     "test:security:fixture": "node tests/archive-security.fixture.cjs",
     "test:security:browser": "node tests/archive-security.browser.cjs"
   }

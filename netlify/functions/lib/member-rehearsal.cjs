@@ -28,7 +28,7 @@ function reply(status, body, method, extra = {}) {
   });
 }
 
-function rehearsalHandler(method, action) {
+function rehearsalHandler(method, action, { mayWrite = false, unconfirmedCode = 'ARCHIVE_WRITE_UNCONFIRMED' } = {}) {
   return async event => {
     const send = result => {
       const { status, cookie, ...body } = result;
@@ -45,11 +45,12 @@ function rehearsalHandler(method, action) {
       const result = await action(event, access.allowedIds);
       // Expired admin sessions must not deliver data/cookies after a slow DB call.
       const recheck = gate(event);
-      if (recheck.status) return send({ ok: false, ...recheck });
+      if (recheck.status) return send(mayWrite ?
+        { ok: false, status: 503, code: unconfirmedCode } : { ok: false, ...recheck });
       return send(result);
     } catch (_) {
       // Do not expose exception text, passwords, source records or server keys.
-      return send({ ok: false, status: 503, code: 'MEMBER_ACCESS_UNAVAILABLE' });
+      return send({ ok: false, status: 503, code: mayWrite ? unconfirmedCode : 'MEMBER_ACCESS_UNAVAILABLE' });
     }
   };
 }

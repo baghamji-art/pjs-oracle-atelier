@@ -1,4 +1,5 @@
 'use strict';
+const { revision } = require('./archive-record.cjs');
 // Explicit projections only. Never pass a raw member/log object to the browser.
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const fail = () => ({ ok: false, status: 503, code: 'MEMBER_DATA_INVALID' });
@@ -13,6 +14,11 @@ function reading(record, detail) {
   }
   for (const key of ['time', 'score']) {
     if (typeof record[key] === 'number' && Number.isFinite(record[key])) output[key] = record[key];
+  }
+  if (typeof record.score === 'string') output.score = record.score;
+  if (detail && object(record.destinyReflection)) {
+    const { type, memo, time } = record.destinyReflection;
+    if (typeof type === 'string' && typeof memo === 'string' && Number.isSafeInteger(time)) output.destinyReflection = { type, memo, time };
   }
   if (typeof record.favorite === 'boolean') output.favorite = record.favorite;
   if (Array.isArray(record.cards) && record.cards.every(card => typeof card === 'string')) output.cards = record.cards;
@@ -36,9 +42,9 @@ function projectMemberData(member, logs, resource, readingId) {
       if (!object(item) || typeof item.id !== 'string' || !item.id || ids.has(item.id)) return fail();
       ids.add(item.id);
     }
-    if (resource === 'history') return success(history.map(item => reading(item, false)));
+    if (resource === 'history') return success(history.map(item => ({ ...reading(item, false), revision: revision(member.id, item) })));
     const item = history.find(item => item.id === readingId);
-    return item ? success(reading(item, true)) : { ok: false, status: 404, code: 'READING_NOT_FOUND' };
+    return item ? success({ ...reading(item, true), revision: revision(member.id, item) }) : { ok: false, status: 404, code: 'READING_NOT_FOUND' };
   }
   if (resource !== 'consultations' || !Array.isArray(logs)) return fail();
   const threads = new Map();
@@ -51,7 +57,8 @@ function projectMemberData(member, logs, resource, readingId) {
         !['user', 'admin'].includes(log.role) || typeof log.message !== 'string' ||
         !Number.isSafeInteger(log.time) || log.time < 0) return fail();
     if (!threads.has(log.consultId)) threads.set(log.consultId, { id: log.consultId, messages: [] });
-    threads.get(log.consultId).messages.push({ role: log.role, text: log.message, time: log.time });
+    threads.get(log.consultId).messages.push({ role: log.role, text: log.message, time: log.time,
+      ...(typeof log.messageId === 'string' ? { messageId: log.messageId } : {}) });
   }
   const result = [...threads.values()];
   for (const thread of result) {

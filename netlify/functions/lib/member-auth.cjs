@@ -178,7 +178,7 @@ async function resolveMemberSession(event, includeLogs = false, allowedIds = nul
   if (claims.exp <= Math.floor(Date.now() / 1000) || !member || !eligible(member, Date.now()) ||
       !constantEqual(claims.cv, credentialVersion(member, secret))) return denied();
   // Private helper only. Raw record must never cross the HTTP boundary.
-  return { ok: true, member, logs: result.logs };
+  return { ok: true, member, logs: result.logs, sessionExpiresAt: claims.exp };
 }
 
 async function verifyMemberSession(event, allowedIds = null) {
@@ -228,4 +228,14 @@ async function auditMemberMigration() {
     mode: 'read-only', dataAccessMigrationComplete: false };
 }
 
-module.exports = { authenticateMember, verifyMemberSession, clearMemberSessionCookie, auditMemberMigration, readMemberData };
+// Server-only raw snapshot for atomic write preparation, never a JSON response.
+const prepareMemberWrite = (event, allowedIds) => resolveMemberSession(event, false, allowedIds);
+// Caller must already have a verified admin cookie. Never expose raw records.
+async function prepareAdminConsultWrite(memberId, allowedIds) {
+  if (!boundedString(memberId, 256) || !allowedIds?.has(memberId)) return denied();
+  const result = await readMembers();
+  if (result.error) return result.error;
+  const member = result.members.find(item => item.id === memberId);
+  return member ? { ok: true, member } : denied();
+}
+module.exports = { authenticateMember, verifyMemberSession, clearMemberSessionCookie, auditMemberMigration, readMemberData, prepareMemberWrite, prepareAdminConsultWrite };
